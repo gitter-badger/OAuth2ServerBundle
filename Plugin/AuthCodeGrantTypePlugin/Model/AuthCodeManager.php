@@ -1,0 +1,130 @@
+<?php
+
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model;
+
+use OAuth2\Token\AuthCodeManager as BaseManager;
+use OAuth2\Client\ClientInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
+use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\Configuration\ConfigurationInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PreAuthCodeCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PostAuthCodeCreationEvent;
+
+class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
+{
+    use ManagerBehaviour;
+
+    /**
+     * @var \OAuth2\Exception\ExceptionManagerInterface
+     */
+    private $exception_manager;
+
+    /**
+     * @var \OAuth2\Configuration\ConfigurationInterface
+     */
+    private $configuration;
+
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $event_dispatcher;
+
+    /**
+     * @param                                                             $class
+     * @param \Doctrine\Common\Persistence\ManagerRegistry                $manager_registry
+     * @param \OAuth2\Exception\ExceptionManagerInterface                 $exception_manager
+     * @param \OAuth2\Configuration\ConfigurationInterface                $configuration
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+     */
+    public function __construct(
+        $class,
+        ManagerRegistry $manager_registry,
+        ExceptionManagerInterface $exception_manager,
+        ConfigurationInterface $configuration,
+        EventDispatcherInterface $event_dispatcher
+    ) {
+        $this->setClass($class);
+        $this->setManagerRegistry($manager_registry);
+        $this->event_dispatcher = $event_dispatcher;
+        $this->exception_manager = $exception_manager;
+        $this->configuration = $configuration;
+    }
+
+    protected function getExceptionManager()
+    {
+        return $this->exception_manager;
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createAuthCode(ClientInterface $client, $redirectUri, array $scope = array(), ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    {
+        if (!is_null($this->event_dispatcher)) {
+            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHCODE_CREATION, new PreAuthCodeCreationEvent($client, $redirectUri, $scope, $resourceOwner, $issueRefreshToken));
+        }
+
+        $authcode = parent::createAuthCode($client, $redirectUri, $scope, $resourceOwner, $issueRefreshToken);
+
+        if (!is_null($this->event_dispatcher)) {
+            $this->event_dispatcher->dispatch(Events::OAUTH2_POST_AUTHCODE_CREATION, new PostAuthCodeCreationEvent($authcode));
+        }
+
+        return $authcode;
+    }
+
+    protected function addAuthCode($code, $expiresAt, ClientInterface $client, $redirectUri, array $scope = array(), ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    {
+        $class = $this->getClass();
+        /*
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
+         */
+        $authcode = new $class();
+        $authcode->setCode($code)
+            ->setExpiresAt($expiresAt)
+            ->setClientPublicId($client->getPublicId())
+            ->setScope($scope)
+            ->setRedirectUri($redirectUri)
+            ->setIssueRefreshToken($issueRefreshToken);
+        if (!is_null($resourceOwner)) {
+            $authcode->setResourceOwnerPublicId($resourceOwner->getPublicId());
+        }
+
+        $this->getEntityManager()->persist($authcode);
+        $this->getEntityManager()->flush();
+
+        return $authcode;
+    }
+
+    public function getAuthCode($code)
+    {
+        return $this->getEntityRepository()->findOneBy(array('code' => $code));
+    }
+
+    public function markAuthCodeAsUsed(BaseAuthCodeInterface $authcode)
+    {
+        $this->getEntityManager()->remove($authcode);
+        $this->getEntityManager()->flush();
+    }
+
+    public function deleteExpired()
+    {
+        $qb = $this->getEntityRepository()->createQueryBuilder('t');
+        $qb
+            ->delete()
+            ->where('t.expires_at < :now')
+            ->setParameters(array('now' => time()));
+
+        return $qb->getQuery()->execute();
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="oauth2_server.password_client.manager" class="%oauth2_server.password_client.manager_class%">
+            <argument>%oauth2_server.password_client.client_class%</argument>
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="oauth2_server.exception.manager" />
+            <argument type="service" id="oauth2_server.configuration" />
+            <tag name="oauth2_server.client_manager" />
+        </service>
+    </services>
+</container>

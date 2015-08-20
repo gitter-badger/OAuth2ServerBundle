@@ -1,0 +1,17 @@
+<p>
+    {{ 'authorization.form.message'|trans({'%client_id%': client.getPublicId()}, 'SpomkyLabsOAuth2Server') }}<br />
+{% if scopes|length > 0 %}
+    {{ 'authorization.form.scope'|trans({}, 'SpomkyLabsOAuth2Server') }}
+    <ul>
+        {% for scope in scopes %}
+            <li>{{ scope }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    {{ 'authorization.form.no_scope'|trans({}, 'SpomkyLabsOAuth2Server') }}
+{% endif %}
+</p>
+{{ form_start(form, {'action':app.request.uri }) }}
+    {{ form_row(form.accept) }}
+    {{ form_row(form.reject) }}
+{{ form_end(form) }}

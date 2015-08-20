@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessToken">
+        <field name="token" column="token" type="string" unique="true" />
+        <field name="expires_at" column="expires_at" type="integer" nullable="false" />
+        <field name="scope" column="scope" type="array" nullable="true" />
+        <field name="client_public_id" column="client_public_id" type="string" nullable="false" />
+        <field name="resource_owner_public_id" column="resource_owner_public_id" type="string" nullable="true" />
+    </mapped-superclass>
+</doctrine-mapping>

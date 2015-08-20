@@ -1,0 +1,83 @@
+imports:
+    - { resource: security.yml }
+
+framework:
+    test: ~
+    secret: test
+    translator: { fallback: en }
+    form: ~
+    validation:
+        enable_annotations: true
+    session:
+        storage_id: session.storage.mock_file
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+    templating:
+        engines: ['twig']
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     localhost
+        port:
+        path:     "%kernel.cache_dir%/project.db"
+        user:     root
+        password:
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+#        default_entity_manager: default
+#        entity_managers:
+#            default:
+#                connection: default
+#                mappings:
+#                    SpomkyLabsOAuth2ServerBundle:  ~
+#                    SpomkyLabsTestBundle:  ~
+
+oauth2_server:
+    scope:
+        policy: default
+        default_scope: 'scope1'
+        available_scope: 'scope1 scope2 scope3 scope4'
+    unregistered_client:
+        client_class: SpomkyLabs\TestBundle\Entity\UnregisteredClient
+        manager_class: SpomkyLabs\TestBundle\Entity\UnregisteredClientManager
+    public_client:
+        client_class: SpomkyLabs\TestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\TestBundle\Entity\PublicClientManager
+    password_client:
+        client_class: SpomkyLabs\TestBundle\Entity\PasswordClient
+        manager_class: SpomkyLabs\TestBundle\Entity\PasswordClientManager
+    refresh_token:
+        token_class: SpomkyLabs\TestBundle\Entity\RefreshToken
+        token_manager: oauth2_server.test_bundle.refresh_token_manager
+    auth_code:
+        class: SpomkyLabs\TestBundle\Entity\AuthCode
+        manager: oauth2_server.test_bundle.auth_code_manager
+        length: 50
+    simple_string_access_token:
+        class: SpomkyLabs\TestBundle\Entity\SimpleStringAccessToken
+        manager: oauth2_server.test_bundle.access_token_manager
+    token_endpoint:
+        access_token_type: oauth2_server.bearer_access_token
+        access_token_manager: oauth2_server.simple_string_access_token.manager
+        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
+        end_user_manager: oauth2_server.test_bundle.end_user_manager
+    implicit_grant_type:
+        access_token_type: oauth2_server.bearer_access_token
+        access_token_manager: oauth2_server.simple_string_access_token.manager
+    resource_owner_password_credentials_grant_type:
+        end_user_manager: oauth2_server.test_bundle.end_user_manager
+    token_revocation_endpoint:
+        access_token_manager: oauth2_server.simple_string_access_token.manager
+        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
+    authorization_endpoint:
+        security:
+            x_frame_options: deny
+        option:
+            enforce_redirect_uri: true
+            enforce_secured_redirect_uri: true
+            enforce_registered_client_redirect_uris: true
+            enforce_state: true

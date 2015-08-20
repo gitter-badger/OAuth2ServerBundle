@@ -1,0 +1,61 @@
+<?php
+
+namespace SpomkyLabs\TestBundle\Entity;
+
+use OAuth2\EndUser\EndUserInterface;
+use OAuth2\EndUser\EndUserManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class EndUserManager implements EndUserManagerInterface
+{
+    private $entity_repository;
+    private $entity_manager;
+    private $class;
+
+    public function __construct(
+        $class,
+        ManagerRegistry $manager_registry
+    ) {
+        $this->class = $class;
+        $this->entity_manager = $manager_registry->getManagerForClass($class);
+        $this->entity_repository = $this->entity_manager->getRepository($class);
+    }
+
+    public function createEndUser()
+    {
+        $class = $this->getClass();
+
+        return new $class();
+    }
+
+    protected function getClass()
+    {
+        return $this->class;
+    }
+
+    public function saveEndUser(EndUserInterface $end_user)
+    {
+        $this->getEntityManager()->persist($end_user);
+        $this->getEntityManager()->flush();
+    }
+
+    public function checkEndUserPasswordCredentials(EndUserInterface $end_user, $password)
+    {
+        return $end_user->getPassword() === $password;
+    }
+
+    public function getEndUser($username)
+    {
+        return $this->getEntityRepository()->findOneBy(array('username' => $username));
+    }
+
+    protected function getEntityRepository()
+    {
+        return $this->entity_repository;
+    }
+
+    protected function getEntityManager()
+    {
+        return $this->entity_manager;
+    }
+}

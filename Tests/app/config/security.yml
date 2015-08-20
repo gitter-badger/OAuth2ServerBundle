@@ -1,0 +1,24 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\UserInterface: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    providers:
+        test_bundle:
+            id: oauth2_server.test_bundle.user_provider
+
+    firewalls:
+        main:
+            pattern: ^/oauth/v2/authorize
+            http_basic:
+                realm: "My security system"
+        token:
+            pattern: ^/oauth/v2/(token|revoke)
+            anonymous: true
+
+    access_control:
+        - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/oauth/v2/token, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/v2/revoke, role: IS_AUTHENTICATED_ANONYMOUSLY }

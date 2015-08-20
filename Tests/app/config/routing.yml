@@ -1,0 +1,8 @@
+token_endpoint:
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/TokenEndpointPlugin/Resources/config/routing/token_endpoint.xml"
+
+revocation_endpoint:
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/TokenRevocationEndpointPlugin/Resources/config/routing/revocation_endpoint.xml"
+
+authorization_endpoint:
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml"

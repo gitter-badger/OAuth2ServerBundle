@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.token_revocation_endpoint.controller.class">SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\Controller\TokenRevocationEndpointController</parameter>
+
+        <parameter key="oauth2_server.token_revocation_endpoint.endpoint.class">SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\Endpoint\TokenRevocationEndpoint</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.token_revocation_endpoint.controller" class="%oauth2_server.token_revocation_endpoint.controller.class%" scope="request">
+            <argument type="service" id="oauth2_server.token_revocation_endpoint" />
+        </service>
+
+        <service id="oauth2_server.token_revocation_endpoint" class="%oauth2_server.token_revocation_endpoint.endpoint.class%">
+            <argument type="service" id="oauth2_server.configuration" />
+            <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            <argument type="service" id="oauth2_server.exception.manager" />
+            <argument type="service" id="oauth2_server.token_revocation_endpoint.access_token_manager" />
+            <argument type="service" id="oauth2_server.token_revocation_endpoint.refresh_token_manager" on-invalid="ignore" />
+        </service>
+    </services>
+</container>

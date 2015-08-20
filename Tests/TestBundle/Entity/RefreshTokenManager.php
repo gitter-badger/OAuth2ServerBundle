@@ -1,0 +1,49 @@
+<?php
+
+namespace SpomkyLabs\TestBundle\Entity;
+
+use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\RefreshTokenManager as BaseTokenManager;
+use OAuth2\Client\ClientInterface;
+use OAuth2\Token\RefreshTokenInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
+
+class RefreshTokenManager extends BaseTokenManager
+{
+    public function createExpiredAccessToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
+    {
+        $class = $this->getClass();
+        $expired_date = (new \Datetime('now -10sec'))->format('U');
+        $token = new $class();
+        $token->setToken($refresh_token)
+              ->setExpiresAt($expired_date)
+              ->setResourceOwnerPublicId($resource_owner->getPublicId())
+              ->setClientPublicId($client->getPublicId());
+
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
+
+        return $token;
+    }
+
+    public function revokeRefreshToken(RefreshTokenInterface $refresh_token)
+    {
+        $this->getEntityManager()->remove($refresh_token);
+        $this->getEntityManager()->flush();
+    }
+
+    public function createValidAccessToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
+    {
+        $class = $this->getClass();
+        $expired_date = (new \Datetime('now +1 year'))->format('U');
+        $token = new $class();
+        $token->setToken($refresh_token)
+              ->setExpiresAt($expired_date)
+              ->setResourceOwnerPublicId($resource_owner->getPublicId())
+              ->setClientPublicId($client->getPublicId());
+
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
+
+        return $token;
+    }
+}

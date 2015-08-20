@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.authorization_endpoint.controller.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Controller\AuthorizationEndpointController</parameter>
+        <parameter key="oauth2_server.authorization_endpoint.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Endpoint\AuthorizationEndpoint</parameter>
+        <parameter key="oauth2_server.authorization_endpoint.form_type.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Type\AuthorizationFormType</parameter>
+        <parameter key="oauth2_server.authorization_endpoint.form_handler.default.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.authorization_endpoint.controller" class="%oauth2_server.authorization_endpoint.controller.class%" scope="request">
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="oauth2_server.authorization_endpoint.form_handler" />
+            <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            <argument type="service" id="oauth2_server.authorization_endpoint.form" />
+            <argument type="service" id="oauth2_server.scope.manager" />
+            <argument>%oauth2_server.authorization_endpoint.security.x_frame_options%</argument>
+        </service>
+
+        <service id="oauth2_server.authorization_endpoint" class="%oauth2_server.authorization_endpoint.class%">
+            <argument type="service" id="oauth2_server.configuration" />
+            <argument type="service" id="oauth2_server.exception.manager" />
+            <argument type="service" id="oauth2_server.scope.manager" />
+        </service>
+
+        <service id="oauth2_server.authorization_endpoint.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%oauth2_server.authorization_endpoint.form_name%</argument>
+            <argument>%oauth2_server.authorization_endpoint.form_type%</argument>
+            <argument>null</argument>
+            <argument type="collection">
+                <argument key="validation_groups">%oauth2_server.authorization_endpoint.form_validation_groups%</argument>
+            </argument>
+        </service>
+
+        <service id="oauth2_server.authorization_endpoint.form_type" class="%oauth2_server.authorization_endpoint.form_type.class%">
+            <tag name="form.type" alias="oauth2_server_authorization_endpoint" />
+        </service>
+
+        <service id="oauth2_server.authorization_endpoint.form_handler.default" class="%oauth2_server.authorization_endpoint.form_handler.default.class%" scope="request">
+            <argument type="service" id="oauth2_server.authorization_endpoint" />
+        </service>
+    </services>
+</container>
