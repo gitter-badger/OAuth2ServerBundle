@@ -23,6 +23,11 @@ class PostFindClientEvent extends Event
      */
     protected $throw_exception_if_not_found;
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \OAuth2\Client\ClientInterface|null       $client
+     * @param bool                                      $throw_exception_if_not_found
+     */
     public function __construct(Request $request, ClientInterface $client = null, $throw_exception_if_not_found = true)
     {
         $this->client = $client;

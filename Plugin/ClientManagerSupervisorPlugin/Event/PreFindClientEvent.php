@@ -17,6 +17,10 @@ class PreFindClientEvent extends Event
      */
     protected $throw_exception_if_not_found;
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param bool                                      $throw_exception_if_not_found
+     */
     public function __construct(Request $request, $throw_exception_if_not_found = true)
     {
         $this->request = $request;

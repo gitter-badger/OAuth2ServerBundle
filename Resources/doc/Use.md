@@ -75,7 +75,7 @@ The following plugins are enabled by default:
     * [Public Client](Resources/doc/Plugin/PublicClient.md)
     * [Password Client](Resources/doc/Plugin/PasswordClient.md)
 * Token transport:
-    * [Bearer Access Token](Resources/doc/Plugin/BearerAccessTokenP.md)
+    * [Bearer Access Token](Resources/doc/Plugin/BearerAccessToken.md)
 * Access token manager:
     * [SimpleString Access Token](Resources/doc/Plugin/SimpleStringAccessToken.md)
 * Endpoints:
@@ -130,14 +130,15 @@ oauth2_server_authorization_endpoint: # Only need if you have enabled Authorizat
 
 # Usage
 
-The token endpoint is at `/oauth/v2/token` by default (see [routing configuration file](Plugin/TokenEndpointPlugin/Resources/config/routing/token_endpoint.xml)).
-
-The token revocation endpoint is at `/oauth/v2/revoke` by default (see see [routing configuration file](Plugin/TokenRevocationEndpointPlugin/Resources/config/routing/revocation_endpoint.xml)).
-
-The authorize endpoint is at `/oauth/v2/authorize` by default (see see [routing configuration file](Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml)).
+See [this page](Usage/Index.md) to know how to create your first access tokens.
 
 # Next steps
 
 * [Notes about Security](Next/Security.md)
 * [Configuration Reference](Next/ConfigurationReference.md)
 * [Adding Grant Extensions](Next/AddingGrantExtensions.md)
+* [Custom Endpoint](Next/CustomEndpoint.md)
+* [Custom Client Type](Next/CustomClientType.md)
+* [Custom Properties On Access Tokens](Next/CustomPropertiesOnAccessTokens.md)
+* [Scope Per Client](Next/ScopePerClient.md)
+* [Token Lifetime Per Client](Next/STokenLifetimePerClient.md)
