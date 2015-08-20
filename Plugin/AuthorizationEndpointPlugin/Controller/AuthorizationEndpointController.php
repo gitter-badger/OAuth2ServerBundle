@@ -3,19 +3,19 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Controller;
 
 use OAuth2\Client\ClientInterface;
-use OAuth2\EndUser\EndUserInterface;
-use OAuth2\Scope\ScopeManagerInterface;
-use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Client\ClientManagerSupervisorInterface;
+use OAuth2\Endpoint\Authorization;
+use OAuth2\Endpoint\AuthorizationInterface;
+use OAuth2\EndUser\EndUserInterface;
+use OAuth2\Exception\BaseExceptionInterface;
+use OAuth2\Scope\ScopeManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler;
-use Symfony\Component\Form\FormInterface;
-use OAuth2\Endpoint\Authorization;
-use OAuth2\Endpoint\AuthorizationInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 class AuthorizationEndpointController
 {
@@ -103,11 +103,11 @@ class AuthorizationEndpointController
     {
         $content = $this->template_engine->render(
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
-            array(
-                'form' => $this->form->createView(),
+            [
+                'form'   => $this->form->createView(),
                 'client' => $authorization->getClient(),
                 'scopes' => $authorization->getScope(),
-            )
+            ]
         );
         $response = new Response($content);
         if (!is_null($this->x_frame_options)) {

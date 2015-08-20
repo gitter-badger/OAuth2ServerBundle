@@ -2,11 +2,11 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
 class CorePlugin implements BundlePlugin
 {

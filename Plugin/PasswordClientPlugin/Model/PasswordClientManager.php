@@ -2,11 +2,11 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model;
 
-use OAuth2\Client\PasswordClientManager as Base;
-use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\Configuration\ConfigurationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PasswordClientInterface as BasePasswordClientInterface;
+use OAuth2\Client\PasswordClientManager as Base;
+use OAuth2\Configuration\ConfigurationInterface;
+use OAuth2\Exception\ExceptionManagerInterface;
 
 class PasswordClientManager extends Base implements PasswordClientManagerInterface
 {
@@ -85,7 +85,7 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
      */
     public function getClient($public_id)
     {
-        $client = $this->getEntityRepository()->findOneBy(array('public_id' => $public_id));
+        $client = $this->getEntityRepository()->findOneBy(['public_id' => $public_id]);
 
         return $client;
     }

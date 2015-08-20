@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestBuilder
 {
-    private $query = array();
-    private $fragment = array();
-    private $server = array();
-    private $header = array();
-    private $content_parameter = array();
+    private $query = [];
+    private $fragment = [];
+    private $server = [];
+    private $header = [];
+    private $content_parameter = [];
     private $content = null;
     private $method = 'GET';
     private $uri = '/';
@@ -18,8 +18,8 @@ class RequestBuilder
     public function getUri()
     {
         $parse_url = parse_url($this->uri);
-        $parse_url['query'] = array_merge(isset($parse_url['query']) ? $parse_url['query'] : array(), $this->query);
-        $parse_url['fragment'] = array_merge(isset($parse_url['fragment']) ? $parse_url['fragment'] : array(), $this->fragment);
+        $parse_url['query'] = array_merge(isset($parse_url['query']) ? $parse_url['query'] : [], $this->query);
+        $parse_url['fragment'] = array_merge(isset($parse_url['fragment']) ? $parse_url['fragment'] : [], $this->fragment);
         if (count($parse_url['query']) === 0) {
             unset($parse_url['query']);
         }
@@ -180,9 +180,9 @@ class RequestBuilder
         return Request::create(
             $this->getUri(),
             $this->method,
-            array(),
-            array(),
-            array(),
+            [],
+            [],
+            [],
             $this->getServer(),
             $this->getContent()
         );

@@ -2,9 +2,9 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PublicClientManager as BaseManager;
 use OAuth2\Exception\ExceptionManagerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 class PublicClientManager extends BaseManager implements PublicClientManagerInterface
@@ -66,7 +66,7 @@ class PublicClientManager extends BaseManager implements PublicClientManagerInte
      */
     public function getClient($public_id)
     {
-        $client = $this->getEntityRepository()->findOneBy(array('public_id' => $public_id));
+        $client = $this->getEntityRepository()->findOneBy(['public_id' => $public_id]);
 
         return $client;
     }
@@ -92,9 +92,9 @@ class PublicClientManager extends BaseManager implements PublicClientManagerInte
      */
     protected function findClientMethods()
     {
-        return array(
+        return [
             'findClientInRequestHeader',
-        );
+        ];
     }
 
     /**

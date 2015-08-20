@@ -20,7 +20,7 @@ class PublicClientPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (array('services') as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -48,11 +48,11 @@ class PublicClientPlugin implements BundlePlugin
 
     public function build(ContainerBuilder $container)
     {
-        $mappings = array(
+        $mappings = [
             realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model',
-        );
+        ];
         if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, array('oauth2_server.public_client.manager')));
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['oauth2_server.public_client.manager']));
         }
     }
 

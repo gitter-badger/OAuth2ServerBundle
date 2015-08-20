@@ -4,12 +4,12 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\DependencyInjection\Compiler\ConfigurationEntryCompilerPass;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\DependencyInjection\Compiler\ConfigurationEntryCompilerPass;
 
 class PasswordClientPlugin implements BundlePlugin
 {
@@ -22,18 +22,18 @@ class PasswordClientPlugin implements BundlePlugin
     {
         $container->addCompilerPass(new ConfigurationEntryCompilerPass());
 
-        $mappings = array(
+        $mappings = [
             realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model',
-        );
+        ];
         if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, array('oauth2_server.password_client.manager')));
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['oauth2_server.password_client.manager']));
         }
     }
 
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (array('services') as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 

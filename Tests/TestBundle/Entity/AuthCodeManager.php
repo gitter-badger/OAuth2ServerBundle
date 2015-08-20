@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeManager as BaseManager;
 use OAuth2\Token\AuthCodeInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeManager as BaseManager;
 
 class AuthCodeManager extends BaseManager
 {

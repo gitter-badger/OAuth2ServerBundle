@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model;
 
-use OAuth2\Token\RefreshTokenInterface;
 use OAuth2\Token\AccessTokenInterface as Base;
+use OAuth2\Token\RefreshTokenInterface;
 
 interface SimpleStringAccessTokenInterface extends Base
 {

@@ -2,10 +2,10 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
-use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\RefreshTokenManager as BaseTokenManager;
 use OAuth2\Client\ClientInterface;
-use OAuth2\Token\RefreshTokenInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
+use OAuth2\Token\RefreshTokenInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\RefreshTokenManager as BaseTokenManager;
 
 class RefreshTokenManager extends BaseTokenManager
 {

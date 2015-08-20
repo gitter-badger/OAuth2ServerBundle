@@ -21,7 +21,7 @@ class PreAuthCodeCreationEvent extends Event
      * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $resource_owner
      * @param bool                                         $issue_refresh_token
      */
-    public function __construct(ClientInterface $client, $redirect_uri, array $scope = array(), ResourceOwnerInterface $resource_owner = null, $issue_refresh_token = false)
+    public function __construct(ClientInterface $client, $redirect_uri, array $scope = [], ResourceOwnerInterface $resource_owner = null, $issue_refresh_token = false)
     {
         $this->client = $client;
         $this->redirect_uri = $redirect_uri;

@@ -2,9 +2,9 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
-use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager as BaseManager;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientInterface;
 use OAuth2\Client\PasswordClientInterface as BasePasswordClientInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager as BaseManager;
 
 class PasswordClientManager extends BaseManager
 {

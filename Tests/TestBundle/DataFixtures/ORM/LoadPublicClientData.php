@@ -2,12 +2,12 @@
 
 namespace SpomkyLabs\TestBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 class LoadPublicClientData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -45,13 +45,13 @@ class LoadPublicClientData extends AbstractFixture implements FixtureInterface, 
 
     public function getClients()
     {
-        return array(
-            array(
-                'public_id' => 'foo',
-                'grant_types' => array('code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'),
-                'redirect_uris' => array('https://example.com/redirection/callback'),
-            ),
-        );
+        return [
+            [
+                'public_id'     => 'foo',
+                'grant_types'   => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
+                'redirect_uris' => ['https://example.com/redirection/callback'],
+            ],
+        ];
     }
 
     /**

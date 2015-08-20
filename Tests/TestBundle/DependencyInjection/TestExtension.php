@@ -3,10 +3,10 @@
 namespace SpomkyLabs\TestBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class TestExtension extends Extension
 {
@@ -28,7 +28,7 @@ class TestExtension extends Extension
         $processor->processConfiguration($configuration, $configs);*/
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        foreach (array('services') as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
     }

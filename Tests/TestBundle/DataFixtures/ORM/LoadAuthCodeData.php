@@ -2,12 +2,12 @@
 
 namespace SpomkyLabs\TestBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -52,56 +52,56 @@ class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, Cont
     {
         $scope_manager = $this->container->get('oauth2_server.scope.manager');
 
-        return array(
-            array(
-                'client' => $this->getReference('public-client-foo'),
+        return [
+            [
+                'client'         => $this->getReference('public-client-foo'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'VALID_CODE1',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() + 10000,
-                'redirect_uri' => null,
-            ),
-            array(
-                'client' => $this->getReference('public-client-foo'),
+                'code'           => 'VALID_CODE1',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() + 10000,
+                'redirect_uri'   => null,
+            ],
+            [
+                'client'         => $this->getReference('public-client-foo'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'VALID_CODE2',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() + 10000,
-                'redirect_uri' => null,
-            ),
-            array(
-                'client' => $this->getReference('public-client-foo'),
+                'code'           => 'VALID_CODE2',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() + 10000,
+                'redirect_uri'   => null,
+            ],
+            [
+                'client'         => $this->getReference('public-client-foo'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'VALID_CODE3',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() + 10000,
-                'redirect_uri' => null,
-            ),
-            array(
-                'client' => $this->getReference('password-client-bar'),
+                'code'           => 'VALID_CODE3',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() + 10000,
+                'redirect_uri'   => null,
+            ],
+            [
+                'client'         => $this->getReference('password-client-bar'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'VALID_CODE4',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() + 10000,
-                'redirect_uri' => 'https://example.com/redirection/callback',
-            ),
-            array(
-                'client' => $this->getReference('public-client-foo'),
+                'code'           => 'VALID_CODE4',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() + 10000,
+                'redirect_uri'   => 'https://example.com/redirection/callback',
+            ],
+            [
+                'client'         => $this->getReference('public-client-foo'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'VALID_CODE5',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() + 10000,
-                'redirect_uri' => 'https://example.com/redirection/callback',
-            ),
-            array(
-                'client' => $this->getReference('public-client-foo'),
+                'code'           => 'VALID_CODE5',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() + 10000,
+                'redirect_uri'   => 'https://example.com/redirection/callback',
+            ],
+            [
+                'client'         => $this->getReference('public-client-foo'),
                 'resource_owner' => $this->getReference('user-john'),
-                'code' => 'EXPIRED_CODE1',
-                'scope' => $scope_manager->convertToScope('scope1 scope2'),
-                'expires_at' => time() - 10000,
-                'redirect_uri' => 'https://example.com/redirection/callback',
-            ),
-        );
+                'code'           => 'EXPIRED_CODE1',
+                'scope'          => $scope_manager->convertToScope('scope1 scope2'),
+                'expires_at'     => time() - 10000,
+                'redirect_uri'   => 'https://example.com/redirection/callback',
+            ],
+        ];
     }
 
     /**

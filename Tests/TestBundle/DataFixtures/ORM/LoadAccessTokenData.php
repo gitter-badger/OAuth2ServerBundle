@@ -2,12 +2,12 @@
 
 namespace SpomkyLabs\TestTokenRevocationEndpointBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 
 class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -59,26 +59,26 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
 
     protected function getAccessTokens()
     {
-        return array(
-            array(
-                'id' => 'ABCD',
-                'expires_at' => time() + 1000,
-                'token' => 'ABCD',
-                'scope' => array(),
-                'client_public_id' => 'foo',
+        return [
+            [
+                'id'                       => 'ABCD',
+                'expires_at'               => time() + 1000,
+                'token'                    => 'ABCD',
+                'scope'                    => [],
+                'client_public_id'         => 'foo',
                 'resource_owner_public_id' => 'foo',
-                'refresh_token' => null,
-            ),
-            array(
-                'id' => 'EFGH',
-                'expires_at' => time() + 1000,
-                'token' => 'EFGH',
-                'scope' => array(),
-                'client_public_id' => 'bar',
+                'refresh_token'            => null,
+            ],
+            [
+                'id'                       => 'EFGH',
+                'expires_at'               => time() + 1000,
+                'token'                    => 'EFGH',
+                'scope'                    => [],
+                'client_public_id'         => 'bar',
                 'resource_owner_public_id' => 'bar',
-                'refresh_token' => null,
-            ),
-        );
+                'refresh_token'            => null,
+            ],
+        ];
     }
 
     /**
