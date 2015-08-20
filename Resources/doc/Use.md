@@ -1,14 +1,31 @@
-Use
-===
+How to use this bundle?
+=======================
 
 # Enable the bundle
 
 First of all, you must enable the bundle and the plugins you want to use in the kernel.
-Please note that this bundle uses Puli. The Puli bundle must be enabled to.
+
+Please note that this bundle uses [Puli](puli.io). The [Puli bundle](https://github.com/puli/symfony-bundle) must be enabled too.
+
+Hereafter, an example using all available plugins.
 
 ```php
 <?php
 // app/AppKernel.php
+
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\RefreshTokenGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\ResourceOwnerPasswordCredentialsGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\SimpleStringAccessTokenPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\TokenEndpointPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\TokenRevocationEndpointPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredClientPlugin;
 
 public function registerBundles()
 {
@@ -36,58 +53,91 @@ public function registerBundles()
 
 # Configure the bundle
 
-## Main configuration
+There is no configuration for the bundle itself.
+All plugins you enabled have their own configuration, model classes...
 
-## Plugin configuration
+See below details of each plugin provided by this bundle
 
-###
+# Mandatory plugins
 
-# 
+The following plugins are enabled by default:
+* [Core Plugin](Resources/doc/Plugin/Core.md)
+* [Scope Manager Plugin](Resources/doc/Plugin/ScopeManager.md)
+* [Configuration Plugin](Resources/doc/Plugin/Configuration.md)
+* [Exception Manager Plugin](Resources/doc/Plugin/ExceptionManager.md)
+* [Client Manager Supervisor Plugin](Resources/doc/Plugin/ClientManagerSupervisor.md)
+* [Token Endpoint](Resources/doc/Plugin/TokenEndpoint.md)
+
+# Other plugins
+
+* Client:
+    * [Unregistered Client](Resources/doc/Plugin/UnregisteredClient.md)
+    * [Public Client](Resources/doc/Plugin/PublicClient.md)
+    * [Password Client](Resources/doc/Plugin/PasswordClient.md)
+* Token transport:
+    * [Bearer Access Token](Resources/doc/Plugin/BearerAccessTokenP.md)
+* Access token manager:
+    * [SimpleString Access Token](Resources/doc/Plugin/SimpleStringAccessToken.md)
+* Endpoints:
+    * [Authorization Endpoint](Resources/doc/Plugin/AuthorizationEndpoint.md)
+    * [Token Revocation Endpoint](Resources/doc/Plugin/TokenRevocationEndpoint.md)
+* Grant types:
+    * [Authorization Code Grant Type](Resources/doc/Plugin/AuthCodeGrantType.md)
+    * [Refresh Token Grant Type](Resources/doc/Plugin/RefreshTokenGrantType.md)
+    * [Implicit Grant Type](Resources/doc/Plugin/ImplicitGrantType.md)
+    * [Resource Owner Password Credentials Grant Type](Resources/doc/Plugin/ResourceOwnerPasswordCredentialsGrantType.md)
+    * [Client Credentials Grant Type](Resources/doc/Plugin/ClientCredentialsGrantType.md)
+
+# Configure your application's security.yml
+
+In order for Symfony's security component to use the this bundle, you must tell it to do so in the `security.yml file`.
+The `security.yml` file is where the basic configuration for the security for your application is contained.
+
+Below is an example of the configuration necessary to use authorization, token and token revocation endpoints in your application:
 
 ```yml
-oauth2_server:
-    scope:
-        policy: default
-        default_scope: 'scope1'
-        available_scope: 'scope1 scope2 scope3 scope4'
-    unregistered_client:
-        client_class: SpomkyLabs\TestBundle\Entity\UnregisteredClient
-        manager_class: SpomkyLabs\TestBundle\Entity\UnregisteredClientManager
-    public_client:
-        client_class: SpomkyLabs\TestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\TestBundle\Entity\PublicClientManager
-    password_client:
-        client_class: SpomkyLabs\TestBundle\Entity\PasswordClient
-        manager_class: SpomkyLabs\TestBundle\Entity\PasswordClientManager
-    refresh_token:
-        token_class: SpomkyLabs\TestBundle\Entity\RefreshToken
-        token_manager: oauth2_server.test_bundle.refresh_token_manager
-    auth_code:
-        class: SpomkyLabs\TestBundle\Entity\AuthCode
-        manager: oauth2_server.test_bundle.auth_code_manager
-        length: 50
-    simple_string_access_token:
-        class: SpomkyLabs\TestBundle\Entity\SimpleStringAccessToken
-        manager: oauth2_server.test_bundle.access_token_manager
-    token_endpoint:
-        access_token_type: oauth2_server.bearer_access_token
-        access_token_manager: oauth2_server.simple_string_access_token.manager
-        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
-        end_user_manager: oauth2_server.test_bundle.end_user_manager
-    implicit_grant_type:
-        access_token_type: oauth2_server.bearer_access_token
-        access_token_manager: oauth2_server.simple_string_access_token.manager
-    resource_owner_password_credentials_grant_type:
-        end_user_manager: oauth2_server.test_bundle.end_user_manager
-    token_revocation_endpoint:
-        access_token_manager: oauth2_server.simple_string_access_token.manager
-        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
-    authorization_endpoint:
-        security:
-            x_frame_options: deny
-        option:
-            enforce_redirect_uri: true
-            enforce_secured_redirect_uri: true
-            enforce_registered_client_redirect_uris: true
-            enforce_state: true
+# app/config/security.yml
+security:
+    firewalls:
+        authorize: # Only need if you have enabled AuthorizationEndpointPlugin
+            pattern: ^/oauth/v2/authorize
+            # Add your favorite authentication process here
+        token:
+            pattern: ^/oauth/v2/token
+            #pattern: ^/oauth/v2/(token|revoke)  # If you have enabled TokenRevocationEndpointPlugin, comment the previous line and uncomment this one
+            security: false
+
+    access_control:
+        - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY }
 ```
+
+# Configure the routes
+
+Import the `routing.yml` configuration file in `app/config/routing.yml`:
+
+```yml
+# app/config/routing.yml
+oauth2_server_token_endpoint:
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/TokenEndpointPlugin/Resources/config/routing/token_endpoint.xml"
+
+oauth2_server_revocation_endpoint: # Only need if you have enabled TokenRevocationEndpointPlugin
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/TokenRevocationEndpointPlugin/Resources/config/routing/revocation_endpoint.xml"
+
+oauth2_server_authorization_endpoint: # Only need if you have enabled AuthorizationEndpointPlugin
+    resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml"
+
+```
+
+# Usage
+
+The token endpoint is at `/oauth/v2/token` by default (see [routing configuration file](Plugin/TokenEndpointPlugin/Resources/config/routing/token_endpoint.xml)).
+
+The token revocation endpoint is at `/oauth/v2/revoke` by default (see see [routing configuration file](Plugin/TokenRevocationEndpointPlugin/Resources/config/routing/revocation_endpoint.xml)).
+
+The authorize endpoint is at `/oauth/v2/authorize` by default (see see [routing configuration file](Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml)).
+
+# Next steps
+
+* [Notes about Security](Next/Security.md)
+* [Configuration Reference](Next/ConfigurationReference.md)
+* [Adding Grant Extensions](Next/AddingGrantExtensions.md)

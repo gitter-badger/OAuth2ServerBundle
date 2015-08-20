@@ -10,7 +10,6 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\RefreshTokenGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\ResourceOwnerPasswordCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\SimpleStringAccessTokenPlugin;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\TokenEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\TokenRevocationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle;
@@ -35,7 +34,6 @@ class AppKernel extends Kernel
                 new BearerAccessTokenPlugin(),
                 new SimpleStringAccessTokenPlugin(),
                 new AuthorizationEndpointPlugin(),
-                new TokenEndpointPlugin(),
                 new AuthCodeGrantTypePlugin(),
                 new RefreshTokenGrantTypePlugin(),
                 new ImplicitGrantTypePlugin(),

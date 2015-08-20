@@ -8,6 +8,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\ConfigurationPlugin\ConfigurationPlugin
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\CorePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ExceptionManagerPlugin\ExceptionManagerPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ScopeManagerPlugin\ScopeManagerPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\TokenEndpointPlugin;
 
 class SpomkyLabsOAuth2ServerBundle extends BundleWithPlugins
 {
@@ -21,9 +22,11 @@ class SpomkyLabsOAuth2ServerBundle extends BundleWithPlugins
         return [
             new CorePlugin(),
             new ScopeManagerPlugin(),
+            new TokenEndpointPlugin(),
             new ConfigurationPlugin(),
             new ExceptionManagerPlugin(),
             new ClientManagerSupervisorPlugin(),
+
         ];
     }
 }

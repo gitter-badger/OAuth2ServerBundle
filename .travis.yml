@@ -14,15 +14,15 @@ env:
 before_script:
     - composer require symfony/yaml:${SYMFONY_VERSION} --no-update
     - composer require symfony/class-loader:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/framework-bundle:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/security-bundle:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/finder:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/form:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/twig-bundle:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/validator:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/event-dispatcher:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/yaml:${SYMFONY_VERSION} --no-update
-    - composer require symfony/symfony/var-dumper:${SYMFONY_VERSION} --no-update
+    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/security-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/finder:${SYMFONY_VERSION} --no-update
+    - composer require symfony/form:${SYMFONY_VERSION} --no-update
+    - composer require symfony/twig-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/validator:${SYMFONY_VERSION} --no-update
+    - composer require symfony/event-dispatcher:${SYMFONY_VERSION} --no-update
+    - composer require symfony/yaml:${SYMFONY_VERSION} --no-update
+    - composer require symfony/var-dumper:${SYMFONY_VERSION} --no-update
     - composer update
 
 script:
