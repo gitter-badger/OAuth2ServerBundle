@@ -2,18 +2,18 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model;
 
-use OAuth2\Token\AuthCodeManager as BaseManager;
-use OAuth2\Client\ClientInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\Configuration\ConfigurationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use OAuth2\Client\ClientInterface;
+use OAuth2\Configuration\ConfigurationInterface;
+use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
+use OAuth2\Token\AuthCodeManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PostAuthCodeCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PreAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PreAuthCodeCreationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PostAuthCodeCreationEvent;
 
 class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
 {
@@ -68,7 +68,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createAuthCode(ClientInterface $client, $redirectUri, array $scope = array(), ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    public function createAuthCode(ClientInterface $client, $redirectUri, array $scope = [], ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
     {
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHCODE_CREATION, new PreAuthCodeCreationEvent($client, $redirectUri, $scope, $resourceOwner, $issueRefreshToken));
@@ -83,7 +83,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
         return $authcode;
     }
 
-    protected function addAuthCode($code, $expiresAt, ClientInterface $client, $redirectUri, array $scope = array(), ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    protected function addAuthCode($code, $expiresAt, ClientInterface $client, $redirectUri, array $scope = [], ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
     {
         $class = $this->getClass();
         /*
@@ -108,7 +108,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
 
     public function getAuthCode($code)
     {
-        return $this->getEntityRepository()->findOneBy(array('code' => $code));
+        return $this->getEntityRepository()->findOneBy(['code' => $code]);
     }
 
     public function markAuthCodeAsUsed(BaseAuthCodeInterface $authcode)
@@ -123,7 +123,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
         $qb
             ->delete()
             ->where('t.expires_at < :now')
-            ->setParameters(array('now' => time()));
+            ->setParameters(['now' => time()]);
 
         return $qb->getQuery()->execute();
     }

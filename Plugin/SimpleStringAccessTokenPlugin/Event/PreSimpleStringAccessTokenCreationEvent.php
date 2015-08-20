@@ -35,7 +35,7 @@ class PreSimpleStringAccessTokenCreationEvent extends Event
      * @param ResourceOwnerInterface $resource_owner
      * @param RefreshTokenInterface  $refresh_token
      */
-    public function __construct(ClientInterface $client, array $scope = array(), ResourceOwnerInterface $resource_owner = null, RefreshTokenInterface $refresh_token = null)
+    public function __construct(ClientInterface $client, array $scope = [], ResourceOwnerInterface $resource_owner = null, RefreshTokenInterface $refresh_token = null)
     {
         $this->client = $client;
         $this->scope = $scope;

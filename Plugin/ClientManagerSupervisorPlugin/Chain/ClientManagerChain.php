@@ -6,7 +6,7 @@ use OAuth2\Client\ClientManagerInterface;
 
 class ClientManagerChain
 {
-    private $client_managers = array();
+    private $client_managers = [];
 
     public function addClientManager(ClientManagerInterface $client_manager)
     {

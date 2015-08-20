@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ResponseTypeCompilerPass implements CompilerPassInterface
@@ -18,7 +18,7 @@ class ResponseTypeCompilerPass implements CompilerPassInterface
 
         $taggedServices = $container->findTaggedServiceIds('oauth2_server.response_type');
         foreach ($taggedServices as $id => $attributes) {
-            $definition->addMethodCall('addResponseType', array(new Reference($id)));
+            $definition->addMethodCall('addResponseType', [new Reference($id)]);
         }
     }
 }

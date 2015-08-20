@@ -32,7 +32,7 @@ class TokenEndpointPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (array('token.endpoint') as $basename) {
+        foreach (['token.endpoint'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 

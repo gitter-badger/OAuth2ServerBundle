@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class GrantTypeCompilerPass implements CompilerPassInterface
@@ -18,7 +18,7 @@ class GrantTypeCompilerPass implements CompilerPassInterface
 
         $taggedServices = $container->findTaggedServiceIds('oauth2_server.grant_type');
         foreach ($taggedServices as $id => $attributes) {
-            $definition->addMethodCall('addGrantType', array(new Reference($id)));
+            $definition->addMethodCall('addGrantType', [new Reference($id)]);
         }
     }
 }

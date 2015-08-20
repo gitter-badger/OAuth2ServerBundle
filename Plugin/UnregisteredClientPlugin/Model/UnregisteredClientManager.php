@@ -51,7 +51,7 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
     public function getClient($public_id)
     {
         $class = $this->getClass();
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = new $class();
@@ -65,9 +65,9 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
      */
     protected function findClientMethods()
     {
-        return array(
+        return [
             'findClientInRequestHeader',
-        );
+        ];
     }
 
     /**
@@ -90,7 +90,7 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
     public function findClient(Request $request)
     {
         $methods = $this->findClientMethods();
-        $result = array();
+        $result = [];
 
         foreach ($methods as $method) {
             $data = $this->$method($request);
@@ -114,9 +114,9 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
     /**
      * @param array $result
      *
-     * @return null|\OAuth2\Client\ClientInterface
-     *
      * @throws \OAuth2\Exception\BaseExceptionInterface
+     *
+     * @return null|\OAuth2\Client\ClientInterface
      */
     private function checkResult(array $result)
     {

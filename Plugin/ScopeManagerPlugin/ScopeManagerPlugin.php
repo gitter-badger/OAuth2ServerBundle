@@ -3,11 +3,11 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ScopeManagerPlugin;
 
 use Matthias\BundlePlugins\BundlePlugin;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 class ScopeManagerPlugin implements BundlePlugin
 {
@@ -19,7 +19,7 @@ class ScopeManagerPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (array('services') as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -30,7 +30,7 @@ class ScopeManagerPlugin implements BundlePlugin
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
-        $supportedPolicies = array('default', 'error', null);
+        $supportedPolicies = ['default', 'error', null];
 
         $pluginNode
             ->addDefaultsIfNotSet()

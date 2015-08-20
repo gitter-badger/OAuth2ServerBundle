@@ -2,9 +2,9 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\EndUser\EndUserManagerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class EndUserManager implements EndUserManagerInterface
 {
@@ -46,7 +46,7 @@ class EndUserManager implements EndUserManagerInterface
 
     public function getEndUser($username)
     {
-        return $this->getEntityRepository()->findOneBy(array('username' => $username));
+        return $this->getEntityRepository()->findOneBy(['username' => $username]);
     }
 
     protected function getEntityRepository()

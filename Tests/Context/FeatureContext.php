@@ -2,16 +2,16 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
-use Behat\Symfony2Extension\Context\KernelDictionary;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * Behat context class.
@@ -154,8 +154,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             $client->request(
                 $method,
                 $this->getRequestBuilder()->getUri(),
-                array(),
-                array(),
+                [],
+                [],
                 $this->getRequestBuilder()->getServer(),
                 $this->getRequestBuilder()->getContent()
             );
@@ -533,7 +533,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
 
         $command = $this->application->find($line);
         $tester = new CommandTester($command);
-        $tester->execute(array('command' => $command->getName()));
+        $tester->execute(['command' => $command->getName()]);
         $this->command_output = $tester->getDisplay();
     }
 
@@ -684,14 +684,13 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function theAccessTokenManagerHasAccessTokenForClient($count, $client_id)
     {
         /**
-         * @var $access_token_manager \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenManager
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenManager
          */
         $access_token_manager = $manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');
         $access_tokens = $access_token_manager->getEntityRepository()->findBy(['client_public_id' => $client_id]);
 
-        if ((int)$count !== count($access_tokens)) {
-            throw new \Exception(sprintf('I have not exactly %s access token(s). I have %d.',$count,count($access_tokens)));
+        if ((int) $count !== count($access_tokens)) {
+            throw new \Exception(sprintf('I have not exactly %s access token(s). I have %d.', $count, count($access_tokens)));
         }
     }
-
 }

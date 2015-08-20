@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ConfigurationEntryCompilerPass implements CompilerPassInterface
 {
@@ -14,12 +14,12 @@ class ConfigurationEntryCompilerPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('oauth2_server.configuration');
-        $options = array(
+        $options = [
             'allow_refresh_token_with_resource_owner_grant_type' => 'oauth2_server.resource_owner_password_credentials_grant_type.allow_refresh_token_with_resource_owner_grant_type',
-        );
+        ];
 
         foreach ($options as $key => $value) {
-            $definition->addMethodCall('set', array($key, $container->getParameter($value)));
+            $definition->addMethodCall('set', [$key, $container->getParameter($value)]);
         }
     }
 }

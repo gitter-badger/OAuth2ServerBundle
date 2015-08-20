@@ -2,14 +2,14 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model;
 
-use OAuth2\Token\AccessTokenInterface;
-use OAuth2\Token\SimpleStringAccessTokenManager as BaseManager;
-use OAuth2\Client\ClientInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\Configuration\ConfigurationInterface;
-use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use OAuth2\Client\ClientInterface;
+use OAuth2\Configuration\ConfigurationInterface;
+use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
+use OAuth2\Token\AccessTokenInterface;
+use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
+use OAuth2\Token\SimpleStringAccessTokenManager as BaseManager;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PostSimpleStringAccessTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PreSimpleStringAccessTokenCreationEvent;
@@ -77,7 +77,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         return $this->class;
     }
 
-    protected function addAccessToken($token, $expiresAt, ClientInterface $client, array $scope = array(), ResourceOwnerInterface $resourceOwner = null, BaseRefreshTokenInterface $refresh_token = null)
+    protected function addAccessToken($token, $expiresAt, ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null, BaseRefreshTokenInterface $refresh_token = null)
     {
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PreSimpleStringAccessTokenCreationEvent($client, $scope, $resourceOwner, $refresh_token));
@@ -111,7 +111,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
 
     public function getAccessToken($token)
     {
-        return $this->getEntityRepository()->findOneBy(array('token' => $token));
+        return $this->getEntityRepository()->findOneBy(['token' => $token]);
     }
 
     public function revokeAccessToken(AccessTokenInterface $access_token)
@@ -140,7 +140,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         $qb
             ->delete()
             ->where('t.expires_at < :now')
-            ->setParameters(array('now' => time()));
+            ->setParameters(['now' => time()]);
 
         return $qb->getQuery()->execute();
     }

@@ -2,18 +2,18 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\ClientInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\Configuration\ConfigurationInterface;
 use OAuth2\Client\TokenLifetimeExtensionInterface;
+use OAuth2\Configuration\ConfigurationInterface;
+use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\RefreshTokenManager as BaseManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PostRefreshTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PreRefreshTokenCreationEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInterface
 {
@@ -96,7 +96,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     /**
      * {@inheritdoc}
      */
-    public function createRefreshToken(ClientInterface $client, array $scope = array(), ResourceOwnerInterface $resourceOwner = null)
+    public function createRefreshToken(ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null)
     {
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_REFRESH_TOKEN_CREATION, new PreRefreshTokenCreationEvent($client, $scope, $resourceOwner));
@@ -152,7 +152,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
      *
      * @return mixed
      */
-    protected function addRefreshToken($token, $expiresAt, ClientInterface $client, array $scope = array(), ResourceOwnerInterface $resourceOwner = null)
+    protected function addRefreshToken($token, $expiresAt, ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null)
     {
         $class = $this->getClass();
         $refresh_token = new $class();
@@ -176,7 +176,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
      */
     public function getRefreshToken($token)
     {
-        return $this->getEntityRepository()->findOneBy(array('token' => $token));
+        return $this->getEntityRepository()->findOneBy(['token' => $token]);
     }
 
     /**
@@ -201,7 +201,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
         $qb
             ->delete()
             ->where('t.expires_at < :now')
-            ->setParameters(array('now' => time()));
+            ->setParameters(['now' => time()]);
 
         return $qb->getQuery()->execute();
     }

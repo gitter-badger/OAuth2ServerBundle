@@ -2,12 +2,12 @@
 
 namespace SpomkyLabs\TestBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 class LoadEndUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -45,23 +45,23 @@ class LoadEndUserData extends AbstractFixture implements FixtureInterface, Conta
 
     public function getEndUsers()
     {
-        return array(
-            array(
+        return [
+            [
                 'username' => 'john',
                 'password' => 'secret',
-                'roles' => array('ROLE_USER'),
-            ),
-            array(
+                'roles'    => ['ROLE_USER'],
+            ],
+            [
                 'username' => 'ben',
                 'password' => 'secret',
-                'roles' => array('ROLE_USER'),
-            ),
-            array(
+                'roles'    => ['ROLE_USER'],
+            ],
+            [
                 'username' => 'user1',
                 'password' => 'password1',
-                'roles' => array('ROLE_USER'),
-            ),
-        );
+                'roles'    => ['ROLE_USER'],
+            ],
+        ];
     }
 
     /**

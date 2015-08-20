@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\TestBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use SpomkyLabs\TestBundle\DependencyInjection\TestExtension;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SpomkyLabsTestBundle extends Bundle
 {

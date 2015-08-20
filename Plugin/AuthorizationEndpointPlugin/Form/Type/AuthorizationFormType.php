@@ -11,13 +11,12 @@ class AuthorizationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('accept', 'submit', array(
+            ->add('accept', 'submit', [
                 'label' => 'authorization.form.accept',
-            ))
-            ->add('reject', 'submit', array(
+            ])
+            ->add('reject', 'submit', [
                 'label' => 'authorization.form.reject',
-            ))
-        ;
+            ]);
     }
 
     /**
@@ -25,10 +24,10 @@ class AuthorizationFormType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'translation_domain' => 'SpomkyLabsOAuth2Server',
-            'data_class' => 'OAuth2\Endpoint\Authorization',
-        ));
+            'data_class'         => 'OAuth2\Endpoint\Authorization',
+        ]);
     }
 
     /**

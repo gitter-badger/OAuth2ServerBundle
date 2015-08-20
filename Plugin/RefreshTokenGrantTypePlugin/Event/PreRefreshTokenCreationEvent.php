@@ -28,7 +28,7 @@ class PreRefreshTokenCreationEvent extends Event
      * @param array                                        $scope
      * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $resource_owner
      */
-    public function __construct(ClientInterface $client, array $scope = array(), ResourceOwnerInterface $resource_owner = null)
+    public function __construct(ClientInterface $client, array $scope = [], ResourceOwnerInterface $resource_owner = null)
     {
         $this->client = $client;
         $this->scope = $scope;

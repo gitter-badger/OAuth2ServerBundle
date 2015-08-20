@@ -14,7 +14,7 @@ class UnregisteredClientManager extends Base
         if ('**UNREGISTERED**_' !== substr($public_id, 0, 17)) {
             return;
         }
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = parent::getClient($public_id);
