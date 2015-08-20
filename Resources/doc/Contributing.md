@@ -1,5 +1,5 @@
 Contributing
-=============================
+============
 
 First of all, **thank you** for contributing.
 
@@ -22,5 +22,5 @@ Run test suite
 ------------
 
 * install composer: `curl -s http://getcomposer.org/installer | php`
-* install dependencies: `composer install`
+* install dependencies: `php composer.phar install`
 * run tests: `vendor/bin/behat`
