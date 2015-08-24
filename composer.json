@@ -16,14 +16,9 @@
         "symfony/security-bundle": "~2.7",
         "doctrine/doctrine-bundle": "~1.0",
         "matthiasnoback/symfony-bundle-plugins": "~1.0.0",
-        "puli/symfony-bundle": "~1.0@beta",
-        "puli/symfony-bridge": "~1.0@beta",
-        "puli/repository": "~1.0@beta",
-        "puli/discovery": "~1.0@beta",
-        "puli/twig-extension": "~1.0@beta",
-        "puli/composer-plugin": "~1.0@beta",
-        "puli/url-generator": "~1.0@beta",
-        "webmozart/key-value-store": "~1@beta",
+        "puli/twig-extension": "~1.0",
+        "puli/composer-plugin": "~1.0",
+        "puli/symfony-bundle": "~1.0",
         "spomky-labs/oauth2-server-password-client": "~5.0.0",
         "spomky-labs/oauth2-server-public-client": "~5.0.0",
         "spomky-labs/oauth2-server-exception-manager": "~5.0.0",
@@ -56,8 +51,10 @@
         "symfony/event-dispatcher": "~2.7",
         "symfony/class-loader": "~2.7",
         "symfony/yaml": "~2.7",
-        "symfony/var-dumper": "~2.7"
+        "symfony/var-dumper": "~2.7",
+        "puli/cli": "~1.0"
     },
+    "minimum-stability": "beta",
     "suggest": {
     },
     "autoload": {
