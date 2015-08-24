@@ -50,9 +50,12 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
      */
     public function getClient($public_id)
     {
+        if (!$this->isPublicIdSupported($public_id)) {
+            return;
+        }
         $class = $this->getClass();
         /*
-         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
+         * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = new $class();
         $client->setPublicId($public_id);
@@ -130,6 +133,22 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
 
         $client = $this->getClient($result[0]);
 
-        return is_null($client) ? null : $client;
+        return $client;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPrefix()
+    {
+        return '**UNREGISTERED**_';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSuffix()
+    {
+        return '_**UNREGISTERED**';
     }
 }

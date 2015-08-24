@@ -4,7 +4,7 @@ Feature: A client request an authorization
 
   Scenario: A resource owner accepted the client
     Given I am logged in as "john"
-    And I add key "client_id" with value "foo" in the query parameter
+    And I add key "client_id" with value "PUBLIC-foo" in the query parameter
     And I add key "scope" with value "scope1 scope2" in the query parameter
     And I add key "response_type" with value "token" in the query parameter
     And I add key "state" with value "state123" in the query parameter
@@ -19,7 +19,7 @@ Feature: A client request an authorization
 
   Scenario: A resource owner rejected the client
     Given I am logged in as "john"
-    And I add key "client_id" with value "foo" in the query parameter
+    And I add key "client_id" with value "PUBLIC-foo" in the query parameter
     And I add key "scope" with value "scope1 scope2" in the query parameter
     And I add key "response_type" with value "token" in the query parameter
     And I add key "state" with value "state123" in the query parameter

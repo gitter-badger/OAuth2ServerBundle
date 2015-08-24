@@ -2,22 +2,25 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientManager as Base;
 
 class UnregisteredClientManager extends Base
 {
+    use ResourceOwnerManagerBehaviour;
+
     /**
      * {@inheritdoc}
      */
     public function getClient($public_id)
     {
-        if ('**UNREGISTERED**_' !== substr($public_id, 0, 17)) {
-            return;
-        }
         /*
-         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
+         * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = parent::getClient($public_id);
+        if (is_null($client)) {
+            return;
+        }
         $client->setAllowedGrantTypes(['token']);
 
         return $client;

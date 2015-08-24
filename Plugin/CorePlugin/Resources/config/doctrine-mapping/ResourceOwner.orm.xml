@@ -4,6 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClient">
+    <mapped-superclass name="SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwner">
+        <field name="public_id" column="public_id" type="string" unique="true" />
     </mapped-superclass>
 </doctrine-mapping>

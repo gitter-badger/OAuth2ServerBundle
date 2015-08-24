@@ -33,7 +33,7 @@ class LoadPasswordClientData extends AbstractFixture implements FixtureInterface
 
         foreach ($this->getClients() as $password_client) {
             $client = $manager->createClient();
-            $client->setPublicId($password_client['public_id'])
+            $client->setPublicId('PASSWORD-'.$password_client['public_id'])
                    ->setAllowedGrantTypes($password_client['grant_types'])
                    ->setRedirectUris($password_client['redirect_uris'])
                    ->setPlainTextSecret($password_client['secret']);
@@ -48,16 +48,16 @@ class LoadPasswordClientData extends AbstractFixture implements FixtureInterface
     {
         return [
             [
-                'public_id'     => 'bar',
-                'grant_types'   => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
+                'public_id' => 'bar',
+                'grant_types' => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
                 'redirect_uris' => ['https://example.com/redirection/callback'],
-                'secret'        => 'secret',
+                'secret' => 'secret',
             ],
             [
-                'public_id'     => 'baz',
-                'grant_types'   => [],
+                'public_id' => 'baz',
+                'grant_types' => [],
                 'redirect_uris' => ['https://example.com/redirection/callback'],
-                'secret'        => 'secret',
+                'secret' => 'secret',
             ],
         ];
     }

@@ -683,7 +683,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function theAccessTokenManagerHasAccessTokenForClient($count, $client_id)
     {
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenManager
          */
         $access_token_manager = $manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');

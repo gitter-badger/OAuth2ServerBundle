@@ -36,6 +36,13 @@ class TokenRevocationEndpoint extends Base
      */
     protected $exception_manager;
 
+    /**
+     * @param \OAuth2\Configuration\ConfigurationInterface    $configuration
+     * @param \OAuth2\Client\ClientManagerSupervisorInterface $client_manager_supervisor
+     * @param \OAuth2\Exception\ExceptionManagerInterface     $exception_manager
+     * @param \OAuth2\Token\AccessTokenManagerInterface       $access_token_manager
+     * @param \OAuth2\Token\RefreshTokenManagerInterface|null $refresh_token_manager
+     */
     public function __construct(
         ConfigurationInterface $configuration,
         ClientManagerSupervisorInterface $client_manager_supervisor,
@@ -50,26 +57,41 @@ class TokenRevocationEndpoint extends Base
         $this->exception_manager = $exception_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getClientManagerSupervisor()
     {
         return $this->client_manager_supervisor;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getAccessTokenManager()
     {
         return $this->access_token_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getRefreshTokenManager()
     {
         return $this->refresh_token_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getExceptionManager()
     {
         return $this->exception_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
         return $this->configuration;

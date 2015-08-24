@@ -7,18 +7,15 @@ use OAuth2\Client\PasswordClientInterface as BasePasswordClientInterface;
 use OAuth2\Client\PasswordClientManager as Base;
 use OAuth2\Configuration\ConfigurationInterface;
 use OAuth2\Exception\ExceptionManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientManagerBehaviour;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 
 class PasswordClientManager extends Base implements PasswordClientManagerInterface
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository
-     */
-    private $entity_repository;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager|null
-     */
-    private $entity_manager;
+    use ManagerBehaviour;
+    use ClientManagerBehaviour {
+        saveClient as saveClientTrait;
+    }
 
     /**
      * @var \OAuth2\Exception\ExceptionManagerInterface
@@ -29,11 +26,6 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
      * @var \OAuth2\Configuration\ConfigurationInterface
      */
     private $configuration;
-
-    /**
-     * @var string
-     */
-    private $class;
 
     /**
      * @param string                                       $class
@@ -47,11 +39,10 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
         ExceptionManagerInterface $exception_manager,
         ConfigurationInterface $configuration
     ) {
-        $this->class = $class;
+        $this->setClass($class);
+        $this->setManagerRegistry($manager_registry);
         $this->configuration = $configuration;
         $this->exception_manager = $exception_manager;
-        $this->entity_manager = $manager_registry->getManagerForClass($class);
-        $this->entity_repository = $this->entity_manager->getRepository($class);
     }
 
     /**
@@ -68,42 +59,6 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
     protected function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
-     * @param string $public_id
-     *
-     * @return object
-     */
-    public function getClient($public_id)
-    {
-        $client = $this->getEntityRepository()->findOneBy(['public_id' => $public_id]);
-
-        return $client;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getEntityRepository()
-    {
-        return $this->entity_repository;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|null
-     */
-    protected function getEntityManager()
-    {
-        return $this->entity_manager;
     }
 
     /**
@@ -132,5 +87,25 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
         if ($client instanceof PasswordClientInterface) {
             return $client->getSecret() === hash('sha512', $client->getSalt().$secret);
         }
+
+        return false;
+    }
+
+    protected function getPrefix()
+    {
+        return 'PASSWORD-';
+    }
+
+    protected function getSuffix()
+    {
+        return '';
+    }
+
+    public function saveClient(PasswordClientInterface $client)
+    {
+        $this->updateClientCredentials($client);
+        $this->saveClientTrait($client);
+
+        return $this;
     }
 }

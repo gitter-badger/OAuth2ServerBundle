@@ -36,7 +36,6 @@ public function registerBundles()
            new UnregisteredClientPlugin(), // Unregistered clients support
            new PublicClientPlugin(), // Public clients support
            new PasswordClientPlugin(), // Password clients support
-           new BearerAccessTokenPlugin(), // Bearer tokens support
            new SimpleStringAccessTokenPlugin(), // Access token (Simple string)
            new AuthorizationEndpointPlugin(), // Authorization endpoint
            new TokenEndpointPlugin(), // Token endpoint
@@ -61,12 +60,13 @@ See below details of each plugin provided by this bundle
 # Mandatory plugins
 
 The following plugins are enabled by default:
-* [Core Plugin](Resources/doc/Plugin/Core.md)
-* [Scope Manager Plugin](Resources/doc/Plugin/ScopeManager.md)
-* [Configuration Plugin](Resources/doc/Plugin/Configuration.md)
-* [Exception Manager Plugin](Resources/doc/Plugin/ExceptionManager.md)
-* [Client Manager Supervisor Plugin](Resources/doc/Plugin/ClientManagerSupervisor.md)
-* [Token Endpoint](Resources/doc/Plugin/TokenEndpoint.md)
+* [Core Plugin](Resources/doc/Plugin/Core.md): provides common classes for all plugins
+* [Scope Manager Plugin](Resources/doc/Plugin/ScopeManager.md): adds scope support
+* [Configuration Plugin](Resources/doc/Plugin/Configuration.md): unified configuration for all plugins
+* [Exception Manager Plugin](Resources/doc/Plugin/ExceptionManager.md): errors are all emitted using this plugin.
+* [Client Manager Supervisor Plugin](Resources/doc/Plugin/ClientManagerSupervisor.md): required by endpoints to authenticate client using the request
+* [Token Endpoint](Resources/doc/Plugin/TokenEndpoint.md): the token endpoint
+* [Bearer Access Token](Resources/doc/Plugin/BearerAccessToken.md): bearer access token type
 
 # Other plugins
 
@@ -74,8 +74,6 @@ The following plugins are enabled by default:
     * [Unregistered Client](Resources/doc/Plugin/UnregisteredClient.md)
     * [Public Client](Resources/doc/Plugin/PublicClient.md)
     * [Password Client](Resources/doc/Plugin/PasswordClient.md)
-* Token transport:
-    * [Bearer Access Token](Resources/doc/Plugin/BearerAccessToken.md)
 * Access token manager:
     * [SimpleString Access Token](Resources/doc/Plugin/SimpleStringAccessToken.md)
 * Endpoints:
@@ -90,7 +88,7 @@ The following plugins are enabled by default:
 
 # Configure your application's security.yml
 
-In order for Symfony's security component to use the this bundle, you must tell it to do so in the `security.yml file`.
+In order for Symfony's security component to use the this bundle, you must tell it to do so in the `security.yml` file.
 The `security.yml` file is where the basic configuration for the security for your application is contained.
 
 Below is an example of the configuration necessary to use authorization, token and token revocation endpoints in your application:
@@ -104,11 +102,12 @@ security:
             # Add your favorite authentication process here
         token:
             pattern: ^/oauth/v2/token
-            #pattern: ^/oauth/v2/(token|revoke)  # If you have enabled TokenRevocationEndpointPlugin, comment the previous line and uncomment this one
+            #pattern: ^/oauth/v2/(token|revoke) # If you have enabled TokenRevocationEndpointPlugin, comment the previous line and uncomment this one
             security: false
 
     access_control:
-        - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY } # Choose one of the following line depending on your security policy
+        #- { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_REMEMBERED }
 ```
 
 # Configure the routes
@@ -125,7 +124,6 @@ oauth2_server_revocation_endpoint: # Only need if you have enabled TokenRevocati
 
 oauth2_server_authorization_endpoint: # Only need if you have enabled AuthorizationEndpointPlugin
     resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml"
-
 ```
 
 # Usage
@@ -136,9 +134,6 @@ See [this page](Usage/Index.md) to know how to create your first access tokens.
 
 * [Notes about Security](Next/Security.md)
 * [Configuration Reference](Next/ConfigurationReference.md)
-* [Adding Grant Extensions](Next/AddingGrantExtensions.md)
-* [Custom Endpoint](Next/CustomEndpoint.md)
-* [Custom Client Type](Next/CustomClientType.md)
-* [Custom Properties On Access Tokens](Next/CustomPropertiesOnAccessTokens.md)
+* [Adding Plugins](Next/AddingPlugins.md)
 * [Scope Per Client](Next/ScopePerClient.md)
-* [Token Lifetime Per Client](Next/STokenLifetimePerClient.md)
+* [Token Lifetime Per Client](Next/TokenLifetimePerClient.md)

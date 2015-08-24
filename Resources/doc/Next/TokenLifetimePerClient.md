@@ -1,4 +1,4 @@
-Token revocation endpoint
+Token lifetime per client
 =========================
 
 [Go back](../Use.md)

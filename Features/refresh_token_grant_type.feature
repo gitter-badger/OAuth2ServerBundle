@@ -4,7 +4,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
   And use it once
 
   Scenario: The request is invalid (refresh token expired)
-    Given I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
+    Given I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     And I add key "refresh_token" with value "INVALID_REFRESH_TOKEN_FOO" in the body request
@@ -13,7 +13,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
     And the status code of the response is 400
 
   Scenario: The request is valid and an access token is issued
-    Given I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
+    Given I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_FOO" in the body request
@@ -25,7 +25,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
     And the refresh token "VALID_REFRESH_TOKEN_FOO" must be marked as used
 
   Scenario: The confidential client is not fully authenticated
-    Given I add user 'bar' and password 'bad_secret' in the authorization header
+    Given I add user 'PASSWORD-bar' and password 'bad_secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_BAR" in the body request
@@ -36,7 +36,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
   Scenario: The confidential client is not fully authenticated
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
-    And I add key "client_id" with value "bar" in the body request
+    And I add key "client_id" with value "PASSWORD-bar" in the body request
     And I add key "client_secret" with value "bad_secret" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_BAR" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"
@@ -44,7 +44,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
     And the status code of the response is 400
 
   Scenario: The request is valid and an access token is issued
-    Given I add user 'bar' and password 'secret' in the authorization header
+    Given I add user 'PASSWORD-bar' and password 'secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_BAR" in the body request
@@ -57,7 +57,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
 
   Scenario: The request is valid and an access token is issued
     And I add key "scope" with value "scope1 scope2" in the body request
-    And I add key "client_id" with value "bar" in the body request
+    And I add key "client_id" with value "PASSWORD-bar" in the body request
     And I add key "client_secret" with value "secret" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_BAR" in the body request
@@ -69,7 +69,7 @@ Feature: A client request an access token using the Refresh Token Grant Type
     And the refresh token "VALID_REFRESH_TOKEN_BAR" must be marked as used
 
   Scenario: The request is valid but the client is not authorized
-    Given I add user 'baz' and password 'secret' in the authorization header
+    Given I add user 'PASSWORD-baz' and password 'secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "refresh_token" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"

@@ -4,7 +4,7 @@ Feature: A client request an access token using the ResourceOwner Password Crede
   Using a valid request to the Token Endpoint
 
   Scenario: The request is invalid
-    Given I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
+    Given I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "password" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"
@@ -12,7 +12,7 @@ Feature: A client request an access token using the ResourceOwner Password Crede
     And the status code of the response is 400
 
   Scenario: The request is valid and an access token is issued
-    Given I add user 'bar' and password 'secret' in the authorization header
+    Given I add user 'PASSWORD-bar' and password 'secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "password" in the body request
     And I add key "username" with value "user1" in the body request
@@ -24,7 +24,7 @@ Feature: A client request an access token using the ResourceOwner Password Crede
     And the status code of the response is 200
 
   Scenario: The request is valid but the client is not authorized
-    Given I add user 'baz' and password 'secret' in the authorization header
+    Given I add user 'PASSWORD-baz' and password 'secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "password" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"

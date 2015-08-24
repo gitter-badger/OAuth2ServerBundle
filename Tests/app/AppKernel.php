@@ -2,7 +2,6 @@
 
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
@@ -31,7 +30,6 @@ class AppKernel extends Kernel
                 new UnregisteredClientPlugin(),
                 new PublicClientPlugin(),
                 new PasswordClientPlugin(),
-                new BearerAccessTokenPlugin(),
                 new SimpleStringAccessTokenPlugin(),
                 new AuthorizationEndpointPlugin(),
                 new AuthCodeGrantTypePlugin(),

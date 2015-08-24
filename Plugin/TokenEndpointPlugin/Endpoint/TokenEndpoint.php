@@ -48,6 +48,15 @@ class TokenEndpoint extends Base
      */
     protected $exception_manager;
 
+    /**
+     * @param \OAuth2\Client\ClientManagerSupervisorInterface $client_manager_supervisor
+     * @param \OAuth2\Exception\ExceptionManagerInterface     $exception_manager
+     * @param \OAuth2\Scope\ScopeManagerInterface             $scope_manager
+     * @param \OAuth2\Token\AccessTokenManagerInterface       $access_token_manager
+     * @param \OAuth2\Token\AccessTokenTypeInterface          $access_token_type
+     * @param \OAuth2\EndUser\EndUserManagerInterface         $end_user_manager
+     * @param \OAuth2\Token\RefreshTokenManagerInterface|null $refresh_token_manager
+     */
     public function __construct(
         ClientManagerSupervisorInterface $client_manager_supervisor,
         ExceptionManagerInterface $exception_manager,
@@ -66,33 +75,48 @@ class TokenEndpoint extends Base
         $this->exception_manager = $exception_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getClientManagerSupervisor()
     {
         return $this->client_manager_supervisor;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getScopeManager()
     {
         return $this->scope_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getAccessTokenManager()
     {
         return $this->access_token_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getRefreshTokenManager()
     {
         return $this->refresh_token_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getExceptionManager()
     {
         return $this->exception_manager;
     }
 
     /**
-     * @return \OAuth2\EndUser\EndUserManagerInterface
+     * {@inheritdoc}
      */
     protected function getEndUserManager()
     {
@@ -100,7 +124,7 @@ class TokenEndpoint extends Base
     }
 
     /**
-     * @return \OAuth2\Token\AccessTokenTypeInterface
+     * {@inheritdoc}
      */
     protected function getAccessTokenType()
     {

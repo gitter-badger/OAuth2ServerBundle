@@ -14,6 +14,11 @@ class ResourceOwner implements ResourceOwnerInterface
      */
     protected $type;
 
+    public function __construct()
+    {
+        $this->public_id = hash('sha512', uniqid('', true));
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -4,7 +4,7 @@ Feature: A client request an authorization
 
   Scenario: A resource owner accepted the client
     Given I am logged in as "john"
-    And I add key "client_id" with value "foo" in the query parameter
+    And I add key "client_id" with value "PUBLIC-foo" in the query parameter
     And I add key "scope" with value "scope1 scope2" in the query parameter
     And I add key "response_type" with value "code" in the query parameter
     And I add key "state" with value "0123456789" in the query parameter
@@ -19,7 +19,7 @@ Feature: A client request an authorization
 
   Scenario: A resource owner rejected the client
     Given I am logged in as "john"
-    And I add key "client_id" with value "foo" in the query parameter
+    And I add key "client_id" with value "PUBLIC-foo" in the query parameter
     And I add key "scope" with value "scope1 scope2" in the query parameter
     And I add key "response_type" with value "code" in the query parameter
     And I add key "state" with value "0123456789" in the query parameter
@@ -34,8 +34,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE1" in the body request
@@ -46,8 +46,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode but the redirect URI parameter mismatch
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE5" in the body request
@@ -58,8 +58,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode but the redirect URI parameter is missing
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE5" in the body request
@@ -69,8 +69,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode, but reduced scope
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE2" in the body request
@@ -81,8 +81,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode, but requested scope are not authorized
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope3" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE3" in the body request
@@ -92,8 +92,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode, but associated client_id is not valid
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "VALID_CODE4" in the body request
@@ -103,8 +103,8 @@ Feature: A client request an authorization
 
   Scenario: A client want an access token using a valid authcode, but the authcode expired
     Given the request is secured
-    And I add key "X-OAuth2-Public-Client-ID" with value "foo" in the header
-    And I add key "client_id" with value "foo" in the body request
+    And I add key "X-OAuth2-Public-Client-ID" with value "PUBLIC-foo" in the header
+    And I add key "client_id" with value "PUBLIC-foo" in the body request
     And I add key "scope" with value "scope1" in the body request
     And I add key "grant_type" with value "authorization_code" in the body request
     And I add key "code" with value "EXPIRED_CODE1" in the body request

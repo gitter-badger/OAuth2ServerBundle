@@ -5,29 +5,19 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PublicClientManager as BaseManager;
 use OAuth2\Exception\ExceptionManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientManagerBehaviour;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 use Symfony\Component\HttpFoundation\Request;
 
 class PublicClientManager extends BaseManager implements PublicClientManagerInterface
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository
-     */
-    private $entity_repository;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $entity_manager;
+    use ManagerBehaviour;
+    use ClientManagerBehaviour;
 
     /**
      * @var \OAuth2\Exception\ExceptionManagerInterface
      */
     private $exception_manager;
-
-    /**
-     * @var string
-     */
-    private $class;
 
     /**
      * @param string                                       $class
@@ -39,10 +29,9 @@ class PublicClientManager extends BaseManager implements PublicClientManagerInte
         ManagerRegistry $manager_registry,
         ExceptionManagerInterface $exception_manager
     ) {
-        $this->class = $class;
+        $this->setClass($class);
+        $this->setManagerRegistry($manager_registry);
         $this->exception_manager = $exception_manager;
-        $this->entity_manager = $manager_registry->getManagerForClass($class);
-        $this->entity_repository = $this->entity_manager->getRepository($class);
     }
 
     /**
@@ -53,38 +42,14 @@ class PublicClientManager extends BaseManager implements PublicClientManagerInte
         return $this->exception_manager;
     }
 
-    /**
-     * @return string
-     */
-    protected function getClass()
+    protected function getPrefix()
     {
-        return $this->class;
+        return 'PUBLIC-';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClient($public_id)
+    protected function getSuffix()
     {
-        $client = $this->getEntityRepository()->findOneBy(['public_id' => $public_id]);
-
-        return $client;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getEntityRepository()
-    {
-        return $this->entity_repository;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->entity_manager;
+        return '';
     }
 
     /**

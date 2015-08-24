@@ -49,17 +49,17 @@ class LoadEndUserData extends AbstractFixture implements FixtureInterface, Conta
             [
                 'username' => 'john',
                 'password' => 'secret',
-                'roles'    => ['ROLE_USER'],
+                'roles' => ['ROLE_USER'],
             ],
             [
                 'username' => 'ben',
                 'password' => 'secret',
-                'roles'    => ['ROLE_USER'],
+                'roles' => ['ROLE_USER'],
             ],
             [
                 'username' => 'user1',
                 'password' => 'password1',
-                'roles'    => ['ROLE_USER'],
+                'roles' => ['ROLE_USER'],
             ],
         ];
     }

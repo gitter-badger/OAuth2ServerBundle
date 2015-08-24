@@ -3,6 +3,7 @@
 namespace SpomkyLabs\TestBundle\Entity;
 
 use OAuth2\EndUser\EndUserInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwner;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class EndUser extends ResourceOwner implements EndUserInterface, UserInterface
@@ -11,15 +12,16 @@ class EndUser extends ResourceOwner implements EndUserInterface, UserInterface
     private $password;
     private $salt;
     private $roles;
+    private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getRoles()
     {
         return $this->roles;
-    }
-
-    public function getPublicId()
-    {
-        return $this->getUsername();
     }
 
     public function setRoles(array $roles)

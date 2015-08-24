@@ -1,4 +1,4 @@
-Token endpoint
+Adding plugins
 ==============
 
 [Go back](../Use.md)

@@ -3,6 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle;
 
 use Matthias\BundlePlugins\BundleWithPlugins;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\ClientManagerSupervisorPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ConfigurationPlugin\ConfigurationPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\CorePlugin;
@@ -25,8 +26,8 @@ class SpomkyLabsOAuth2ServerBundle extends BundleWithPlugins
             new TokenEndpointPlugin(),
             new ConfigurationPlugin(),
             new ExceptionManagerPlugin(),
+            new BearerAccessTokenPlugin(),
             new ClientManagerSupervisorPlugin(),
-
         ];
     }
 }

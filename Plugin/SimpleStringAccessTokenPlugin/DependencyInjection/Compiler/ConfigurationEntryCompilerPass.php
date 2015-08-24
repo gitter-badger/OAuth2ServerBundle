@@ -15,9 +15,9 @@ class ConfigurationEntryCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('oauth2_server.configuration');
         $options = [
-            'simple_string_access_token_length'  => 'oauth2_server.simple_string_access_token.length',
+            'simple_string_access_token_length' => 'oauth2_server.simple_string_access_token.length',
             'simple_string_access_token_charset' => 'oauth2_server.simple_string_access_token.charset',
-            'access_token_lifetime'              => 'oauth2_server.simple_string_access_token.lifetime',
+            'access_token_lifetime' => 'oauth2_server.simple_string_access_token.lifetime',
         ];
 
         foreach ($options as $key => $value) {

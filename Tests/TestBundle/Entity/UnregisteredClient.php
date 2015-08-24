@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
-use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClient as BaseUnregisteredClient;
 
-class UnregisteredClient extends Client implements UnregisteredClientInterface
+class UnregisteredClient extends BaseUnregisteredClient
 {
 }

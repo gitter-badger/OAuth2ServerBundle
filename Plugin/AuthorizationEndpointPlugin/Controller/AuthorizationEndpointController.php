@@ -104,7 +104,7 @@ class AuthorizationEndpointController
         $content = $this->template_engine->render(
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
             [
-                'form'   => $this->form->createView(),
+                'form' => $this->form->createView(),
                 'client' => $authorization->getClient(),
                 'scopes' => $authorization->getScope(),
             ]
