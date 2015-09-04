@@ -5,7 +5,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\Controller;
 use OAuth2\Endpoint\TokenEndpointInterface;
 use OAuth2\Exception\BaseExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Zend\Diactoros\Response;
 
 class TokenEndpointController
@@ -36,6 +35,7 @@ class TokenEndpointController
         } catch (BaseExceptionInterface $e) {
             $e->getHttpResponse($response);
         }
+
         return $response;
     }
 }

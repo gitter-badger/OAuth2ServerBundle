@@ -4,8 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\ClientInterface;
-use OAuth2\Configuration\ConfigurationInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
 use OAuth2\Token\AuthCodeManager as BaseManager;

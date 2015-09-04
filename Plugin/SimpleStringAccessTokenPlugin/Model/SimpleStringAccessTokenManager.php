@@ -4,8 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Mod
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\ClientInterface;
-use OAuth2\Configuration\ConfigurationInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AccessTokenInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;

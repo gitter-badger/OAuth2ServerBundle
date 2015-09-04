@@ -89,10 +89,12 @@ class AuthorizationEndpointController
 
             if ('POST' === $request->getMethod()) {
                 $this->form_handler->handle($this->form, $request, $response, $authorization);
+
                 return $response;
             }
         } catch (BaseExceptionInterface $e) {
             $e->getHttpResponse($response);
+
             return $response;
         }
 
@@ -124,22 +126,22 @@ class AuthorizationEndpointController
         $authorization = new Authorization();
 
         $params = $request->getQueryParams();
-        $client_id = array_key_exists('client_id', $params)?$params['client_id']:null;
+        $client_id = array_key_exists('client_id', $params) ? $params['client_id'] : null;
         $this->checkClientId($client_id);
 
         $client = $this->client_manager_supervisor->getClient($client_id);
         $this->checkClient($client);
 
-        $response_type = array_key_exists('response_type', $params)?$params['response_type']:null;
+        $response_type = array_key_exists('response_type', $params) ? $params['response_type'] : null;
         $this->checkResponseType($response_type);
 
-        $scope = $this->scope_manager->convertToScope(array_key_exists('scope', $params)?$params['scope']:null);
+        $scope = $this->scope_manager->convertToScope(array_key_exists('scope', $params) ? $params['scope'] : null);
         $authorization->setClient($client)
-                      ->setResponseType(array_key_exists('response_type', $params)?$params['response_type']:null)
+                      ->setResponseType(array_key_exists('response_type', $params) ? $params['response_type'] : null)
                       ->setScope($scope)
-                      ->setRedirectUri(array_key_exists('redirect_uri', $params)?$params['redirect_uri']:null)
-                      ->setIssueRefreshToken(array_key_exists('issue_refresh_token', $params)?$params['issue_refresh_token']:null)
-                      ->setState(array_key_exists('state', $params)?$params['state']:null);
+                      ->setRedirectUri(array_key_exists('redirect_uri', $params) ? $params['redirect_uri'] : null)
+                      ->setIssueRefreshToken(array_key_exists('issue_refresh_token', $params) ? $params['issue_refresh_token'] : null)
+                      ->setState(array_key_exists('state', $params) ? $params['state'] : null);
 
         return $authorization;
     }

@@ -4,7 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\Con
 
 use OAuth2\Endpoint\RevocationEndpointInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Zend\Diactoros\Response;
 
 class TokenRevocationEndpointController

@@ -4,7 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PublicClientManager as BaseManager;
-use OAuth2\Exception\ExceptionManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;

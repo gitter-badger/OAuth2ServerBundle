@@ -2,7 +2,6 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ScopeManagerPlugin\Model;
 
-use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\Scope\ScopeManager as Base;
 
 class ScopeManager extends Base

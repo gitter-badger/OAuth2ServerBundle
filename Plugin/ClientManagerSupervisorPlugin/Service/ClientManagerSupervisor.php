@@ -3,14 +3,12 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Service;
 
 use OAuth2\Client\ClientManagerSupervisor as BaseClientManagerSupervisor;
-use OAuth2\Exception\ExceptionManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Chain\ClientManagerChain;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PostFindClientEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PreFindClientEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class ClientManagerSupervisor extends BaseClientManagerSupervisor
 {
