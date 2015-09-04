@@ -61,22 +61,22 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
     {
         return [
             [
-                'id' => 'ABCD',
-                'expires_at' => time() + 1000,
-                'token' => 'ABCD',
-                'scope' => [],
-                'client_public_id' => 'PUBLIC-foo',
+                'id'                       => 'ABCD',
+                'expires_at'               => time() + 1000,
+                'token'                    => 'ABCD',
+                'scope'                    => [],
+                'client_public_id'         => 'PUBLIC-foo',
                 'resource_owner_public_id' => 'PUBLIC-foo',
-                'refresh_token' => null,
+                'refresh_token'            => null,
             ],
             [
-                'id' => 'EFGH',
-                'expires_at' => time() + 1000,
-                'token' => 'EFGH',
-                'scope' => [],
-                'client_public_id' => 'PASSWORD-bar',
+                'id'                       => 'EFGH',
+                'expires_at'               => time() + 1000,
+                'token'                    => 'EFGH',
+                'scope'                    => [],
+                'client_public_id'         => 'PASSWORD-bar',
                 'resource_owner_public_id' => 'PASSWORD-bar',
-                'refresh_token' => null,
+                'refresh_token'            => null,
             ],
         ];
     }

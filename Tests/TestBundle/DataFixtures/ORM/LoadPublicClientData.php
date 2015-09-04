@@ -47,8 +47,8 @@ class LoadPublicClientData extends AbstractFixture implements FixtureInterface, 
     {
         return [
             [
-                'public_id' => 'foo',
-                'grant_types' => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
+                'public_id'     => 'foo',
+                'grant_types'   => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
                 'redirect_uris' => ['https://example.com/redirection/callback'],
             ],
         ];
