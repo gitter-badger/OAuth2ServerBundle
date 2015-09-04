@@ -5,7 +5,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Eve
 use OAuth2\Client\ClientInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpFoundation\Request;
 
 class PostFindClientEvent extends Event
 {
@@ -27,7 +26,7 @@ class PostFindClientEvent extends Event
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \OAuth2\Client\ClientInterface|null      $client
-     * @param bool                                     $client_public_id_found
+     * @param null|string                              $client_public_id_found
      */
     public function __construct(ServerRequestInterface $request, ClientInterface $client = null, $client_public_id_found = null)
     {

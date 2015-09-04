@@ -36,7 +36,7 @@ class PreFindClientEvent extends Event
     }
 
     /**
-     * @return bool
+     * @return null|string
      */
     public function getClientPublicIdFound()
     {

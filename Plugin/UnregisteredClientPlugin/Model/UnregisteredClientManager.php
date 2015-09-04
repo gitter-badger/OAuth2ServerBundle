@@ -4,7 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model;
 
 use OAuth2\Exception\ExceptionManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class UnregisteredClientManager implements UnregisteredClientManagerInterface
 {
