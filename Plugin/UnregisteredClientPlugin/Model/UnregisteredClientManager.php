@@ -3,6 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model;
 
 use OAuth2\Exception\ExceptionManagerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class UnregisteredClientManager implements UnregisteredClientManagerInterface
@@ -75,28 +76,30 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
 
     /**
      * Public client are identified with header name 'X-OAuth2-Unregistered-Client-ID' in the request.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return null|string
      */
-    protected function findClientInRequestHeader(Request $request)
-    {
-        $header = $request->headers->get('X-OAuth2-Unregistered-Client-ID');
 
-        return empty($header) ? null : $header;
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @return string|null
+     */
+    protected function findClientInRequestHeader(ServerRequestInterface $request)
+    {
+        $header = $request->getHeader('X-OAuth2-Unregistered-Client-ID');
+
+        return count($header) === 0 ? null : $header[0];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findClient(Request $request)
+    public function findClient(ServerRequestInterface $request, &$client_public_id_found = null)
     {
         $methods = $this->findClientMethods();
         $result = [];
 
         foreach ($methods as $method) {
-            $data = $this->$method($request);
+            $data = $this->$method($request, $client_public_id_found);
             if (null !== $data) {
                 $result[] = $data;
             }

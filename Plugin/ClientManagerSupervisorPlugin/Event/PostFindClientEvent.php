@@ -3,6 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event;
 
 use OAuth2\Client\ClientInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,25 +15,25 @@ class PostFindClientEvent extends Event
     protected $client;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var \Psr\Http\Message\ServerRequestInterface
      */
     protected $request;
 
     /**
-     * @var bool
+     * @var null|string
      */
-    protected $throw_exception_if_not_found;
+    protected $client_public_id_found;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \OAuth2\Client\ClientInterface|null       $client
-     * @param bool                                      $throw_exception_if_not_found
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \OAuth2\Client\ClientInterface|null      $client
+     * @param bool                                     $client_public_id_found
      */
-    public function __construct(Request $request, ClientInterface $client = null, $throw_exception_if_not_found = true)
+    public function __construct(ServerRequestInterface $request, ClientInterface $client = null, $client_public_id_found = null)
     {
         $this->client = $client;
         $this->request = $request;
-        $this->throw_exception_if_not_found = $throw_exception_if_not_found;
+        $this->client_public_id_found = $client_public_id_found;
     }
 
     /**
@@ -44,7 +45,7 @@ class PostFindClientEvent extends Event
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Request
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function getRequest()
     {
@@ -52,10 +53,10 @@ class PostFindClientEvent extends Event
     }
 
     /**
-     * @return bool
+     * @return null|string
      */
-    public function getThrowExceptionIfNotFound()
+    public function getClientPublicIdFound()
     {
-        return $this->throw_exception_if_not_found;
+        return $this->client_public_id_found;
     }
 }

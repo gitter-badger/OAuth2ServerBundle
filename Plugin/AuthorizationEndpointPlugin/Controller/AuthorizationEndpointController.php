@@ -9,13 +9,15 @@ use OAuth2\Endpoint\AuthorizationInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Scope\ScopeManagerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Templating\EngineInterface;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Stream;
 
 class AuthorizationEndpointController
 {
@@ -33,11 +35,6 @@ class AuthorizationEndpointController
      * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler
      */
     protected $form_handler;
-
-    /**
-     * @var
-     */
-    protected $resource_owner_manager;
 
     /**
      * @var \OAuth2\Client\ClientManagerSupervisorInterface
@@ -77,29 +74,34 @@ class AuthorizationEndpointController
         $this->scope_manager = $scope_manager;
     }
 
-    public function authorizationAction(Request $request)
+    public function authorizationAction(ServerRequestInterface $request)
     {
         $user = $this->token_storage->getToken()->getUser();
         if (!$user instanceof EndUserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
+        $response = new Response();
         try {
             $authorization = $this->createAuthorization($request);
             $authorization->setResourceOwner($user);
             $this->form->setData($authorization);
 
-            if ($request->isMethod(Request::METHOD_POST)) {
-                return $this->form_handler->handle($this->form, $request, $authorization);
+            if ('POST' === $request->getMethod()) {
+                $this->form_handler->handle($this->form, $request, $response, $authorization);
+                return $response;
             }
         } catch (BaseExceptionInterface $e) {
-            return $e->getHttpResponse();
+            $e->getHttpResponse($response);
+            return $response;
         }
 
-        return $this->prepareResponse($authorization);
+        $this->prepareResponse($authorization, $response);
+
+        return $response;
     }
 
-    private function prepareResponse(AuthorizationInterface $authorization)
+    private function prepareResponse(AuthorizationInterface $authorization, ResponseInterface &$response)
     {
         $content = $this->template_engine->render(
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
@@ -109,34 +111,35 @@ class AuthorizationEndpointController
                 'scopes' => $authorization->getScope(),
             ]
         );
-        $response = new Response($content);
+        $body = new Stream('php://temp', 'wb+');
+        $body->write($content);
+        $response = new Response($body);
         if (!is_null($this->x_frame_options)) {
-            $response->headers->set('X-Frame-Options', $this->x_frame_options);
+            $response = $response->withHeader('X-Frame-Options', $this->x_frame_options);
         }
-
-        return $response;
     }
 
-    private function createAuthorization(Request $request)
+    private function createAuthorization(ServerRequestInterface $request)
     {
         $authorization = new Authorization();
 
-        $client_id = $request->query->get('client_id');
+        $params = $request->getQueryParams();
+        $client_id = array_key_exists('client_id', $params)?$params['client_id']:null;
         $this->checkClientId($client_id);
 
         $client = $this->client_manager_supervisor->getClient($client_id);
         $this->checkClient($client);
 
-        $response_type = $request->query->get('response_type');
+        $response_type = array_key_exists('response_type', $params)?$params['response_type']:null;
         $this->checkResponseType($response_type);
 
-        $scope = $this->scope_manager->convertToScope($request->query->get('scope'));
+        $scope = $this->scope_manager->convertToScope(array_key_exists('scope', $params)?$params['scope']:null);
         $authorization->setClient($client)
-                      ->setResponseType($request->query->get('response_type'))
+                      ->setResponseType(array_key_exists('response_type', $params)?$params['response_type']:null)
                       ->setScope($scope)
-                      ->setRedirectUri($request->query->get('redirect_uri'))
-                      ->setIssueRefreshToken($request->query->get('issue_refresh_token'))
-                      ->setState($request->query->get('state'));
+                      ->setRedirectUri(array_key_exists('redirect_uri', $params)?$params['redirect_uri']:null)
+                      ->setIssueRefreshToken(array_key_exists('issue_refresh_token', $params)?$params['issue_refresh_token']:null)
+                      ->setState(array_key_exists('state', $params)?$params['state']:null);
 
         return $authorization;
     }

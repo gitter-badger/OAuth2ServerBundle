@@ -16,11 +16,21 @@
         </service>
 
         <service id="oauth2_server.token_revocation_endpoint" class="%oauth2_server.token_revocation_endpoint.endpoint.class%">
-            <argument type="service" id="oauth2_server.configuration" />
-            <argument type="service" id="oauth2_server.client_manager_supervisor" />
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.token_revocation_endpoint.access_token_manager" />
-            <argument type="service" id="oauth2_server.token_revocation_endpoint.refresh_token_manager" on-invalid="ignore" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
+            <call method="setClientManagerSupervisor">
+                <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            </call>
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.token_revocation_endpoint.access_token_manager" />
+            </call>
+            <call method="setRefreshTokenManager">
+                <argument type="service" id="oauth2_server.refresh_token.token_manager" on-invalid="ignore" />
+            </call>
         </service>
     </services>
 </container>

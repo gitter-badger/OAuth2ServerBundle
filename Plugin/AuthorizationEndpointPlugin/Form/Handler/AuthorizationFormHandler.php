@@ -4,6 +4,9 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\
 
 use OAuth2\Endpoint\Authorization;
 use OAuth2\Endpoint\AuthorizationEndpointInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
@@ -18,13 +21,16 @@ class AuthorizationFormHandler
         $this->endpoint = $endpoint;
     }
 
-    public function handle(FormInterface $form, Request $request, Authorization $authorization)
+    public function handle(FormInterface $form, ServerRequestInterface $request, ResponseInterface &$response, Authorization $authorization)
     {
-        if (!$request->isMethod(Request::METHOD_POST)) {
+        if ('POST' !== $request->getMethod()) {
             return false;
         }
 
-        $form->submit($request);
+        $httpFoundationFactory = new HttpFoundationFactory();
+        $symfony_request = $httpFoundationFactory->createRequest($request);
+
+        $form->submit($symfony_request);
         if (!$form->isValid()) {
             return false;
         }
@@ -35,6 +41,6 @@ class AuthorizationFormHandler
         }
         $authorization->setAuthorized($button->isClicked());
 
-        return $this->endpoint->authorize($authorization);
+        $this->endpoint->authorize($authorization, $response);
     }
 }

@@ -13,9 +13,11 @@
         <service id="oauth2_server.client_manager_supervisor.chain" class="%oauth2_server.client_manager_supervisor.chain.class%" />
 
         <service id="oauth2_server.client_manager_supervisor.default" class="%oauth2_server.client_manager_supervisor.default.class%">
-            <argument type="service" id="oauth2_server.exception.manager" />
             <argument type="service" id="oauth2_server.client_manager_supervisor.chain" />
             <argument type="service" id="event_dispatcher" on-invalid="ignore" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
         </service>
     </services>
 </container>

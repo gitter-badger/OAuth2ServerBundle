@@ -28,16 +28,6 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     private $entity_manager;
 
     /**
-     * @var \OAuth2\Exception\ExceptionManagerInterface
-     */
-    private $exception_manager;
-
-    /**
-     * @var \OAuth2\Configuration\ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * @var
      */
     private $event_dispatcher;
@@ -50,39 +40,17 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     /**
      * @param string                                                      $class
      * @param \Doctrine\Common\Persistence\ManagerRegistry                $manager_registry
-     * @param \OAuth2\Exception\ExceptionManagerInterface                 $exception_manager
-     * @param \OAuth2\Configuration\ConfigurationInterface                $configuration
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
      */
     public function __construct(
         $class,
         ManagerRegistry $manager_registry,
-        ExceptionManagerInterface $exception_manager,
-        ConfigurationInterface $configuration,
         EventDispatcherInterface $event_dispatcher = null
     ) {
         $this->class = $class;
-        $this->exception_manager = $exception_manager;
-        $this->configuration = $configuration;
         $this->event_dispatcher = $event_dispatcher;
         $this->entity_manager = $manager_registry->getManagerForClass($class);
         $this->entity_repository = $this->entity_manager->getRepository($class);
-    }
-
-    /**
-     * @return \OAuth2\Exception\ExceptionManagerInterface
-     */
-    protected function getExceptionManager()
-    {
-        return $this->exception_manager;
-    }
-
-    /**
-     * @return \OAuth2\Configuration\ConfigurationInterface
-     */
-    protected function getConfiguration()
-    {
-        return $this->configuration;
     }
 
     /**

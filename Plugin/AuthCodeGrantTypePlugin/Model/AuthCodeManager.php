@@ -20,16 +20,6 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
     use ManagerBehaviour;
 
     /**
-     * @var \OAuth2\Exception\ExceptionManagerInterface
-     */
-    private $exception_manager;
-
-    /**
-     * @var \OAuth2\Configuration\ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
     private $event_dispatcher;
@@ -37,32 +27,16 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
     /**
      * @param                                                             $class
      * @param \Doctrine\Common\Persistence\ManagerRegistry                $manager_registry
-     * @param \OAuth2\Exception\ExceptionManagerInterface                 $exception_manager
-     * @param \OAuth2\Configuration\ConfigurationInterface                $configuration
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
      */
     public function __construct(
         $class,
         ManagerRegistry $manager_registry,
-        ExceptionManagerInterface $exception_manager,
-        ConfigurationInterface $configuration,
         EventDispatcherInterface $event_dispatcher
     ) {
         $this->setClass($class);
         $this->setManagerRegistry($manager_registry);
         $this->event_dispatcher = $event_dispatcher;
-        $this->exception_manager = $exception_manager;
-        $this->configuration = $configuration;
-    }
-
-    protected function getExceptionManager()
-    {
-        return $this->exception_manager;
-    }
-
-    protected function getConfiguration()
-    {
-        return $this->configuration;
     }
 
     /**
@@ -90,7 +64,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
          */
         $authcode = new $class();
-        $authcode->setCode($code)
+        $authcode->setToken($code)
             ->setExpiresAt($expiresAt)
             ->setClientPublicId($client->getPublicId())
             ->setScope($scope)
@@ -106,9 +80,9 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
         return $authcode;
     }
 
-    public function getAuthCode($code)
+    public function getAuthCode($token)
     {
-        return $this->getEntityRepository()->findOneBy(['code' => $code]);
+        return $this->getEntityRepository()->findOneBy(['token' => $token]);
     }
 
     public function markAuthCodeAsUsed(BaseAuthCodeInterface $authcode)

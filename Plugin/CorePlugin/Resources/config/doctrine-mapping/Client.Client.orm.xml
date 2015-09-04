@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\RegisteredClient">
-        <field name="redirect_uris" column="redirect_uris" type="array" />
+    <mapped-superclass name="OAuth2\Client\Client">
+        <field name="grant_types" column="grant_types" type="array" />
     </mapped-superclass>
 </doctrine-mapping>

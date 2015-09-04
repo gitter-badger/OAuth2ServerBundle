@@ -28,16 +28,6 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
     private $entity_manager;
 
     /**
-     * @var \OAuth2\Exception\ExceptionManagerInterface
-     */
-    private $exception_manager;
-
-    /**
-     * @var \OAuth2\Configuration\ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * @var string
      */
     private $class;
@@ -50,26 +40,12 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
     public function __construct(
         $class,
         ManagerRegistry $manager_registry,
-        ExceptionManagerInterface $exception_manager,
-        ConfigurationInterface $configuration,
         EventDispatcherInterface $event_dispatcher = null
     ) {
         $this->class = $class;
-        $this->exception_manager = $exception_manager;
-        $this->configuration = $configuration;
         $this->event_dispatcher = $event_dispatcher;
         $this->entity_manager = $manager_registry->getManagerForClass($class);
         $this->entity_repository = $this->entity_manager->getRepository($class);
-    }
-
-    protected function getExceptionManager()
-    {
-        return $this->exception_manager;
-    }
-
-    protected function getConfiguration()
-    {
-        return $this->configuration;
     }
 
     protected function getClass()
@@ -85,7 +61,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
 
         $class = $this->getClass();
         /*
-         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
+         * @var $access_token \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
          */
         $access_token = new $class();
         $access_token->setToken($token)

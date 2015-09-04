@@ -10,7 +10,9 @@
 
     <services>
         <service id="oauth2_server.bearer_access_token" class="%oauth2_server.bearer_access_token.class%">
-            <argument type="service" id="oauth2_server.exception.manager" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
         </service>
     </services>
 </container>

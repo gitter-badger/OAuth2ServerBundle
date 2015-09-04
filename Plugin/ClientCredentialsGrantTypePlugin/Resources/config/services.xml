@@ -10,8 +10,12 @@
 
     <services>
         <service id="oauth2_server.client_credentials_grant_type" class="%oauth2_server.client_credentials_grant_type.class%">
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.configuration" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
             <tag name="oauth2_server.grant_type" />
         </service>
     </services>

@@ -13,7 +13,9 @@
             <argument>%oauth2_server.scope.policy%</argument>
             <argument>%oauth2_server.scope.available_scope%</argument>
             <argument>%oauth2_server.scope.default_scope%</argument>
-            <argument type="service" id="oauth2_server.exception.manager" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
         </service>
     </services>
 </container>

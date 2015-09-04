@@ -10,7 +10,9 @@
 
     <services>
         <service id="oauth2_server.exception.manager.default" class="%oauth2_server.exception.manager.class%">
-            <argument type="service" id="oauth2_server.configuration" />
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
         </service>
     </services>
 </container>

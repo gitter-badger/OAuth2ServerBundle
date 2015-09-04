@@ -26,7 +26,7 @@ class CorePlugin implements BundlePlugin
     public function build(ContainerBuilder $container)
     {
         $mappings = [
-            realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model',
+            realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'OAuth2',
         ];
         if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, []));

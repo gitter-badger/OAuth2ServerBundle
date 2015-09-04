@@ -23,9 +23,15 @@
         </service>
 
         <service id="oauth2_server.authorization_endpoint" class="%oauth2_server.authorization_endpoint.class%">
-            <argument type="service" id="oauth2_server.configuration" />
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.scope.manager" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
+            <call method="setScopeManager">
+                <argument type="service" id="oauth2_server.scope.manager" />
+            </call>
         </service>
 
         <service id="oauth2_server.authorization_endpoint.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">

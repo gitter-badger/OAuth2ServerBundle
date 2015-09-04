@@ -3,7 +3,9 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\Controller;
 
 use OAuth2\Endpoint\RevocationEndpointInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Zend\Diactoros\Response;
 
 class TokenRevocationEndpointController
 {
@@ -21,12 +23,15 @@ class TokenRevocationEndpointController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function revokeAction(Request $request)
+    public function revokeAction(ServerRequestInterface $request)
     {
-        return $this->revocation_endpoint->revoke($request);
+        $response = new Response();
+        $this->revocation_endpoint->revoke($request, $response);
+
+        return $response;
     }
 }

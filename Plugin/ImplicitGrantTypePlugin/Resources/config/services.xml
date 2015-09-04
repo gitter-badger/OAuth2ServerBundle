@@ -10,8 +10,12 @@
 
     <services>
         <service id="oauth2_server.implicit_grant_type" class="%oauth2_server.implicit_grant_type.class%">
-            <argument type="service" id="oauth2_server.implicit_grant_type.access_token_type" />
-            <argument type="service" id="oauth2_server.implicit_grant_type.access_token_manager" />
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.implicit_grant_type.access_token_manager" />
+            </call>
+            <call method="setAccessTokenType">
+                <argument type="service" id="oauth2_server.implicit_grant_type.access_token_type" />
+            </call>
             <tag name="oauth2_server.response_type" />
         </service>
     </services>

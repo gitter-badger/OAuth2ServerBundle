@@ -16,13 +16,27 @@
         </service>
 
         <service id="oauth2_server.token_endpoint" class="%oauth2_server.token_endpoint.class%">
-            <argument type="service" id="oauth2_server.client_manager_supervisor" />
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.scope.manager" />
-            <argument type="service" id="oauth2_server.token_endpoint.access_token_manager" />
-            <argument type="service" id="oauth2_server.token_endpoint.access_token_type" />
-            <argument type="service" id="oauth2_server.token_endpoint.end_user_manager" />
-            <argument type="service" id="oauth2_server.token_endpoint.refresh_token_manager" on-invalid="ignore" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAccessTokenType">
+                <argument type="service" id="oauth2_server.token_endpoint.access_token_type" />
+            </call>
+            <call method="setClientManagerSupervisor">
+                <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            </call>
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.token_endpoint.access_token_manager" />
+            </call>
+            <call method="setRefreshTokenManager">
+                <argument type="service" id="oauth2_server.refresh_token.token_manager" on-invalid="ignore" />
+            </call>
+            <call method="setScopeManager">
+                <argument type="service" id="oauth2_server.scope.manager" />
+            </call>
+            <call method="setEndUserManager">
+                <argument type="service" id="oauth2_server.token_endpoint.end_user_manager" />
+            </call>
         </service>
     </services>
 </container>

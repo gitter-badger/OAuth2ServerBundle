@@ -12,5 +12,9 @@ interface AuthCodeManagerInterface extends BaseManager
      * @return \Doctrine\Common\Persistence\ObjectManager|null
      */
     public function getEntityManager();
+
+    /**
+     * @return self
+     */
     public function deleteExpired();
 }

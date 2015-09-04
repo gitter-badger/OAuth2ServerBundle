@@ -38,7 +38,7 @@ class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, Cont
             $code = $code_manager->newAuthCode();
             $code->setResourceOwnerPublicId($authcode['resource_owner']->getPublicId())
                  ->setClientPublicId($authcode['client']->getPublicId())
-                 ->setCode($authcode['code'])
+                 ->setToken($authcode['code'])
                  ->setScope($authcode['scope'])
                  ->setRedirectUri($authcode['redirect_uri'])
                  ->setExpiresAt($authcode['expires_at']);

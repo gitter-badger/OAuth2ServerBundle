@@ -10,19 +10,12 @@ class ScopeManager extends Base
     protected $policy;
     protected $default_scope;
     protected $available_scope;
-    protected $exception_manager;
 
-    public function __construct($policy, $available_scope, $default_scope, ExceptionManagerInterface $exception_manager)
+    public function __construct($policy, $available_scope, $default_scope)
     {
         $this->policy = $policy;
-        $this->exception_manager = $exception_manager;
         $this->available_scope = $this->convertToScope($available_scope);
         $this->default_scope = $this->convertToScope($default_scope);
-    }
-
-    protected function getExceptionManager()
-    {
-        return $this->exception_manager;
     }
 
     public function getScopes()

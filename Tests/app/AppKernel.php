@@ -41,6 +41,8 @@ class AppKernel extends Kernel
             ]),
             new SpomkyLabs\TestBundle\SpomkyLabsTestBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
+
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         ];
 
         return $bundles;

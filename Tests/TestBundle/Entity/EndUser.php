@@ -2,11 +2,9 @@
 
 namespace SpomkyLabs\TestBundle\Entity;
 
-use OAuth2\EndUser\EndUserInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwner;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class EndUser extends ResourceOwner implements EndUserInterface, UserInterface
+class EndUser extends \OAuth2\EndUser\EndUser implements UserInterface
 {
     private $username;
     private $password;

@@ -14,7 +14,7 @@ OAuth2 Server Bundle
 [![License](https://poser.pugx.org/spomky-labs/oauth2-server-bundle/license.png)](https://packagist.org/packages/spomky-labs/oauth2-server-bundle)
 
 
-This bundle is a complete OAuth2 Server Bundle for [!Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
+This bundle is a complete OAuth2 Server Bundle for ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
 
 It provides the following official plugins:
 
@@ -48,10 +48,10 @@ The release process [is described here](Resources/doc/Release.md).
 
 ## Prerequisites
 
-This bundle needs [!PHP 5.4+](https://img.shields.io/badge/PHP-5.4%2B-ff6946.svg) and [!Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
+This bundle needs ![PHP 5.6+](https://img.shields.io/badge/PHP-5.4%2B-ff6946.svg) and ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
 
 It has been successfully tested using:
-* PHP: `PHP 5.4` to `PHP 5.6`, `PHP 7` and `HHVM`.
+* PHP: `PHP 5.6`, `PHP 7` and `HHVM`.
 * Symfony: `v2.7.x`.
 
 ## Installation
@@ -59,7 +59,7 @@ It has been successfully tested using:
 The preferred way to install this library is to rely on Composer:
 
 ```sh
-composer require "spomky-labs/oauth2-server-bundle" "~3.0.0"
+composer require "spomky-labs/oauth2-server-bundle" "dev-master"
 ```
 
 ## How to use
