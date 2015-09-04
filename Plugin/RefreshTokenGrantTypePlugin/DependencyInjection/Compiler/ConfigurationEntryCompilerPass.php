@@ -15,7 +15,7 @@ class ConfigurationEntryCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('oauth2_server.configuration');
         $options = [
-            'refresh_token_length' => 'oauth2_server.refresh_token.token_length',
+            'refresh_token_length'   => 'oauth2_server.refresh_token.token_length',
             'refresh_token_lifetime' => 'oauth2_server.refresh_token.token_lifetime',
         ];
 

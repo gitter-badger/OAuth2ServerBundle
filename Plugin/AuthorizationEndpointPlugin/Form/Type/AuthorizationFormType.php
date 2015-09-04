@@ -26,7 +26,7 @@ class AuthorizationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'translation_domain' => 'SpomkyLabsOAuth2Server',
-            'data_class' => 'OAuth2\Endpoint\Authorization',
+            'data_class'         => 'OAuth2\Endpoint\Authorization',
         ]);
     }
 

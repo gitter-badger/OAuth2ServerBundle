@@ -48,16 +48,16 @@ class LoadPasswordClientData extends AbstractFixture implements FixtureInterface
     {
         return [
             [
-                'public_id' => 'bar',
-                'grant_types' => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
+                'public_id'     => 'bar',
+                'grant_types'   => ['code', 'authorization_code', 'token', 'refresh_token', 'password', 'client_credentials'],
                 'redirect_uris' => ['https://example.com/redirection/callback'],
-                'secret' => 'secret',
+                'secret'        => 'secret',
             ],
             [
-                'public_id' => 'baz',
-                'grant_types' => [],
+                'public_id'     => 'baz',
+                'grant_types'   => [],
                 'redirect_uris' => ['https://example.com/redirection/callback'],
-                'secret' => 'secret',
+                'secret'        => 'secret',
             ],
         ];
     }
