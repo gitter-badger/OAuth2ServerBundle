@@ -48,11 +48,11 @@ The release process [is described here](Resources/doc/Release.md).
 
 ## Prerequisites
 
-This bundle needs ![PHP 5.6+](https://img.shields.io/badge/PHP-5.4%2B-ff6946.svg) and ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
+This bundle needs ![PHP 5.6+](https://img.shields.io/badge/PHP-5.6%2B-ff6946.svg) and ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
 
 It has been successfully tested using:
 * PHP: `PHP 5.6`, `PHP 7` and `HHVM`.
-* Symfony: `v2.7.x`.
+* Symfony: `v2.7.x` or `v3.0.x`.
 
 ## Installation
 
