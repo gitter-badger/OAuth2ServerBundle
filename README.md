@@ -53,7 +53,7 @@ It provides the following official plugins:
     * [ ] [Session Management](http://openid.net/specs/openid-connect-session-1_0.html)
     * [ ] [HTTP Based logout](http://openid.net/specs/openid-connect-logout-1_0.html)
 
-It relies on the [OAuth2 Interfaces Project](https://github.com/Spomky-Labs/oauth2-interface).
+It uses on the [OAuth2 Server Library](https://github.com/Spomky-Labs/oauth2-server-library).
 
 ## The Release Process
 
@@ -61,11 +61,16 @@ The release process [is described here](Resources/doc/Release.md).
 
 ## Prerequisites
 
-This bundle needs ![PHP 5.6+](https://img.shields.io/badge/PHP-5.6%2B-ff6946.svg) and ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
+This bundle needs:
+* ![PHP 5.6+](https://img.shields.io/badge/PHP-5.6%2B-ff6946.svg).
+* ![Symfony 2.7+](https://img.shields.io/badge/Symfony-2.7%2B-ff69b4.svg).
+* `SensioFrameworkExtraBundle` to handle `PSR-7` requests and responses.
+* `PuliBundle` for resources support.
 
 It has been successfully tested using:
 * PHP: `PHP 5.6`, `PHP 7` and `HHVM`.
 * Symfony: `v2.7.x` or `v3.0.x`.
+
 
 ## Installation
 

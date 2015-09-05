@@ -4,7 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\DependencyInjection\Compiler\ConfigurationEntryCompilerPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
