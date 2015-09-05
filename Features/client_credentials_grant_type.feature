@@ -28,3 +28,13 @@ Feature: A client request an access token using the Client Credentials Grant Typ
     When I post the request to "https://oauth2.test/oauth/v2/token"
     Then I should receive an OAuth2 exception with message 'unauthorized_client' and description 'The grant type "client_credentials" is unauthorized for this client_id'
     And the status code of the response is 400
+
+  Scenario: The request is valid and an access token is issued
+    Given I have a valid client assertion for client 'JWT-jwt1' in the body request
+    And I add key "scope" with value "scope1" in the body request
+    And I add key "grant_type" with value "client_credentials" in the body request
+    When I post the request to "https://oauth2.test/oauth/v2/token"
+    Then I should receive an OAuth2 response
+    And the response is not an OAuth2 Exception
+    And the response contains an access token
+    And the status code of the response is 200
