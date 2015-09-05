@@ -26,16 +26,27 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
         $this->setManagerRegistry($manager_registry);
     }
 
+    /**
+     * @return string
+     */
     protected function getPrefix()
     {
         return 'PASSWORD-';
     }
 
+    /**
+     * @return string
+     */
     protected function getSuffix()
     {
         return '';
     }
 
+    /**
+     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientInterface $client
+     *
+     * @return self
+     */
     public function saveClient(PasswordClientInterface $client)
     {
         $this->updateClientCredentials($client);

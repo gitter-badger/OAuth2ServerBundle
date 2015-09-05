@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model\JWTClient">
+        <field name="allowed_signature_algorithms" column="allowed_signature_algorithms" type="array" nullable="false" />
+        <field name="signature_public_key_set" column="signature_public_key_set" type="array" nullable="false" />
+    </mapped-superclass>
+</doctrine-mapping>

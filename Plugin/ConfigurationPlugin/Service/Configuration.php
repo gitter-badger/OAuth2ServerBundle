@@ -10,19 +10,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @var array
      */
-    protected $options;
-    /**
-     * @var string[]
-     */
-    protected $descriptions;
-
-    /**
-     * @param array $options
-     */
-    public function __construct(array $options)
-    {
-        $this->options = $options;
-    }
+    protected $options = [];
 
     /**
      * {@inheritdoc}
@@ -50,14 +38,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription($name)
-    {
-        return isset($this->descriptions[$name]) ? $this->descriptions[$name] : null;
     }
 
     /**

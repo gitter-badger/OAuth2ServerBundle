@@ -9,8 +9,6 @@
     </parameters>
 
     <services>
-        <service id="oauth2_server.configuration" class="%oauth2_server.configuration.class%">
-            <argument>%oauth2_server.configuration.options%</argument>
-        </service>
+        <service id="oauth2_server.configuration" class="%oauth2_server.configuration.class%" />
     </services>
 </container>

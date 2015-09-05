@@ -20,13 +20,6 @@ interface ConfigurationInterface extends  Base
     public function remove($name);
 
     /**
-     * @param string $name Configuration key
-     *
-     * @return null|string Returns null if the description does not exists, else the description
-     */
-    public function getDescription($name);
-
-    /**
      * @return string[] Returns the list of stored configuration keys
      */
     public function getConfigurationKeys();

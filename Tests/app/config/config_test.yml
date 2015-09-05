@@ -31,7 +31,7 @@ doctrine:
 
 oauth2_server:
     scope:
-        policy: default
+        policy: 'default'
         default_scope: 'scope1'
         available_scope: 'scope1 scope2 scope3 scope4'
     unregistered_client:
@@ -66,6 +66,20 @@ oauth2_server:
     token_revocation_endpoint:
         access_token_manager: oauth2_server.simple_string_access_token.manager
         refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
+    jwt_bearer:
+        client_class: SpomkyLabs\TestBundle\Entity\JWTClient
+        allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
+        private_keys:
+            JWK1:
+                type: oct
+                data:
+                    use: enc
+                    k: 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8'
+            JWK2:
+                type: oct
+                data:
+                    use: sig
+                    k: 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow'
     authorization_endpoint:
         security:
             x_frame_options: deny

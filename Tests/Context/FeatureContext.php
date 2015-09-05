@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
+use SpomkyLabs\Service\Jose;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -46,6 +47,57 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function getException()
     {
         return $this->exception;
+    }
+
+    /**
+     * @Given I have a valid client assertion for client :client in the body request
+     */
+    public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
+    {
+        $jose = Jose::getInstance();
+
+        $jose->getConfiguration()->set('algorithms', ['HS512', 'A256KW', 'A256CBC-HS512']);
+        $jose->getConfiguration()->set('audience', 'My Authorization Server');
+
+        $jose->getKeysetManager()->loadKeyFromValues('JWK1', [
+            'kid' => 'JWK1',
+            'use' => 'enc',
+            'kty' => 'oct',
+            'k'   => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
+        ]);
+        $jose->getKeysetManager()->loadKeyFromValues('JWK2', [
+            'kid' => 'JWK2',
+            'use' => 'sig',
+            'kty' => 'oct',
+            'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
+        ]);
+
+        $jws = $jose->signAndEncrypt(
+            [
+                'exp' => time() + 3600,
+                'aud' => 'My Authorization Server',
+                'iss' => 'My JWT issuer',
+                'sub' => $client,
+            ],
+            'JWK2',
+            [
+                'cty' => 'JWT',
+                'alg' => 'HS512',
+            ],
+            'JWK1',
+            [
+                'cty' => 'JWT',
+                'alg' => 'A256KW',
+                'enc' => 'A256CBC-HS512',
+                'exp' => time() + 3600,
+                'aud' => 'My Authorization Server',
+                'iss' => 'My JWT issuer',
+                'sub' => $client,
+            ]
+        );
+
+        $this->iAddKeyWithValueInTheBodyRequest('client_assertion_type', 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
+        $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jws);
     }
 
     /**

@@ -18,15 +18,6 @@ class ConfigurationPlugin implements BundlePlugin
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
-        $pluginNode
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('options')
-            ->useAttributeAsKey('key')
-            ->treatNullLike([])
-            ->prototype('scalar')->end()
-            ->end()
-            ->end();
     }
 
     public function load(array $pluginConfiguration, ContainerBuilder $container)
@@ -35,7 +26,6 @@ class ConfigurationPlugin implements BundlePlugin
         foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
-        $container->setParameter('oauth2_server.configuration.options', $pluginConfiguration);
     }
 
     public function build(ContainerBuilder $container)

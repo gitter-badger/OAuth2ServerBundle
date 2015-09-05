@@ -119,6 +119,11 @@
             "installer": "composer",
             "env": "dev"
         },
+        "pimple/pimple": {
+            "install-path": "vendor/pimple/pimple",
+            "installer": "composer",
+            "env": "dev"
+        },
         "psr/http-message": {
             "install-path": "vendor/psr/http-message",
             "installer": "composer"
@@ -180,6 +185,11 @@
             "installer": "composer",
             "env": "dev"
         },
+        "spomky-labs/aes-key-wrap": {
+            "install-path": "vendor/spomky-labs/aes-key-wrap",
+            "installer": "composer",
+            "env": "dev"
+        },
         "spomky-labs/base64url": {
             "install-path": "vendor/spomky-labs/base64url",
             "installer": "composer"
@@ -188,13 +198,28 @@
             "install-path": "vendor/spomky-labs/defuse-generator",
             "installer": "composer"
         },
+        "spomky-labs/jose": {
+            "install-path": "vendor/spomky-labs/jose",
+            "installer": "composer",
+            "env": "dev"
+        },
         "spomky-labs/jose-interface": {
             "install-path": "vendor/spomky-labs/jose-interface",
             "installer": "composer"
         },
+        "spomky-labs/jose-service": {
+            "install-path": "vendor/spomky-labs/jose-service",
+            "installer": "composer",
+            "env": "dev"
+        },
         "spomky-labs/oauth2-server-library": {
             "install-path": "vendor/spomky-labs/oauth2-server-library",
             "installer": "composer"
+        },
+        "spomky-labs/pbkdf2": {
+            "install-path": "vendor/spomky-labs/pbkdf2",
+            "installer": "composer",
+            "env": "dev"
         },
         "symfony/asset": {
             "install-path": "vendor/symfony/asset",

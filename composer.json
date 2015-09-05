@@ -19,7 +19,7 @@
         "puli/twig-extension": "~1.0",
         "puli/composer-plugin": "~1.0",
         "puli/symfony-bundle": "~1.0",
-        "spomky-labs/oauth2-server-library": "dev-master"
+        "spomky-labs/oauth2-server-library": "~0.0.0"
     },
     "require-dev": {
         "symfony/psr-http-message-bridge": "~0.2",
@@ -40,7 +40,10 @@
         "symfony/class-loader": "~2.7",
         "symfony/yaml": "~2.7",
         "symfony/var-dumper": "~2.7",
-        "puli/cli": "~1.0"
+        "puli/cli": "~1.0",
+        "spomky-labs/jose-service": "~0.1.0",
+        "spomky-labs/aes-key-wrap": "~2.0",
+        "spomky-labs/pbkdf2": "~1.0"
     },
     "minimum-stability": "beta",
     "suggest": {

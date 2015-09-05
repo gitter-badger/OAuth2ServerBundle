@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.jwt_bearer_grant_type.class">SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Grant\JWTBearerGrantType</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.jwt_bearer_grant_type" class="%oauth2_server.jwt_bearer_grant_type.class%">
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
+            <call method="setAllowedEncryptionAlgorithms">
+                <argument>%oauth2_server.jwt_bearer.allowed_encryption_algorithms%</argument>
+            </call>
+            <tag name="oauth2_server.grant_type" />
+        </service>
+
+        <service id="oauth2_server.jwt_bearer.manager" class="%oauth2_server.jwt_bearer.manager_class%">
+            <argument>%oauth2_server.jwt_bearer.client_class%</argument>
+            <argument type="service" id="doctrine" />
+            <argument>%oauth2_server.jwt_bearer.private_keys%</argument>
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
+            <call method="setAllowedEncryptionAlgorithms">
+                <argument>%oauth2_server.jwt_bearer.allowed_encryption_algorithms%</argument>
+            </call>
+            <tag name="oauth2_server.client_manager" />
+        </service>
+    </services>
+</container>
