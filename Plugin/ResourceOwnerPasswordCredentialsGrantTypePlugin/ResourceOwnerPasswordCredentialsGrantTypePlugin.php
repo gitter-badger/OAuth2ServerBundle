@@ -8,9 +8,10 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class ResourceOwnerPasswordCredentialsGrantTypePlugin implements BundlePlugin
+class ResourceOwnerPasswordCredentialsGrantTypePlugin implements BundlePlugin, PrependExtensionInterface
 {
     public function name()
     {
@@ -46,5 +47,19 @@ class ResourceOwnerPasswordCredentialsGrantTypePlugin implements BundlePlugin
 
     public function boot(ContainerInterface $container)
     {
+    }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     *
+     * @param ContainerBuilder $container
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $config = current($container->getExtensionConfig('oauth2_server'));
+        if (array_key_exists('token_endpoint', $config)) {
+            $config[$this->name()]['end_user_manager'] = $config['token_endpoint']['end_user_manager'];
+        }
+        $container->prependExtensionConfig('oauth2_server', $config);
     }
 }

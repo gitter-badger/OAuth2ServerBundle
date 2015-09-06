@@ -58,14 +58,6 @@ oauth2_server:
         access_token_manager: oauth2_server.simple_string_access_token.manager
         refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
         end_user_manager: oauth2_server.test_bundle.end_user_manager
-    implicit_grant_type:
-        access_token_type: oauth2_server.bearer_access_token
-        access_token_manager: oauth2_server.simple_string_access_token.manager
-    resource_owner_password_credentials_grant_type:
-        end_user_manager: oauth2_server.test_bundle.end_user_manager
-    token_revocation_endpoint:
-        access_token_manager: oauth2_server.simple_string_access_token.manager
-        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
     jwt_bearer:
         client_class: SpomkyLabs\TestBundle\Entity\JWTClient
         allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
