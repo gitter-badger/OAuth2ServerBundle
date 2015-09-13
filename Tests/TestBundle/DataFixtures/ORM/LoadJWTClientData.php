@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use SpomkyLabs\Service\Jose;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,7 +33,7 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
 
         foreach ($this->getClients() as $jwt_client) {
             /**
-             * @var $client \OAuth2\Client\JWTClientInterface
+             * @var \OAuth2\Client\JWTClientInterface
              */
             $client = $manager->createClient();
             $client->setAllowedSignatureAlgorithms($jwt_client['algorithms'])
