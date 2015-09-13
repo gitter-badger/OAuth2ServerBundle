@@ -96,6 +96,11 @@
             "installer": "composer",
             "env": "dev"
         },
+        "fgrosse/phpasn1": {
+            "install-path": "vendor/fgrosse/phpasn1",
+            "installer": "composer",
+            "env": "dev"
+        },
         "jdorn/sql-formatter": {
             "install-path": "vendor/jdorn/sql-formatter",
             "installer": "composer"
@@ -109,6 +114,11 @@
             "install-path": "vendor/matthiasnoback/symfony-bundle-plugins",
             "installer": "composer"
         },
+        "mdanter/ecc": {
+            "install-path": "vendor/mdanter/ecc",
+            "installer": "composer",
+            "env": "dev"
+        },
         "padraic/humbug_get_contents": {
             "install-path": "vendor/padraic/humbug_get_contents",
             "installer": "composer",
@@ -116,6 +126,11 @@
         },
         "padraic/phar-updater": {
             "install-path": "vendor/padraic/phar-updater",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phpseclib/phpseclib": {
+            "install-path": "vendor/phpseclib/phpseclib",
             "installer": "composer",
             "env": "dev"
         },

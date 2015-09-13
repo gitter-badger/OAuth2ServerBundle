@@ -4,6 +4,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTy
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\JWTAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
@@ -40,6 +41,7 @@ class AppKernel extends Kernel
                 new ResourceOwnerPasswordCredentialsGrantTypePlugin(),
                 new ClientCredentialsGrantTypePlugin(),
                 new TokenRevocationEndpointPlugin(),
+                //new JWTAccessTokenPlugin(),
             ]),
             new SpomkyLabs\TestBundle\SpomkyLabsTestBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
