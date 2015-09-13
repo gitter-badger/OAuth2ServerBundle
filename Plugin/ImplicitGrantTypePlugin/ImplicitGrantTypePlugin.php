@@ -55,7 +55,7 @@ class ImplicitGrantTypePlugin implements BundlePlugin, PrependExtensionInterface
     {
         $config = current($container->getExtensionConfig('oauth2_server'));
         if (array_key_exists('token_endpoint', $config)) {
-            foreach(['access_token_type', 'access_token_manager'] as $name) {
+            foreach (['access_token_type', 'access_token_manager'] as $name) {
                 $config[$this->name()][$name] = $config['token_endpoint'][$name];
             }
         }

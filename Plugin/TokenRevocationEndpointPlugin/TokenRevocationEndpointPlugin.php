@@ -62,7 +62,7 @@ class TokenRevocationEndpointPlugin implements BundlePlugin, PrependExtensionInt
     {
         $config = current($container->getExtensionConfig('oauth2_server'));
         if (array_key_exists('token_endpoint', $config)) {
-            foreach(['refresh_token_manager', 'access_token_manager'] as $name) {
+            foreach (['refresh_token_manager', 'access_token_manager'] as $name) {
                 $config[$this->name()][$name] = $config['token_endpoint'][$name];
             }
         }

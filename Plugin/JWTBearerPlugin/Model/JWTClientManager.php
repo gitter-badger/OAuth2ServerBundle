@@ -36,7 +36,7 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
     protected function loadKeys(array $keys)
     {
         $prepared = [];
-        foreach($keys as $id=>$data) {
+        foreach ($keys as $id => $data) {
             $key = [
                 'kid' => $id,
                 'kty' => $data['type'],
@@ -74,6 +74,7 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
 
         return $this;
     }
+
     /**
      * @return \Jose\JWKSetManagerInterface
      */

@@ -650,6 +650,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         }
         throw new \Exception('The redirection URL does not contain parameter "'.$param.'".');
     }
+
     /**
      * @Then the redirect fragment should contain parameter :param with value :value
      */
@@ -715,6 +716,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             throw new \Exception('The access token exists.');
         }
     }
+
     /**
      * @Then the access token :token exists
      */
