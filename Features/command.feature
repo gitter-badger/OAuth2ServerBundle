@@ -7,7 +7,8 @@ Feature: A Console Command exists to remove old tokens
     Then I should see
     """
     Cleaner "Refresh Token Manager" removed 1 expired refresh token(s) from storage.
+    Cleaner "Refresh Token Manager" removed 1 used refresh token(s) from storage.
     Cleaner "Authorization Code Manager" removed 1 expired authorization code(s) from storage.
-    Cleaner "Simple String Access Token Manager" removed 2 expired access token(s) from storage.
+    Cleaner "Simple String Access Token Manager" removed 1 expired access token(s) from storage.
 
     """

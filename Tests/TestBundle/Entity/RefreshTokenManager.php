@@ -9,7 +9,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\Refre
 
 class RefreshTokenManager extends BaseTokenManager
 {
-    public function createExpiredAccessToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
+    public function createExpiredRefreshToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
     {
         $class = $this->getClass();
         $expired_date = (new \Datetime('now -10sec'))->format('U');
@@ -31,7 +31,7 @@ class RefreshTokenManager extends BaseTokenManager
         $this->getEntityManager()->flush();
     }
 
-    public function createValidAccessToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
+    public function createValidRefreshToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
     {
         $class = $this->getClass();
         $expired_date = (new \Datetime('now +1 year'))->format('U');
@@ -40,6 +40,26 @@ class RefreshTokenManager extends BaseTokenManager
               ->setExpiresAt($expired_date)
               ->setResourceOwnerPublicId($resource_owner->getPublicId())
               ->setClientPublicId($client->getPublicId());
+
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
+
+        return $token;
+    }
+
+    public function createUsedRefreshToken(ClientInterface $client, ResourceOwnerInterface $resource_owner, $refresh_token)
+    {
+        $class = $this->getClass();
+        $expired_date = (new \Datetime('now +1 year'))->format('U');
+        $token = new $class();
+        /**
+         * @var $token \OAuth2\Token\RefreshTokenInterface
+         */
+        $token->setToken($refresh_token)
+              ->setExpiresAt($expired_date)
+              ->setResourceOwnerPublicId($resource_owner->getPublicId())
+              ->setClientPublicId($client->getPublicId())
+              ->setUsed(true);
 
         $this->getEntityManager()->persist($token);
         $this->getEntityManager()->flush();
