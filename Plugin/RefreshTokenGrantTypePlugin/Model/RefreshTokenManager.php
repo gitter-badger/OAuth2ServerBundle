@@ -8,12 +8,13 @@ use OAuth2\Client\TokenLifetimeExtensionInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\RefreshTokenManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PostRefreshTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PreRefreshTokenCreationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInterface
+class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInterface, CleanerInterface
 {
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
@@ -172,6 +173,16 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
         return $qb->getQuery()->execute();
     }
 
+    public function deleteUsed()
+    {
+        $qb = $this->getEntityRepository()->createQueryBuilder('t');
+        $qb
+            ->delete()
+            ->where('t.used = true');
+
+        return $qb->getQuery()->execute();
+    }
+
     /**
      * @param \OAuth2\Client\ClientInterface $client Client
      *
@@ -185,5 +196,30 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
         }
 
         return $lifetime;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clean()
+    {
+        $data = [];
+        $result = $this->deleteExpired();
+        if (0 < $result) {
+            $data['expired refresh token(s)'] = $result;
+        }
+        $result = $this->deleteUsed();
+        if (0 < $result) {
+            $data['used refresh token(s)'] = $result;
+        }
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Refresh Token Manager';
     }
 }

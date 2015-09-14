@@ -23,12 +23,15 @@
         </service>
 
         <service id="oauth2_server.test_bundle.refresh_token_manager" class="%oauth2_server.test_bundle.refresh_token_manager.class%" parent="oauth2_server.refresh_token.manager.default">
+            <tag name="oauth2_server.cleaner" />
         </service>
 
         <service id="oauth2_server.test_bundle.auth_code_manager" class="%oauth2_server.test_bundle.auth_code_manager.class%" parent="oauth2_server.auth_code.manager.default">
+            <tag name="oauth2_server.cleaner" />
         </service>
 
         <service id="oauth2_server.test_bundle.access_token_manager" class="%oauth2_server.test_bundle.access_token_manager.class%" parent="oauth2_server.simple_string_access_token.manager.default">
+            <tag name="oauth2_server.cleaner" />
         </service>
     </services>
 </container>

@@ -8,12 +8,13 @@ use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AccessTokenInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\SimpleStringAccessTokenManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PostSimpleStringAccessTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PreSimpleStringAccessTokenCreationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SimpleStringAccessTokenManager extends BaseManager implements SimpleStringAccessTokenManagerInterface
+class SimpleStringAccessTokenManager extends BaseManager implements SimpleStringAccessTokenManagerInterface, CleanerInterface
 {
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
@@ -117,5 +118,25 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
             ->setParameters(['now' => time()]);
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clean()
+    {
+        $result = $this->deleteExpired();
+        if (0 < $result) {
+            return ['expired access token(s)' => $result];
+        }
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Simple String Access Token Manager';
     }
 }

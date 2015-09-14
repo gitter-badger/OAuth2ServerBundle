@@ -11,9 +11,10 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PostAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PreAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
+class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, CleanerInterface
 {
     use ManagerBehaviour;
 
@@ -98,5 +99,25 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface
             ->setParameters(['now' => time()]);
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clean()
+    {
+        $result = $this->deleteExpired();
+        if (0 < $result) {
+            return ['expired authorization code(s)' => $result];
+        }
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Authorization Code Manager';
     }
 }

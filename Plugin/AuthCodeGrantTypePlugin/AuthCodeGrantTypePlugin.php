@@ -47,7 +47,7 @@ class AuthCodeGrantTypePlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['services'] as $basename) {
+        foreach (['services', 'manager'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 

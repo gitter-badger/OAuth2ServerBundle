@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
 use SpomkyLabs\Service\Jose;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
@@ -581,6 +582,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     {
         if (null === $this->application) {
             $this->application = new Application($this->getKernel());
+            $this->application->add(new CleanCommand());
         }
 
         $command = $this->application->find($line);
