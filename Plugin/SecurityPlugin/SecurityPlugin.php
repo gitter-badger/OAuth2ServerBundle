@@ -3,12 +3,12 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin;
 
 use Matthias\BundlePlugins\BundlePlugin;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\DependencyInjection\Security\Factory\OAuth2Factory;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
@@ -21,7 +21,7 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (array('security', 'annotations') as $basename) {
+        foreach (['security', 'annotations'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -44,7 +44,7 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
     public function build(ContainerBuilder $container)
     {
         /**
-         * @var $extension \Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension
+         * @var \Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension
          */
         $extension = $container->getExtension('security');
         $extension->addSecurityListenerFactory(new OAuth2Factory());

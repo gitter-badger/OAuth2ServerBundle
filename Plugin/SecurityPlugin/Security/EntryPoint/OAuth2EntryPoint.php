@@ -2,11 +2,11 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\EntryPoint;
 
-use OAuth2\Token\AccessTokenTypeManagerInterface;
-use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\HttpFoundation\Request;
 use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\Token\AccessTokenTypeManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
 class OAuth2EntryPoint implements AuthenticationEntryPointInterface
 {
@@ -38,9 +38,9 @@ class OAuth2EntryPoint implements AuthenticationEntryPointInterface
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $params = array(
+        $params = [
             'scheme' => $this->access_token_type_manager->getDefaultAccessTokenType()->getScheme(),
-        );
+        ];
 
         $exception = $this->exception_manager->getException(
             'Authenticate',

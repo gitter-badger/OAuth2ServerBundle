@@ -32,7 +32,7 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
         $manager = $this->container->get('oauth2_server.jwt_bearer.manager');
 
         foreach ($this->getClients() as $jwt_client) {
-            /**
+            /*
              * @var \OAuth2\Client\JWTClientInterface
              */
             $client = $manager->createClient();

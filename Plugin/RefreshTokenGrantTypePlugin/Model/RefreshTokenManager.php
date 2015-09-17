@@ -212,6 +212,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
         if (0 < $result) {
             $data['used refresh token(s)'] = $result;
         }
+
         return $data;
     }
 

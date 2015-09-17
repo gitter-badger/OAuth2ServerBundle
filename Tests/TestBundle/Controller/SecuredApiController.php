@@ -2,10 +2,10 @@
 
 namespace SpomkyLabs\TestBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @Route("/api/secured")
@@ -20,7 +20,7 @@ class SecuredApiController extends Controller
      */
     public function fooAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -30,6 +30,6 @@ class SecuredApiController extends Controller
      */
     public function barAction()
     {
-        return array();
+        return [];
     }
 }

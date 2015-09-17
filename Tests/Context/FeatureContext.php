@@ -14,7 +14,6 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**
  * Behat context class.
@@ -750,13 +749,14 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             throw new \Exception(sprintf('I have not exactly %s access token(s). I have %d.', $count, count($access_tokens)));
         }
     }
+
     /**
      * @Then then required scope is :scope
      */
     public function thenRequiredScopeIs($scope)
     {
         $headers = $this->getSession()->getResponseHeaders();
-        $authentication = substr(current($headers['www-authenticate']),7);
+        $authentication = substr(current($headers['www-authenticate']), 7);
         preg_match_all('@(scope)=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authentication, $matches, PREG_SET_ORDER);
         if (1 !== count($matches)) {
             throw new \Exception('There is no scope restriction');

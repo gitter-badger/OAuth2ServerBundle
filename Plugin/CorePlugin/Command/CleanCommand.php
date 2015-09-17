@@ -31,8 +31,8 @@ EOT
     {
         $service = $this->getContainer()->get('oauth2_server.cleaner');
         $result = $service->clean();
-        foreach($result as $cleaner=>$data) {
-            foreach($data as $name=>$counter) {
+        foreach ($result as $cleaner => $data) {
+            foreach ($data as $name => $counter) {
                 $output->writeln(sprintf('Cleaner <info>"%s"</info> removed <info>%d %s</info> from storage.', $cleaner, $counter, $name));
             }
         }

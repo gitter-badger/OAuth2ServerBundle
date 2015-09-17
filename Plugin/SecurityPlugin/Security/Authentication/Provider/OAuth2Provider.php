@@ -2,19 +2,18 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Provider;
 
-use OAuth2\Token\AccessTokenTypeInterface;
-use OAuth2\Token\AccessTokenTypeManagerInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\AccountStatusException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\Token\AccessTokenManagerInterface;
+use OAuth2\Token\AccessTokenTypeManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AccountStatusException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuth2Provider implements AuthenticationProviderInterface
 {
@@ -96,9 +95,9 @@ class OAuth2Provider implements AuthenticationProviderInterface
                     try {
                         $this->user_checker->checkPostAuth($resource_owner);
                     } catch (AccountStatusException $e) {
-                        $params = array(
+                        $params = [
                             'scheme' => $this->access_token_type_manager->getDefaultAccessTokenType()->getScheme(),
-                        );
+                        ];
                         //Add scope here if defined
 
                         throw $this->exception_manager->getException(

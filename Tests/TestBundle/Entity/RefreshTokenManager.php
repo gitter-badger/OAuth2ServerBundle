@@ -52,7 +52,7 @@ class RefreshTokenManager extends BaseTokenManager
         $class = $this->getClass();
         $expired_date = (new \Datetime('now +1 year'))->format('U');
         $token = new $class();
-        /**
+        /*
          * @var $token \OAuth2\Token\RefreshTokenInterface
          */
         $token->setToken($refresh_token)

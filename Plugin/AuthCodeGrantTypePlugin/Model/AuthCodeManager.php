@@ -110,6 +110,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
         if (0 < $result) {
             return ['expired authorization code(s)' => $result];
         }
+
         return [];
     }
 

@@ -3,14 +3,12 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
-use OAuth2\Token\AccessTokenTypeInterface;
-use OAuth2\Token\AccessTokenTypeManager;
-use OAuth2\Token\AccessTokenTypeManagerInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\Scope\ScopeManagerInterface;
 use OAuth2\Token\AccessTokenInterface;
 use OAuth2\Token\AccessTokenManagerInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
+use OAuth2\Token\AccessTokenTypeManagerInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Zend\Diactoros\Response;
 
@@ -135,7 +133,7 @@ class AnnotationDriver
     private function createAuthenticationExeption(FilterControllerEvent &$event, $message, array $scope = [])
     {
         $params = [
-            'scope'=>implode(' ', $scope),
+            'scope'  => implode(' ', $scope),
             'scheme' => $this->access_token_type_manager->getDefaultAccessTokenType()->getScheme(),
         ];
 

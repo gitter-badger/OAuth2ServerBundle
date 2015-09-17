@@ -20,10 +20,10 @@ class AccessTokenTypeCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('oauth2_server.access_token_type');
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
-                if (!array_key_exists("scheme", $attributes)) {
+                if (!array_key_exists('scheme', $attributes)) {
                     throw new \InvalidArgumentException(sprintf("The access token type '%s' does not have any 'scheme' attribute.", $id));
                 }
-                $is_default = $default === $attributes["scheme"];
+                $is_default = $default === $attributes['scheme'];
                 $definition->addMethodCall('addAccessTokenType', [new Reference($id), $is_default]);
             }
         }

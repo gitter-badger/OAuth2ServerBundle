@@ -2,8 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token;
 
-use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use OAuth2\Token\AccessTokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class OAuth2Token extends AbstractToken
 {

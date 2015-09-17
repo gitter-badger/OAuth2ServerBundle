@@ -129,6 +129,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         if (0 < $result) {
             return ['expired access token(s)' => $result];
         }
+
         return [];
     }
 
