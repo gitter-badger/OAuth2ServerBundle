@@ -41,7 +41,8 @@
         "symfony/yaml": "~2.7",
         "symfony/var-dumper": "~2.7",
         "puli/cli": "~1.0",
-        "spomky-labs/jose-service": "~0.1.0"
+        "spomky-labs/jose-service": "~0.1.0",
+        "doctrine/annotations": "~1.0"
     },
     "minimum-stability": "beta",
     "suggest": {

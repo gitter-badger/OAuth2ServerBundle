@@ -5,15 +5,14 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="oauth2_server.bearer_access_token.class">SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\Service\BearerAccessToken</parameter>
+        <parameter key="oauth2_server.access_token_type_manager.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AccessTokenTypeManagerPlugin\Service\AccessTokenTypeManager</parameter>
     </parameters>
 
     <services>
-        <service id="oauth2_server.bearer_access_token" class="%oauth2_server.bearer_access_token.class%">
+        <service id="oauth2_server.access_token_type_manager" class="%oauth2_server.access_token_type_manager.class%">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
-            <tag name="oauth2_server.access_token_type" scheme="Bearer" />
         </service>
     </services>
 </container>

@@ -4,16 +4,28 @@ imports:
 framework:
     test: ~
     secret: test
-    translator: { fallback: en }
+    translator: ~
+    default_locale:  "en"
     form: ~
+    csrf_protection: ~
     validation:
         enable_annotations: true
     session:
         storage_id: session.storage.mock_file
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
     templating:
         engines: ['twig']
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            true
+    strict_variables: true
 
 doctrine:
     dbal:
@@ -25,8 +37,7 @@ doctrine:
         password:
         charset:  UTF8
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_generate_proxy_classes: true
         auto_mapping: true
 
 oauth2_server:
@@ -54,7 +65,6 @@ oauth2_server:
         class: SpomkyLabs\TestBundle\Entity\SimpleStringAccessToken
         manager: oauth2_server.test_bundle.access_token_manager
     token_endpoint:
-        access_token_type: oauth2_server.bearer_access_token
         access_token_manager: oauth2_server.simple_string_access_token.manager
         refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
         end_user_manager: oauth2_server.test_bundle.end_user_manager

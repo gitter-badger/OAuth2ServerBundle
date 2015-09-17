@@ -13,8 +13,8 @@
             <call method="setAccessTokenManager">
                 <argument type="service" id="oauth2_server.implicit_grant_type.access_token_manager" />
             </call>
-            <call method="setAccessTokenType">
-                <argument type="service" id="oauth2_server.implicit_grant_type.access_token_type" />
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
             </call>
             <tag name="oauth2_server.response_type" />
         </service>

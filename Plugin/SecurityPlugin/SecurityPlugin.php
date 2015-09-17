@@ -1,30 +1,31 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin;
 
 use Matthias\BundlePlugins\BundlePlugin;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\DependencyInjection\Security\Factory\OAuth2Factory;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class ImplicitGrantTypePlugin implements BundlePlugin, PrependExtensionInterface
+class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
 {
     public function name()
     {
-        return 'implicit_grant_type';
+        return 'security';
     }
 
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['services'] as $basename) {
+        foreach (array('security', 'annotations') as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
-        $container->setAlias('oauth2_server.implicit_grant_type.access_token_manager', $pluginConfiguration['access_token_manager']);
+        $container->setAlias('oauth2_server.security.access_token_manager', $pluginConfiguration['access_token_manager']);
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
@@ -36,19 +37,19 @@ class ImplicitGrantTypePlugin implements BundlePlugin, PrependExtensionInterface
             ->end();
     }
 
-    public function build(ContainerBuilder $container)
-    {
-    }
-
     public function boot(ContainerInterface $container)
     {
     }
 
-    /**
-     * Allow an extension to prepend the extension configurations.
-     *
-     * @param ContainerBuilder $container
-     */
+    public function build(ContainerBuilder $container)
+    {
+        /**
+         * @var $extension \Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension
+         */
+        $extension = $container->getExtension('security');
+        $extension->addSecurityListenerFactory(new OAuth2Factory());
+    }
+
     public function prepend(ContainerBuilder $container)
     {
         $config = current($container->getExtensionConfig('oauth2_server'));

@@ -17,6 +17,10 @@ security:
         token:
             pattern: ^/oauth/v2/(token|revoke)
             security: false
+        api:
+            pattern: ^/api
+            oauth2:
+            anonymous: true
 
     access_control:
         - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY }

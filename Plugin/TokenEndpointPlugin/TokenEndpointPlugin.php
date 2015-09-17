@@ -22,7 +22,6 @@ class TokenEndpointPlugin implements BundlePlugin
         $pluginNode
             ->isRequired()
             ->children()
-            ->scalarNode('access_token_type')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('access_token_manager')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('refresh_token_manager')->defaultNull()->end()
             ->scalarNode('end_user_manager')->isRequired()->cannotBeEmpty()->end()
@@ -36,7 +35,6 @@ class TokenEndpointPlugin implements BundlePlugin
             $loader->load(sprintf('%s.xml', $basename));
         }
 
-        $container->setAlias('oauth2_server.token_endpoint.access_token_type', $pluginConfiguration['access_token_type']);
         $container->setAlias('oauth2_server.token_endpoint.access_token_manager', $pluginConfiguration['access_token_manager']);
         $container->setAlias('oauth2_server.token_endpoint.end_user_manager', $pluginConfiguration['end_user_manager']);
         if (!is_null($pluginConfiguration['refresh_token_manager'])) {

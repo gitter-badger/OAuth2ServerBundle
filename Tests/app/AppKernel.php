@@ -4,7 +4,6 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTy
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\JWTAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
@@ -16,6 +15,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredCl
 use SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\SecurityPlugin;
 
 class AppKernel extends Kernel
 {
@@ -27,6 +27,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Puli\SymfonyBundle\PuliBundle(),
 
             new SpomkyLabsOAuth2ServerBundle([
                 new UnregisteredClientPlugin(),
@@ -41,12 +43,10 @@ class AppKernel extends Kernel
                 new ResourceOwnerPasswordCredentialsGrantTypePlugin(),
                 new ClientCredentialsGrantTypePlugin(),
                 new TokenRevocationEndpointPlugin(),
-                //new JWTAccessTokenPlugin(),
+                new SecurityPlugin(),
             ]),
             new SpomkyLabs\TestBundle\SpomkyLabsTestBundle(),
-            new Puli\SymfonyBundle\PuliBundle(),
 
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         ];
 
         return $bundles;

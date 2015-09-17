@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.security.annotation_driver.class">SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\AnnotationDriver</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.security.annotation_driver" class="%oauth2_server.security.annotation_driver.class%">
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="oauth2_server.scope.manager" />
+            <argument type="service" id="oauth2_server.access_token_type_manager" />
+            <argument type="service" id="oauth2_server.security.access_token_manager" />
+            <argument type="service" id="oauth2_server.exception.manager" />
+            <argument type="service" id="security.context"/>
+        </service>
+    </services>
+</container>
