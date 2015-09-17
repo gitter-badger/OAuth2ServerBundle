@@ -25,12 +25,13 @@ class Cleaner implements CleanerManagerInterface
     public function clean()
     {
         $result = [];
-        foreach($this->cleaners as $cleaner) {
+        foreach ($this->cleaners as $cleaner) {
             $data = $cleaner->clean();
             if (!empty($data)) {
                 $result[$cleaner->getName()] = $data;
             }
         }
+
         return $result;
     }
 }

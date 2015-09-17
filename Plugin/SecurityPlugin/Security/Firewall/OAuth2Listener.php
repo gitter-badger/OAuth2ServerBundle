@@ -2,11 +2,9 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Firewall;
 
-use OAuth2\Token\AccessTokenTypeInterface;
-use OAuth2\Token\AccessTokenTypeManager;
+use OAuth2\Token\AccessTokenManagerInterface;
 use OAuth2\Token\AccessTokenTypeManagerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
-use OAuth2\Token\AccessTokenManagerInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -77,6 +75,7 @@ class OAuth2Listener implements ListenerInterface
 
             if ($return_value instanceof Response) {
                 $event->setResponse($return_value);
+
                 return;
             }
         } catch (AuthenticationException $e) {

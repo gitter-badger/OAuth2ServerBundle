@@ -18,13 +18,12 @@ class OAuth2Factory implements SecurityFactoryInterface
         $providerId = 'security.authentication.provider.oauth2_security.'.$id;
         $container
             ->setDefinition($providerId, new DefinitionDecorator('oauth2_server.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProvider))
-            ;
+            ->replaceArgument(0, new Reference($userProvider));
 
         $listenerId = 'security.authentication.listener.oauth2_security.'.$id;
         $container->setDefinition($listenerId, new DefinitionDecorator('oauth2_server.security.authentication.listener'));
 
-        return array($providerId, $listenerId, 'oauth2_server.security.entry_point');
+        return [$providerId, $listenerId, 'oauth2_server.security.entry_point'];
     }
 
     /**
