@@ -2,12 +2,6 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation;
 
-use OAuth2\Client\ClientInterface;
-use OAuth2\Client\ConfidentialClientInterface;
-use OAuth2\Client\RegisteredClientInterface;
-use OAuth2\EndUser\EndUserInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
-
 /**
  * Annotation class for @OAuth2().
  *
