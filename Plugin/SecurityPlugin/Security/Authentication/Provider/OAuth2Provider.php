@@ -61,7 +61,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
             return;
         }
 
-        /**
+        /*
          * @var $token \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token
          */
 
@@ -119,6 +119,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
         if ($r_o instanceof ClientInterface) {
             return $r_o;
         }
+
         return $this->getEndUserManager()->getEndUser($resource_owner_public_id);
     }
 

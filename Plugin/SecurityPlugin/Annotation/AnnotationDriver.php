@@ -69,7 +69,7 @@ class AnnotationDriver
                     return;
                 }
 
-                foreach(['checkScope', 'checkClientType', 'checkResourceOwnerType', 'checkClientPublicId', 'checkResourceOwnerPublicId'] as $method) {
+                foreach (['checkScope', 'checkClientType', 'checkResourceOwnerType', 'checkClientPublicId', 'checkResourceOwnerPublicId'] as $method) {
                     $result = $this->$method($event, $token, $configuration);
                     if (false === $result) {
                         return;
@@ -102,6 +102,7 @@ class AnnotationDriver
 
             $factory = new HttpFoundationFactory();
             $response = $factory->createResponse($response);
+
             return $response;
         });
     }
@@ -124,8 +125,10 @@ class AnnotationDriver
         $requiredScope = $this->getScopeManager()->convertToScope($configuration->getScope());
         if (!$this->getScopeManager()->checkScopes($requiredScope, $tokenScope)) {
             $this->createAuthenticationException($event, 'Insufficient scope', $configuration->getScope());
+
             return false;
         }
+
         return true;
     }
 
@@ -142,7 +145,7 @@ class AnnotationDriver
             return true;
         }
 
-        $result = $this->isTypeValid( $configuration->getResourceOwnerType(), $token->getResourceOwner());
+        $result = $this->isTypeValid($configuration->getResourceOwnerType(), $token->getResourceOwner());
         if (false === $result) {
             $this->createAuthenticationException($event, 'Bad resource owner type', $configuration->getScope());
 
@@ -209,7 +212,7 @@ class AnnotationDriver
             return true;
         }
 
-        $result = $this->isTypeValid( $configuration->getClientType(), $token->getClient());
+        $result = $this->isTypeValid($configuration->getClientType(), $token->getClient());
         if (false === $result) {
             $this->createAuthenticationException($event, 'Bad client type', $configuration->getScope());
 
