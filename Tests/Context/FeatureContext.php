@@ -755,5 +755,14 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function theIs($id, $value)
     {
+        $headers = $this->getSession()->getResponseHeaders();
+        $authentication = substr(current($headers['www-authenticate']), 7);
+        preg_match_all('@('.$id.')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authentication, $matches, PREG_SET_ORDER);
+        if (1 !== count($matches)) {
+            throw new \Exception('There is no key "'.$id.'"');
+        }
+        if (1 !== count($matches) || $value !== $matches[0][3]) {
+            throw new \Exception('The '.$id.' is "'.$matches[0][3].'" ("'.$value.'" expected)');
+        }
     }
 }
