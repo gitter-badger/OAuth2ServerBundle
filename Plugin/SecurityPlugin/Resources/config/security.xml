@@ -14,21 +14,38 @@
         <service id="oauth2_server.security.authentication.provider" class="%oauth2_server.security.authentication.provider.class%" public="false">
             <argument /> <!-- user provider -->
             <argument type="service" id="security.user_checker" />
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.access_token_type_manager" />
-            <argument type="service" id="oauth2_server.security.access_token_manager" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.security.access_token_manager" />
+            </call>
+            <call method="setClientManagerSupervisor">
+                <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            </call>
+            <call method="setEndUserManager">
+                <argument type="service" id="oauth2_server.token_endpoint.end_user_manager" />
+            </call>
         </service>
 
         <service id="oauth2_server.security.authentication.listener" class="%oauth2_server.security.authentication.listener.class%" public="false">
             <argument type="service" id="security.context"/>
             <argument type="service" id="security.authentication.manager" />
-            <argument type="service" id="oauth2_server.access_token_type_manager" />
-            <argument type="service" id="oauth2_server.security.access_token_manager" />
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
         </service>
 
         <service id="oauth2_server.security.entry_point" class="%oauth2_server.security.entry_point.class%" public="false">
-            <argument type="service" id="oauth2_server.exception.manager" />
-            <argument type="service" id="oauth2_server.access_token_type_manager" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
         </service>
     </services>
 </container>

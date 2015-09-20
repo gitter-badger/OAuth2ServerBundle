@@ -2,53 +2,46 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\EntryPoint;
 
+use OAuth2\Behaviour\HasAccessTokenTypeManager;
+use OAuth2\Behaviour\HasExceptionManager;
 use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\Token\AccessTokenTypeManagerInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Zend\Diactoros\Response;
 
 class OAuth2EntryPoint implements AuthenticationEntryPointInterface
 {
-    /**
-     * @var \OAuth2\Exception\ExceptionManagerInterface
-     */
-    protected $exception_manager;
-
-    /**
-     * @var \OAuth2\Token\AccessTokenTypeManagerInterface
-     */
-    protected $access_token_type_manager;
-
-    /**
-     * @param \OAuth2\Exception\ExceptionManagerInterface   $exception_manager
-     * @param \OAuth2\Token\AccessTokenTypeManagerInterface $access_token_type_manager
-     */
-    public function __construct(ExceptionManagerInterface $exception_manager, AccessTokenTypeManagerInterface $access_token_type_manager)
-    {
-        $this->exception_manager = $exception_manager;
-        $this->access_token_type_manager = $access_token_type_manager;
-    }
+    use HasExceptionManager;
+    use HasAccessTokenTypeManager;
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request                               $request
      * @param \Symfony\Component\Security\Core\Exception\AuthenticationException|null $authException
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $params = [
-            'scheme' => $this->access_token_type_manager->getDefaultAccessTokenType()->getScheme(),
+            'scheme' => $this->getAccessTokenTypeManager()->getDefaultAccessTokenType()->getScheme(),
         ];
 
-        $exception = $this->exception_manager->getException(
-            'Authenticate',
-            'access_denied',
+        $exception = $this->getExceptionManager()->getException(
+            ExceptionManagerInterface::AUTHENTICATE,
+            ExceptionManagerInterface::ACCESS_DENIED,
             'OAuth2 authentication required',
             $params
         );
 
-        return $exception->getHttpResponse();
+        $response = new Response();
+
+        $exception->getHttpResponse($response);
+
+        $factory = new HttpFoundationFactory();
+        $response = $factory->createResponse($response);
+
+        return $response;
     }
 }

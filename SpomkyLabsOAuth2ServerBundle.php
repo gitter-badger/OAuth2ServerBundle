@@ -24,11 +24,9 @@ class SpomkyLabsOAuth2ServerBundle extends BundleWithPlugins
         return [
             new CorePlugin(),
             new ScopeManagerPlugin(),
-            new TokenEndpointPlugin(),
             new ConfigurationPlugin(),
             new ExceptionManagerPlugin(),
             new AccessTokenTypeManagerPlugin(),
-            new BearerAccessTokenPlugin(),
             new ClientManagerSupervisorPlugin(),
         ];
     }

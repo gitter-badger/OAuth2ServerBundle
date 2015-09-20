@@ -735,7 +735,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then  the access token manager has :count access token for client :client_id
+     * @Then the access token manager has :count access token for client :client_id
      */
     public function theAccessTokenManagerHasAccessTokenForClient($count, $client_id)
     {
@@ -751,18 +751,9 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then then required scope is :scope
+     * @Then the :id is :value
      */
-    public function thenRequiredScopeIs($scope)
+    public function theIs($id, $value)
     {
-        $headers = $this->getSession()->getResponseHeaders();
-        $authentication = substr(current($headers['www-authenticate']), 7);
-        preg_match_all('@(scope)=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authentication, $matches, PREG_SET_ORDER);
-        if (1 !== count($matches)) {
-            throw new \Exception('There is no scope restriction');
-        }
-        if (1 !== count($matches) || $scope !== $matches[0][3]) {
-            throw new \Exception('The scope restriction is "'.$matches[0][3].'" ("'.$scope.'" expected)');
-        }
     }
 }

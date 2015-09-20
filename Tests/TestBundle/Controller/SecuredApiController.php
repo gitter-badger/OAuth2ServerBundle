@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @Route("/api/secured")
- * @OAuth2(resource_owner_type="end_user", scope="scope1 scope2")
  */
 class SecuredApiController extends Controller
 {
@@ -29,6 +28,36 @@ class SecuredApiController extends Controller
      * @OAuth2(scope="scope3")
      */
     public function barAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/baz")
+     * @Template()
+     * @OAuth2(resource_owner_type="end_user")
+     */
+    public function bazAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/plic")
+     * @Template()
+     * @OAuth2(resource_owner_public_id="PUBLIC-foo")
+     */
+    public function plicAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/ploc")
+     * @Template()
+     * @OAuth2(client_public_id="PASSWORD-bar")
+     */
+    public function plocAction()
     {
         return [];
     }

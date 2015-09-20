@@ -2,6 +2,7 @@
 
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
@@ -11,6 +12,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\RefreshToke
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\ResourceOwnerPasswordCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\SecurityPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\SimpleStringAccessTokenPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\TokenEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\TokenRevocationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle;
@@ -31,17 +33,19 @@ class AppKernel extends Kernel
             new Puli\SymfonyBundle\PuliBundle(),
 
             new SpomkyLabsOAuth2ServerBundle([
+                new BearerAccessTokenPlugin(),
                 new UnregisteredClientPlugin(),
                 new PublicClientPlugin(),
                 new PasswordClientPlugin(),
                 new JWTBearerPlugin(),
                 new SimpleStringAccessTokenPlugin(),
-                new AuthorizationEndpointPlugin(),
                 new AuthCodeGrantTypePlugin(),
                 new RefreshTokenGrantTypePlugin(),
                 new ImplicitGrantTypePlugin(),
                 new ResourceOwnerPasswordCredentialsGrantTypePlugin(),
                 new ClientCredentialsGrantTypePlugin(),
+                new AuthorizationEndpointPlugin(),
+                new TokenEndpointPlugin(),
                 new TokenRevocationEndpointPlugin(),
                 new SecurityPlugin(),
             ]),

@@ -143,31 +143,6 @@ class OAuth2
     }
 
     /**
-     * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $resource_owner
-     *
-     * @return bool
-     */
-    public function isResourceOwnerTypeValid(ResourceOwnerInterface $resource_owner)
-    {
-        switch ($this->getResourceOwnerType()) {
-            case 'end_user':
-                return $resource_owner instanceof EndUserInterface;
-            case 'client':
-                return $resource_owner instanceof ClientInterface;
-            case 'registered_client':
-                return $resource_owner instanceof RegisteredClientInterface;
-            case 'confidential_client':
-                return $resource_owner instanceof ConfidentialClientInterface;
-            case 'public_client':
-                return $resource_owner instanceof RegisteredClientInterface && !$resource_owner instanceof ConfidentialClientInterface;
-            case 'unregistered_client':
-                return $resource_owner instanceof ClientInterface && !$resource_owner instanceof RegisteredClientInterface;
-            default:
-                return $this->getResourceOwnerType() === $resource_owner->getType();
-        }
-    }
-
-    /**
      * @param string|string[] $scope
      *
      * @return self

@@ -12,11 +12,19 @@
         <service id="oauth2_server.security.annotation_driver" class="%oauth2_server.security.annotation_driver.class%">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
             <argument type="service" id="annotation_reader" />
-            <argument type="service" id="oauth2_server.scope.manager" />
-            <argument type="service" id="oauth2_server.access_token_type_manager" />
-            <argument type="service" id="oauth2_server.security.access_token_manager" />
-            <argument type="service" id="oauth2_server.exception.manager" />
             <argument type="service" id="security.context"/>
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.security.access_token_manager" />
+            </call>
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setScopeManager">
+                <argument type="service" id="oauth2_server.scope.manager" />
+            </call>
         </service>
     </services>
 </container>
