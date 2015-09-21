@@ -12,7 +12,7 @@ use OAuth2\Client\ConfidentialClientInterface;
 use OAuth2\Client\RegisteredClientInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Exception\ExceptionManagerInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerInterface;
+use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -224,8 +224,8 @@ class AnnotationDriver
     }
 
     /**
-     * @param string                                                                        $type
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerInterface $client
+     * @param string                                       $type
+     * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $client
      *
      * @return bool
      */
