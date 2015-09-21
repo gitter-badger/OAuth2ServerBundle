@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 class OAuth2Listener implements ListenerInterface
@@ -19,7 +19,7 @@ class OAuth2Listener implements ListenerInterface
     /**
      * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
-    private $security_context;
+    private $token_storage;
 
     /**
      * @var \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface
@@ -27,12 +27,12 @@ class OAuth2Listener implements ListenerInterface
     private $authentication_manager;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface                      $security_context
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface                      $token_storage
      * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authentication_manager
      */
-    public function __construct(SecurityContextInterface $security_context, AuthenticationManagerInterface $authentication_manager)
+    public function __construct(TokenStorageInterface $token_storage, AuthenticationManagerInterface $authentication_manager)
     {
-        $this->security_context = $security_context;
+        $this->token_storage = $token_storage;
         $this->authentication_manager = $authentication_manager;
     }
 
@@ -55,7 +55,7 @@ class OAuth2Listener implements ListenerInterface
 
             $result = $this->authentication_manager->authenticate($token);
 
-            $this->security_context->setToken($result);
+            $this->token_storage->setToken($result);
         } catch (AuthenticationException $e) {
             if (null !== $e->getPrevious()) {
                 $e = $e->getPrevious();

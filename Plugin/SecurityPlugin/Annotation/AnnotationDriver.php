@@ -16,7 +16,7 @@ use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Zend\Diactoros\Response;
 
 class AnnotationDriver
@@ -33,18 +33,18 @@ class AnnotationDriver
     /**
      * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
-    private $security_context;
+    private $token_storage;
 
     /**
-     * @param \Doctrine\Common\Annotations\Reader                       $reader
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $security_context
+     * @param \Doctrine\Common\Annotations\Reader                                                 $reader
+     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $token_storage
      */
     public function __construct(
         Reader $reader,
-        SecurityContextInterface $security_context
+        TokenStorageInterface $token_storage
     ) {
         $this->reader = $reader;
-        $this->security_context = $security_context;
+        $this->token_storage = $token_storage;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -60,8 +60,7 @@ class AnnotationDriver
 
         foreach (array_merge($classConfigurations, $methodConfigurations) as $configuration) {
             if ($configuration instanceof OAuth2) {
-                $token = $this->security_context->getToken();
-                $exception = null;
+                $token = $this->token_storage->getToken();
 
                 // If no access token is found by the firewall, then returns an authentication error
                 if (!$token instanceof OAuth2Token) {

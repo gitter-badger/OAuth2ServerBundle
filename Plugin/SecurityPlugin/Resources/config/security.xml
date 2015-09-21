@@ -32,7 +32,7 @@
         </service>
 
         <service id="oauth2_server.security.authentication.listener" class="%oauth2_server.security.authentication.listener.class%" public="false">
-            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.token_storage"/>
             <argument type="service" id="security.authentication.manager" />
             <call method="setAccessTokenTypeManager">
                 <argument type="service" id="oauth2_server.access_token_type_manager" />
