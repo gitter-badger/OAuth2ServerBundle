@@ -751,7 +751,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then the :id is :value
+     * @Then the www-authenticate header parameter :id value is :value
      */
     public function theIs($id, $value)
     {

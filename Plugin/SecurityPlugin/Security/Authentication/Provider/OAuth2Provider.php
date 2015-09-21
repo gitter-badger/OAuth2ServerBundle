@@ -64,7 +64,6 @@ class OAuth2Provider implements AuthenticationProviderInterface
         /*
          * @var $token \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token
          */
-
         $token_id = $token->getToken();
 
         $access_token = $this->getAccessTokenManager()->getAccessToken($token_id);
@@ -78,6 +77,9 @@ class OAuth2Provider implements AuthenticationProviderInterface
 
         try {
             $resource_owner = $this->getResourceOwner($access_token->getResourceOwnerPublicId());
+            if (null === $resource_owner) {
+                throw $this->createException('Unknown resource owner', $access_token);
+            }
             $this->checkResourceOwner($resource_owner, $access_token);
             $token->setResourceOwner($resource_owner);
 

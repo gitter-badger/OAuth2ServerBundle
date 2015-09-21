@@ -5,13 +5,13 @@ Feature: A client request an authorization
   Scenario: No access token in the request
     When I am on the page "https://oauth2.test/api/secured/foo"
     Then I should receive an authentication error
-    And the realm is "OAuth2 Server"
+    And the www-authenticate header parameter realm value is "OAuth2 Server"
 
   Scenario: No access token in the request (with scope)
     When I am on the page "https://oauth2.test/api/secured/bar"
     Then I should receive an authentication error
-    And the scope is "scope3"
-    And the realm is "OAuth2 Server"
+    And the www-authenticate header parameter scope value is "scope3"
+    And the www-authenticate header parameter realm value is "OAuth2 Server"
 
   Scenario: A resource owner accepted the client
     Given I add key "Authorization" with value "Bearer EFGH" in the header
