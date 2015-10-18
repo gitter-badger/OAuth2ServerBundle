@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.authorization_factory.class">OAuth2\Endpoint\AuthorizationFactory</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.authorization_factory" class="%oauth2_server.authorization_factory.class%">
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setClientManagerSupervisor">
+                <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            </call>
+            <call method="setScopeManager">
+                <argument type="service" id="oauth2_server.scope.manager" />
+            </call>
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt.loader" on-invalid="ignore" />
+            </call>
+            <call method="setKeySetManager">
+                <argument type="service" id="oauth2_server.jwt.key_set_manager" on-invalid="ignore" />
+            </call>
+            <call method="setPrivateKeySet">
+                <argument>%oauth2_server.authorization_factory.private_key_set%</argument>
+            </call>
+            <call method="setAllowedEncryptionAlgorithms">
+                <argument>%oauth2_server.authorization_factory.allowed_encryption_algorithms%</argument>
+            </call>
+        </service>
+    </services>
+</container>

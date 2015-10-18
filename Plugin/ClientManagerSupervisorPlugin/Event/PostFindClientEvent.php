@@ -19,20 +19,13 @@ class PostFindClientEvent extends Event
     protected $request;
 
     /**
-     * @var null|string
-     */
-    protected $client_public_id_found;
-
-    /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \OAuth2\Client\ClientInterface|null      $client
-     * @param null|string                              $client_public_id_found
      */
-    public function __construct(ServerRequestInterface $request, ClientInterface $client = null, $client_public_id_found = null)
+    public function __construct(ServerRequestInterface $request, ClientInterface $client = null)
     {
         $this->client = $client;
         $this->request = $request;
-        $this->client_public_id_found = $client_public_id_found;
     }
 
     /**
@@ -49,13 +42,5 @@ class PostFindClientEvent extends Event
     public function getRequest()
     {
         return $this->request;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getClientPublicIdFound()
-    {
-        return $this->client_public_id_found;
     }
 }

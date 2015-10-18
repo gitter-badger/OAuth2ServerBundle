@@ -20,7 +20,7 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $user = $this->user_manager->getEndUser($username);
+        $user = $this->user_manager->getEndUserByUsername($username);
 
         if ($user) {
             return $user;

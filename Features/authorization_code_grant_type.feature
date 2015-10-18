@@ -1,4 +1,4 @@
-Feature: A client request an authorization
+Feature: A client requests an authorization
   In order get a protected resource
   A client must get an authorization from resource owner
 

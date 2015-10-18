@@ -13,17 +13,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ClientManagerSupervisor extends BaseClientManagerSupervisor
 {
     protected $event_dispatcher;
-    protected $client_manager_chain;
 
-    public function __construct(ClientManagerChain $client_manager_chain, EventDispatcherInterface $event_dispatcher = null)
+    public function __construct(EventDispatcherInterface $event_dispatcher = null)
     {
         $this->event_dispatcher = $event_dispatcher;
-        $this->client_manager_chain = $client_manager_chain;
-    }
-
-    protected function getClientManagers()
-    {
-        return $this->client_manager_chain->getClientManagers();
     }
 
     /**
@@ -31,16 +24,16 @@ class ClientManagerSupervisor extends BaseClientManagerSupervisor
      *
      * {@inheritdoc}
      */
-    public function findClient(ServerRequestInterface $request, &$client_public_id_found = null)
+    public function findClient(ServerRequestInterface $request)
     {
         if (!is_null($this->event_dispatcher)) {
-            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_FIND_CLIENT, new PreFindClientEvent($request, $client_public_id_found));
+            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_FIND_CLIENT, new PreFindClientEvent($request));
         }
 
-        $client = parent::findClient($request, $client_public_id_found);
+        $client = parent::findClient($request);
 
         if (!is_null($this->event_dispatcher)) {
-            $this->event_dispatcher->dispatch(Events::OAUTH2_POST_FIND_CLIENT, new PostFindClientEvent($request, $client, $client_public_id_found));
+            $this->event_dispatcher->dispatch(Events::OAUTH2_POST_FIND_CLIENT, new PostFindClientEvent($request, $client));
         }
 
         return $client;

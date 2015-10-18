@@ -5,6 +5,7 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\DependencyInjection\Compiler\CleanerCompilerPass;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\DependencyInjection\Compiler\ResponseModeCompilerPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,7 +26,7 @@ class CorePlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['services'] as $basename) {
+        foreach (['services', 'response_modes'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
     }
@@ -40,6 +41,7 @@ class CorePlugin implements BundlePlugin
         }
 
         $container->addCompilerPass(new CleanerCompilerPass());
+        $container->addCompilerPass(new ResponseModeCompilerPass());
     }
 
     public function boot(ContainerInterface $container)

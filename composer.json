@@ -16,22 +16,24 @@
         "symfony/security-bundle": "~2.7",
         "doctrine/doctrine-bundle": "~1.0",
         "matthiasnoback/symfony-bundle-plugins": "~1.1.0",
-        "puli/twig-extension": "~1.0",
-        "puli/composer-plugin": "~1.0",
-        "puli/symfony-bundle": "~1.0",
-        "spomky-labs/oauth2-server-library": "~0.0.0"
+        "spomky-labs/oauth2-server-library": "~0.0.0",
+        "spomky-labs/jose-interface": "*"
     },
     "require-dev": {
+        "puli/twig-extension": "~1.0",
+        "puli/composer-plugin": "~1.0",
+        "puli/discovery": "~1.0",
+        "puli/symfony-bundle": "~1.0",
+        "spomky-labs/jose-bundle": "dev-master",
         "symfony/psr-http-message-bridge": "~0.2",
         "doctrine/doctrine-fixtures-bundle": "~2.2",
-        "vipsoft/doctrine-data-fixtures-extension": "3.*@dev",
+        "vipsoft/doctrine-data-fixtures-extension": "*",
         "sensio/framework-extra-bundle": "^3.0",
         "symfony/finder": "~2.7",
         "symfony/form": "~2.7",
         "symfony/twig-bundle": "~2.7",
         "symfony/validator": "~2.7",
         "behat/behat": "3.*",
-        "behat/symfony2-extension": "2.0.x-dev",
         "behat/mink": "*",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver":  "*",
@@ -41,11 +43,11 @@
         "symfony/yaml": "~2.7",
         "symfony/var-dumper": "~2.7",
         "puli/cli": "~1.0",
-        "spomky-labs/jose-service": "~0.1.0",
         "doctrine/annotations": "~1.0"
     },
     "minimum-stability": "beta",
     "suggest": {
+        "spomky-labs/jose-bundle" : "To use JWT (OpenID Connect or JWT assertions)"
     },
     "autoload": {
         "psr-4": {

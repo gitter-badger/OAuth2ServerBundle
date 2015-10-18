@@ -12,10 +12,8 @@ class EndUserManager implements EndUserManagerInterface
     private $entity_manager;
     private $class;
 
-    public function __construct(
-        $class,
-        ManagerRegistry $manager_registry
-    ) {
+    public function __construct($class, ManagerRegistry $manager_registry)
+    {
         $this->class = $class;
         $this->entity_manager = $manager_registry->getManagerForClass($class);
         $this->entity_repository = $this->entity_manager->getRepository($class);
@@ -44,9 +42,19 @@ class EndUserManager implements EndUserManagerInterface
         return $end_user->getPassword() === $password;
     }
 
-    public function getEndUser($username)
+    public function getEndUserByUsername($username)
     {
         return $this->getEntityRepository()->findOneBy(['username' => $username]);
+    }
+
+    public function getEndUserByPublicId($public_id)
+    {
+        return $this->getEntityRepository()->findOneBy(['public_id' => $public_id]);
+    }
+
+    public function getEndUser($public_id)
+    {
+        return $this->getEndUserByPublicId($public_id);
     }
 
     protected function getEntityRepository()

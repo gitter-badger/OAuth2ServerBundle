@@ -7,5 +7,6 @@
         <field name="username" column="username" type="string" nullable="false" />
         <field name="password" column="password" type="string" nullable="false" />
         <field name="roles" column="roles" type="array" nullable="false" />
+        <field name="last_login_at" column="last_login_at" type="datetime" nullable="true" />
     </entity>
 </doctrine-mapping>

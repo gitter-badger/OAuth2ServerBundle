@@ -4,6 +4,8 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\ClientInterface;
+use OAuth2\EndUser\EndUser;
+use OAuth2\EndUser\EndUserInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
 use OAuth2\Token\AuthCodeManager as BaseManager;
@@ -41,13 +43,13 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
     /**
      * {@inheritdoc}
      */
-    public function createAuthCode(ClientInterface $client, $redirectUri, array $scope = [], ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    public function createAuthCode(ClientInterface $client, EndUserInterface $end_user, array $query_params, $redirectUri, array $scope = [], $issueRefreshToken = false)
     {
         if (!is_null($this->event_dispatcher)) {
-            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHCODE_CREATION, new PreAuthCodeCreationEvent($client, $redirectUri, $scope, $resourceOwner, $issueRefreshToken));
+            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHCODE_CREATION, new PreAuthCodeCreationEvent($client, $redirectUri, $scope, $end_user, $issueRefreshToken));
         }
 
-        $authcode = parent::createAuthCode($client, $redirectUri, $scope, $resourceOwner, $issueRefreshToken);
+        $authcode = parent::createAuthCode($client, $end_user, $query_params, $redirectUri, $scope, $issueRefreshToken);
 
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_AUTHCODE_CREATION, new PostAuthCodeCreationEvent($authcode));
@@ -56,22 +58,21 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
         return $authcode;
     }
 
-    protected function addAuthCode($code, $expiresAt, ClientInterface $client, $redirectUri, array $scope = [], ResourceOwnerInterface $resourceOwner = null, $issueRefreshToken = false)
+    protected function addAuthCode($code, $expiresAt, ClientInterface $client, EndUserInterface $end_user, array $query_params, $redirectUri, array $scope = [], $issueRefreshToken = false)
     {
         $class = $this->getClass();
-        /*
-         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
+        /**
+         * @var $authcode \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
          */
         $authcode = new $class();
-        $authcode->setToken($code)
+        $authcode->setRedirectUri($redirectUri)
+            ->setQueryParams($query_params)
+            ->setIssueRefreshToken($issueRefreshToken)
+            ->setToken($code)
+            ->setResourceOwnerPublicId($end_user->getPublicId())
             ->setExpiresAt($expiresAt)
             ->setClientPublicId($client->getPublicId())
-            ->setScope($scope)
-            ->setRedirectUri($redirectUri)
-            ->setIssueRefreshToken($issueRefreshToken);
-        if (!is_null($resourceOwner)) {
-            $authcode->setResourceOwnerPublicId($resourceOwner->getPublicId());
-        }
+            ->setScope($scope);
 
         $this->getEntityManager()->persist($authcode);
         $this->getEntityManager()->flush();

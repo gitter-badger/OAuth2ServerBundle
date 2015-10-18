@@ -15,7 +15,7 @@ Feature: A client request an access token using the ResourceOwner Password Crede
     Given I add user 'PASSWORD-bar' and password 'secret' in the authorization header
     And I add key "scope" with value "scope1 scope2" in the body request
     And I add key "grant_type" with value "password" in the body request
-    And I add key "username" with value "user1" in the body request
+    And I add key "username" with public id of "user1" in the body request
     And I add key "password" with value "password1" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"
     Then I should receive an OAuth2 response

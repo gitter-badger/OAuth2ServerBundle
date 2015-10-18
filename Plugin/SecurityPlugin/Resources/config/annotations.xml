@@ -16,14 +16,8 @@
             <call method="setAccessTokenTypeManager">
                 <argument type="service" id="oauth2_server.access_token_type_manager" />
             </call>
-            <call method="setAccessTokenManager">
-                <argument type="service" id="oauth2_server.security.access_token_manager" />
-            </call>
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
-            </call>
-            <call method="setScopeManager">
-                <argument type="service" id="oauth2_server.scope.manager" />
             </call>
         </service>
     </services>

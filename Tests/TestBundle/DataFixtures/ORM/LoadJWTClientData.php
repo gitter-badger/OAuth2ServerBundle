@@ -56,7 +56,7 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
                 'grant_types'   => ['client_credentials', 'password', 'token', 'refresh_token', 'code', 'authorization_code', 'urn:ietf:params:oauth:grant-type:jwt-bearer'],
                 'redirect_uris' => ['http://example.com/test?good=false'],
                 'algorithms'    => ['HS512'],
-                'keys'          => [[
+                'keys'          => ['keys' => [[
                         'kid' => 'JWK1',
                         'use' => 'enc',
                         'kty' => 'oct',
@@ -67,14 +67,14 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
                         'use' => 'sig',
                         'kty' => 'oct',
                         'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
-                    ],
+                    ]],
                 ],
             ],
             [
                 'public_id'     => 'jwt2',
                 'grant_types'   => [],
                 'redirect_uris' => [],
-                'algorithms'    => ['HS512'],
+                'algorithms'    => [],
                 'keys'          => [],
             ],
         ];

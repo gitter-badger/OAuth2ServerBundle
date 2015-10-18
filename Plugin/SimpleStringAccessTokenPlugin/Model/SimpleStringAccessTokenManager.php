@@ -52,7 +52,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         return $this->class;
     }
 
-    protected function addAccessToken($token, $expiresAt, ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null, BaseRefreshTokenInterface $refresh_token = null)
+    protected function addAccessToken($token, $expiresAt, ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [], BaseRefreshTokenInterface $refresh_token = null)
     {
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PreSimpleStringAccessTokenCreationEvent($client, $scope, $resourceOwner, $refresh_token));

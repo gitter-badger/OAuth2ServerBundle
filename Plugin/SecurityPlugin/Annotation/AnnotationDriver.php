@@ -3,16 +3,10 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
-use OAuth2\Behaviour\HasAccessTokenManager;
 use OAuth2\Behaviour\HasAccessTokenTypeManager;
 use OAuth2\Behaviour\HasExceptionManager;
-use OAuth2\Behaviour\HasScopeManager;
-use OAuth2\Client\ClientInterface;
-use OAuth2\Client\ConfidentialClientInterface;
-use OAuth2\Client\RegisteredClientInterface;
-use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Exception\ExceptionManagerInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\Checker\CheckerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -21,10 +15,9 @@ use Zend\Diactoros\Response;
 
 class AnnotationDriver
 {
-    use HasScopeManager;
     use HasAccessTokenTypeManager;
-    use HasAccessTokenManager;
     use HasExceptionManager;
+
     /**
      * @var \Doctrine\Common\Annotations\Reader
      */
@@ -36,15 +29,23 @@ class AnnotationDriver
     private $token_storage;
 
     /**
+     * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\Checker\CheckerInterface[]
+     */
+    private $checkers = [];
+
+    /**
      * @param \Doctrine\Common\Annotations\Reader                                                 $reader
      * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $token_storage
      */
-    public function __construct(
-        Reader $reader,
-        TokenStorageInterface $token_storage
-    ) {
+    public function __construct(Reader $reader, TokenStorageInterface $token_storage)
+    {
         $this->reader = $reader;
         $this->token_storage = $token_storage;
+    }
+
+    public function addChecker(CheckerInterface $checker)
+    {
+        $this->checkers[] = $checker;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -69,9 +70,10 @@ class AnnotationDriver
                     return;
                 }
 
-                foreach (['checkScope', 'checkClientType', 'checkResourceOwnerType', 'checkClientPublicId', 'checkResourceOwnerPublicId'] as $method) {
-                    $result = $this->$method($event, $token, $configuration);
-                    if (false === $result) {
+                foreach ($this->checkers as $checker) {
+                    $result = $checker->check($token, $configuration);
+                    if (null !== $result) {
+                        $this->createAuthenticationException($event, $result, $configuration->getScope());
                         return;
                     }
                 }
@@ -86,14 +88,20 @@ class AnnotationDriver
      */
     private function createAuthenticationException(FilterControllerEvent &$event, $message, $scope)
     {
-        $params = [
-            'scheme' => $this->getAccessTokenTypeManager()->getDefaultAccessTokenType()->getScheme(),
-        ];
-        if (null !== $scope) {
-            $params['scope'] = implode(' ', $scope);
+        $schemes = ['schemes' => []];
+        foreach ($this->getAccessTokenTypeManager()->getAccessTokenTypes() as $type) {
+            $params = $type->getSchemeParameters();
+            if (!empty($params)) {
+                foreach($params as $id=>$param) {
+                    if (!empty($scope)) {
+                        $params[$id] = array_merge($params[$id], ['scope'=>implode(' ', $scope)]);
+                    }
+                }
+                $schemes['schemes'] = array_merge($schemes['schemes'], $params);
+            }
         }
 
-        $exception = $this->getExceptionManager()->getException(ExceptionManagerInterface::AUTHENTICATE, ExceptionManagerInterface::ACCESS_DENIED, $message, $params);
+        $exception = $this->getExceptionManager()->getException(ExceptionManagerInterface::AUTHENTICATE, ExceptionManagerInterface::ACCESS_DENIED, $message, $schemes);
 
         $event->setController(function () use ($exception) {
             $response = new Response();
@@ -105,146 +113,5 @@ class AnnotationDriver
 
             return $response;
         });
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterControllerEvent                                      $event
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token $token
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2                         $configuration
-     *
-     * @return bool
-     */
-    private function checkScope(FilterControllerEvent &$event, OAuth2Token $token, OAuth2 $configuration)
-    {
-        if (null === $configuration->getScope()) {
-            return true;
-        }
-
-        // If the scope of the access token are not sufficient, then returns an authentication error
-        $tokenScope = $this->getScopeManager()->convertToScope($token->getAccessToken()->getScope());
-        $requiredScope = $this->getScopeManager()->convertToScope($configuration->getScope());
-        if (!$this->getScopeManager()->checkScopes($requiredScope, $tokenScope)) {
-            $this->createAuthenticationException($event, 'Insufficient scope', $configuration->getScope());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterControllerEvent                                      $event
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token $token
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2                         $configuration
-     *
-     * @return bool
-     */
-    private function checkResourceOwnerType(FilterControllerEvent &$event, OAuth2Token $token, OAuth2 $configuration)
-    {
-        if (null === $configuration->getResourceOwnerType()) {
-            return true;
-        }
-
-        $result = $this->isTypeValid($configuration->getResourceOwnerType(), $token->getResourceOwner());
-        if (false === $result) {
-            $this->createAuthenticationException($event, 'Bad resource owner type', $configuration->getScope());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterControllerEvent                                      $event
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token $token
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2                         $configuration
-     *
-     * @return bool
-     */
-    private function checkClientPublicId(FilterControllerEvent &$event, OAuth2Token $token, OAuth2 $configuration)
-    {
-        if (null === $configuration->getClientPublicId()) {
-            return true;
-        }
-
-        if ($configuration->getClientPublicId() !== $token->getClient()->getPublicId()) {
-            $this->createAuthenticationException($event, 'Client not authorized', $configuration->getScope());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterControllerEvent                                      $event
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token $token
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2                         $configuration
-     *
-     * @return bool
-     */
-    private function checkResourceOwnerPublicId(FilterControllerEvent &$event, OAuth2Token $token, OAuth2 $configuration)
-    {
-        if (null === $configuration->getResourceOwnerPublicId()) {
-            return true;
-        }
-
-        if ($configuration->getResourceOwnerPublicId() !== $token->getResourceOwner()->getPublicId()) {
-            $this->createAuthenticationException($event, 'Resource owner not authorized', $configuration->getScope());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterControllerEvent                                      $event
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token $token
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2                         $configuration
-     *
-     * @return bool
-     */
-    private function checkClientType(FilterControllerEvent &$event, OAuth2Token $token, OAuth2 $configuration)
-    {
-        if (null === $configuration->getClientType()) {
-            return true;
-        }
-
-        $result = $this->isTypeValid($configuration->getClientType(), $token->getClient());
-        if (false === $result) {
-            $this->createAuthenticationException($event, 'Bad client type', $configuration->getScope());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param string                                       $type
-     * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $client
-     *
-     * @return bool
-     */
-    private function isTypeValid($type, ResourceOwnerInterface $client)
-    {
-        switch ($type) {
-            case 'end_user':
-                return $client instanceof EndUserInterface;
-            case 'client':
-                return $client instanceof ClientInterface;
-            case 'registered_client':
-                return $client instanceof RegisteredClientInterface;
-            case 'confidential_client':
-                return $client instanceof ConfidentialClientInterface;
-            case 'public_client':
-                return $client instanceof RegisteredClientInterface && !$client instanceof ConfidentialClientInterface;
-            case 'unregistered_client':
-                return $client instanceof ClientInterface && !$client instanceof RegisteredClientInterface;
-            default:
-                return $type === $client->getType();
-        }
     }
 }

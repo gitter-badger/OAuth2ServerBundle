@@ -40,6 +40,23 @@ doctrine:
         auto_generate_proxy_classes: true
         auto_mapping: true
 
+jose:
+    server_name: My Authorization Server
+    use_controller: true
+    storage:
+        enabled: true
+        class: SpomkyLabs\TestBundle\Entity\Jot
+    compression_methods: [DEF,GZ,ZLIB]
+    algorithms:
+        - all
+        - !none
+        - !A128GCMKW
+        - !A192GCMKW
+        - !A256GCMKW
+        - !A128GCM
+        - !A192GCM
+        - !A256GCM
+
 oauth2_server:
     scope:
         policy: 'default'
@@ -54,6 +71,7 @@ oauth2_server:
     password_client:
         client_class: SpomkyLabs\TestBundle\Entity\PasswordClient
         manager_class: SpomkyLabs\TestBundle\Entity\PasswordClientManager
+        digest_authentication_key: abcdefghijklmnop
     refresh_token:
         token_class: SpomkyLabs\TestBundle\Entity\RefreshToken
         token_manager: oauth2_server.test_bundle.refresh_token_manager
@@ -69,19 +87,19 @@ oauth2_server:
         refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
         end_user_manager: oauth2_server.test_bundle.end_user_manager
     jwt_bearer:
+        jwt_loader: jose.loader
+        keyset_manager: jose.jwkset_manager
         client_class: SpomkyLabs\TestBundle\Entity\JWTClient
         allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
         private_keys:
             JWK1:
-                type: oct
-                data:
-                    use: enc
-                    k: 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8'
+                kty: oct
+                use: enc
+                k: ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8
             JWK2:
-                type: oct
-                data:
-                    use: sig
-                    k: 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow'
+                kty: oct
+                use: sig
+                k: AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow
     authorization_endpoint:
         security:
             x_frame_options: deny

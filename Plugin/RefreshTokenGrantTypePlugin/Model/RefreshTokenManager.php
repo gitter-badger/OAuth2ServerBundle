@@ -63,13 +63,13 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     /**
      * {@inheritdoc}
      */
-    public function createRefreshToken(ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null)
+    public function createRefreshToken(ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [])
     {
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_REFRESH_TOKEN_CREATION, new PreRefreshTokenCreationEvent($client, $scope, $resourceOwner));
         }
 
-        $refresh_token = parent::createRefreshToken($client, $scope, $resourceOwner);
+        $refresh_token = parent::createRefreshToken($client, $resourceOwner, $scope);
 
         if (!is_null($this->event_dispatcher)) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_REFRESH_TOKEN_CREATION, new PostRefreshTokenCreationEvent($refresh_token));
@@ -119,17 +119,18 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
      *
      * @return mixed
      */
-    protected function addRefreshToken($token, $expiresAt, ClientInterface $client, array $scope = [], ResourceOwnerInterface $resourceOwner = null)
+    protected function addRefreshToken($token, $expiresAt, ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [])
     {
         $class = $this->getClass();
+        /**
+         * @var $refresh_token \OAuth2\Token\RefreshTokenInterface
+         */
         $refresh_token = new $class();
-        $refresh_token->setToken($token)
+        $refresh_token->setClientPublicId($client->getPublicId())
             ->setExpiresAt($expiresAt)
-            ->setClientPublicId($client->getPublicId())
+            ->setResourceOwnerPublicId($resourceOwner->getPublicId())
+            ->setToken($token)
             ->setScope($scope);
-        if (!is_null($resourceOwner)) {
-            $refresh_token->setResourceOwnerPublicId($resourceOwner->getPublicId());
-        }
 
         $this->save($refresh_token);
 

@@ -13,18 +13,11 @@ class PreFindClientEvent extends Event
     protected $request;
 
     /**
-     * @var bool
-     */
-    protected $client_public_id_found;
-
-    /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param null|string                              $client_public_id_found
      */
-    public function __construct(ServerRequestInterface $request, $client_public_id_found = null)
+    public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
-        $this->client_public_id_found = $client_public_id_found;
     }
 
     /**
@@ -33,13 +26,5 @@ class PreFindClientEvent extends Event
     public function getRequest()
     {
         return $this->request;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getClientPublicIdFound()
-    {
-        return $this->client_public_id_found;
     }
 }

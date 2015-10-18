@@ -21,12 +21,15 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
      * @param string                                      $class
      * @param \OAuth2\Exception\ExceptionManagerInterface $exception_manager
      */
-    public function __construct(
-        $class,
-        ExceptionManagerInterface $exception_manager
-    ) {
+    public function __construct($class, ExceptionManagerInterface $exception_manager)
+    {
         $this->class = $class;
         $this->exception_manager = $exception_manager;
+    }
+
+    public function getSchemesParameters()
+    {
+        return [];
     }
 
     /**

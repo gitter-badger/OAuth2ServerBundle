@@ -28,17 +28,15 @@ class ClientManagerSupervisorPlugin implements BundlePlugin
         foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
-
-        $container->setAlias('oauth2_server.client_manager_supervisor', $pluginConfiguration['supervisor']);
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
-        $pluginNode
+        /*$pluginNode
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('supervisor')->cannotBeEmpty()->defaultValue('oauth2_server.client_manager_supervisor.default')->end()
-            ->end();
+            ->end();*/
     }
 
     public function boot(ContainerInterface $container)

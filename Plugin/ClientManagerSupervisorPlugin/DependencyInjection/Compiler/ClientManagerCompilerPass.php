@@ -10,12 +10,11 @@ class ClientManagerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('oauth2_server.client_manager_supervisor.chain')) {
+        if (!$container->hasDefinition('oauth2_server.client_manager_supervisor')) {
             return;
         }
 
-        $definition = $container->getDefinition('oauth2_server.client_manager_supervisor.chain');
-
+        $definition = $container->getDefinition('oauth2_server.client_manager_supervisor');
         $taggedServices = $container->findTaggedServiceIds('oauth2_server.client_manager');
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall('addClientManager', [new Reference($id)]);

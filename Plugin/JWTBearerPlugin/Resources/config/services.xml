@@ -10,6 +10,8 @@
 
     <services>
         <service id="oauth2_server.jwt_bearer_grant_type" class="%oauth2_server.jwt_bearer_grant_type.class%">
+            <argument type="service" id="oauth2_server.jwt.jwt_loader" />
+            <argument type="service" id="oauth2_server.jwt.keyset_manager" />
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
@@ -26,6 +28,8 @@
             <argument>%oauth2_server.jwt_bearer.client_class%</argument>
             <argument type="service" id="doctrine" />
             <argument>%oauth2_server.jwt_bearer.private_keys%</argument>
+            <argument type="service" id="oauth2_server.jwt.jwt_loader" />
+            <argument type="service" id="oauth2_server.jwt.keyset_manager" />
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>

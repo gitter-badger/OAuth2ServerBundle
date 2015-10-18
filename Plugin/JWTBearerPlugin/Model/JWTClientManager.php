@@ -3,30 +3,47 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Jose\JWKSetManagerInterface;
+use Jose\LoaderInterface;
 use OAuth2\Client\JWTClientManager as Base;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
-use SpomkyLabs\Service\Jose;
 
 class JWTClientManager extends Base implements JWTClientManagerInterface
 {
+    /**
+     * @var \Jose\JWKSetManagerInterface
+     */
+    private $keyset_manager;
+
+    /**
+     * @var \Jose\LoaderInterface
+     */
+    private $loader;
+
     use ManagerBehaviour;
     use ClientManagerBehaviour {
         saveClient as saveClientTrait;
     }
 
     /**
-     * @param string                                       $class
+     * @param                                              $class
      * @param \Doctrine\Common\Persistence\ManagerRegistry $manager_registry
      * @param array                                        $keys
+     * @param \Jose\LoaderInterface                        $loader
+     * @param \Jose\JWKSetManagerInterface                 $keyset_manager
      */
     public function __construct(
         $class,
         ManagerRegistry $manager_registry,
-        array $keys
+        array $keys,
+        LoaderInterface $loader,
+        JWKSetManagerInterface $keyset_manager
     ) {
         $this->setClass($class);
         $this->setManagerRegistry($manager_registry);
+        $this->loader = $loader;
+        $this->keyset_manager = $keyset_manager;
         $this->loadKeys($keys);
     }
 
@@ -35,13 +52,10 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     protected function loadKeys(array $keys)
     {
-        $prepared = [];
+        $prepared = ['keys'=>[]];
         foreach ($keys as $id => $data) {
-            $key = [
-                'kid' => $id,
-                'kty' => $data['type'],
-            ];
-            $prepared[] = array_merge($key, $data['data']);
+            $data['kid'] = $id;
+            $prepared['keys'][] = $data;
         }
 
         $this->setPrivateKeySet($prepared);
@@ -80,9 +94,7 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     public function getKeySetManager()
     {
-        $jose = Jose::getInstance();
-
-        return $jose->getKeysetManager();
+        return $this->keyset_manager;
     }
 
     /**
@@ -90,8 +102,6 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     public function getJWTLoader()
     {
-        $jose = Jose::getInstance();
-
-        return $jose->getLoader();
+        return $this->loader;
     }
 }

@@ -2,19 +2,34 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Grant;
 
+use Jose\JWKSetManagerInterface;
+use Jose\LoaderInterface;
 use OAuth2\Grant\JWTBearerGrantType as BaseJWTBearerGrantType;
-use SpomkyLabs\Service\Jose;
 
 class JWTBearerGrantType extends BaseJWTBearerGrantType
 {
+    /**
+     * @var \Jose\JWKSetManagerInterface
+     */
+    private $keyset_manager;
+
+    /**
+     * @var \Jose\LoaderInterface
+     */
+    private $loader;
+
+    public function __construct(LoaderInterface $loader, JWKSetManagerInterface $keyset_manager)
+    {
+        $this->loader = $loader;
+        $this->keyset_manager = $keyset_manager;
+    }
+
     /**
      * @return \Jose\JWKSetManagerInterface
      */
     public function getKeySetManager()
     {
-        $jose = Jose::getInstance();
-
-        return $jose->getKeysetManager();
+        return $this->keyset_manager;
     }
 
     /**
@@ -22,8 +37,6 @@ class JWTBearerGrantType extends BaseJWTBearerGrantType
      */
     public function getJWTLoader()
     {
-        $jose = Jose::getInstance();
-
-        return $jose->getLoader();
+        return $this->loader;
     }
 }

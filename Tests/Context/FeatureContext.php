@@ -7,8 +7,8 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
+use SpomkyLabs\JoseBundle\Model\KeysetManagerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
-use SpomkyLabs\Service\Jose;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -55,50 +55,37 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
     {
-        $jose = Jose::getInstance();
-
-        $jose->getConfiguration()->set('algorithms', ['HS512', 'A256KW', 'A256CBC-HS512']);
-        $jose->getConfiguration()->set('audience', 'My Authorization Server');
-
-        $jose->getKeysetManager()->loadKeyFromValues('JWK1', [
+        /**
+         * @var $key_manager \Jose\JWKManagerInterface
+         */
+        $key_manager = $this->getContainer()->get('jose.jwk_manager');
+        $jwk1 = $key_manager->createJWK([
             'kid' => 'JWK1',
+            'kty' => 'oct',
             'use' => 'enc',
-            'kty' => 'oct',
-            'k'   => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
+            'k' => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
         ]);
-        $jose->getKeysetManager()->loadKeyFromValues('JWK2', [
+        $jwk2 = $key_manager->createJWK([
             'kid' => 'JWK2',
-            'use' => 'sig',
             'kty' => 'oct',
-            'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
+            'use' => 'sig',
+            'k' => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
         ]);
 
-        $jws = $jose->signAndEncrypt(
-            [
-                'exp' => time() + 3600,
-                'aud' => 'My Authorization Server',
-                'iss' => 'My JWT issuer',
-                'sub' => $client,
-            ],
-            'JWK2',
-            [
-                'cty' => 'JWT',
-                'alg' => 'HS512',
-            ],
-            'JWK1',
-            [
-                'cty' => 'JWT',
-                'alg' => 'A256KW',
-                'enc' => 'A256CBC-HS512',
-                'exp' => time() + 3600,
-                'aud' => 'My Authorization Server',
-                'iss' => 'My JWT issuer',
-                'sub' => $client,
-            ]
-        );
+        $jose = $this->getContainer()->get('jose');
+
+        $input = [
+            'exp' => time() + 3600,
+            'aud' => 'My Authorization Server',
+            'iss' => 'My JWT issuer',
+            'sub' => $client,
+        ];
+
+        $jws = $jose->sign($input, $jwk2, ['cty' => 'JWT','alg' => 'HS512',]);
+        $jwe = $jose->encrypt($jws, $jwk1, null, ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client,]);
 
         $this->iAddKeyWithValueInTheBodyRequest('client_assertion_type', 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
-        $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jws);
+        $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jwe);
     }
 
     /**
@@ -182,9 +169,12 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
 
         $session = $client->getContainer()->get('session');
 
-        $user = $this->kernel->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUser($username);
+        $user = $this->kernel->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        if (null === $user) {
+            throw new \Exception('Unknown user');
+        }
+        $token = new UsernamePasswordToken($user, 'secret', 'main', $user->getRoles());
         $session->set('_security_main', serialize($token));
         $session->save();
 
@@ -200,7 +190,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function iTheRequestTo($method, $uri)
     {
         $client = $this->getSession()->getDriver()->getClient();
-        $client->followRedirects(false);
+        //$client->followRedirects(false);
 
         $this->getRequestBuilder()->setUri($this->locatePath($uri));
         try {
@@ -215,7 +205,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         } catch (\Exception $e) {
             $this->exception = $e;
         }
-        $client->followRedirects(true);
+        //$client->followRedirects(true);
     }
 
     /**
@@ -223,7 +213,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iShouldReceiveAResponse($content_type)
     {
-        $headers = $this->getSession()->getResponseHeaders();
         if (!isset($headers['content-type']) || !in_array($content_type, $headers['content-type'])) {
             throw new \Exception('The response header does not contain "'.$content_type.'"');
         }
@@ -764,5 +753,18 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         if (1 !== count($matches) || $value !== $matches[0][3]) {
             throw new \Exception('The '.$id.' is "'.$matches[0][3].'" ("'.$value.'" expected)');
         }
+    }
+
+    /**
+     * @Given I add key :key with public id of :username in the body request
+     */
+    public function iAddKeyWithPublicIdOfInTheBodyRequest($key, $username)
+    {
+        $user = $this->kernel->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
+
+        if (null === $user) {
+            throw new \Exception('Unknown user');
+        }
+        $this->iAddKeyWithValueInTheBodyRequest($key, $user->getPublicId());
     }
 }

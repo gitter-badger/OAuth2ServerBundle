@@ -34,6 +34,9 @@ class JWTBearerPlugin implements BundlePlugin
             $loader->load(sprintf('%s.xml', $basename));
         }
 
+        $container->setAlias('oauth2_server.jwt.jwt_loader', $pluginConfiguration['jwt_loader']);
+        $container->setAlias('oauth2_server.jwt.keyset_manager', $pluginConfiguration['keyset_manager']);
+
         $container->setParameter('oauth2_server.jwt_bearer.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.jwt_bearer.manager_class', $pluginConfiguration['manager_class']);
         $container->setParameter('oauth2_server.jwt_bearer.allowed_encryption_algorithms', $pluginConfiguration['allowed_encryption_algorithms']);
@@ -54,6 +57,8 @@ class JWTBearerPlugin implements BundlePlugin
                     ->thenInvalid('The class does not exist')
                 ->end()
             ->end()
+            ->scalarNode('jwt_loader')->cannotBeEmpty()->isRequired()->end()
+            ->scalarNode('keyset_manager')->cannotBeEmpty()->isRequired()->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model\JWTClientManager')->end()
             ->arrayNode('allowed_encryption_algorithms')
                 ->cannotBeEmpty()->isRequired()
@@ -61,22 +66,14 @@ class JWTBearerPlugin implements BundlePlugin
                 ->prototype('scalar')->end()
             ->end()
             ->arrayNode('private_keys')
-                ->cannotBeEmpty()->isRequired()
+                ->isRequired()
+                ->requiresAtLeastOneElement()
                 ->useAttributeAsKey('key')
                 ->prototype('array')
-                    ->children()
-                        ->scalarNode('type')->isRequired()->end()
-                        ->arrayNode('data')
-                            ->children()
-                                ->scalarNode('use')->end()
-                                ->scalarNode('k')->end()
-                                ->scalarNode('dir')->end()
-                                ->scalarNode('x')->end()
-                                ->scalarNode('y')->end()
-                                ->scalarNode('d')->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
                 ->end()
             ->end();
     }

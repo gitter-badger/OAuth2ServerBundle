@@ -5,15 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="oauth2_server.client_manager_supervisor.chain.class">SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Chain\ClientManagerChain</parameter>
-        <parameter key="oauth2_server.client_manager_supervisor.default.class">SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Service\ClientManagerSupervisor</parameter>
+        <parameter key="oauth2_server.client_manager_supervisor.class">SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Service\ClientManagerSupervisor</parameter>
     </parameters>
 
     <services>
-        <service id="oauth2_server.client_manager_supervisor.chain" class="%oauth2_server.client_manager_supervisor.chain.class%" />
-
-        <service id="oauth2_server.client_manager_supervisor.default" class="%oauth2_server.client_manager_supervisor.default.class%">
-            <argument type="service" id="oauth2_server.client_manager_supervisor.chain" />
+        <service id="oauth2_server.client_manager_supervisor" class="%oauth2_server.client_manager_supervisor.class%">
             <argument type="service" id="event_dispatcher" on-invalid="ignore" />
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />

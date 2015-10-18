@@ -40,8 +40,8 @@ Feature: A client request an access token using the Refresh Token Grant Type
     And I add key "client_secret" with value "bad_secret" in the body request
     And I add key "refresh_token" with value "VALID_REFRESH_TOKEN_BAR" in the body request
     When I post the request to "https://oauth2.test/oauth/v2/token"
-    Then I should receive an OAuth2 exception with message 'invalid_client' and description 'Unknown client'
-    And the status code of the response is 400
+    Then I should receive an authentication error
+    And the status code of the response is 401
 
   Scenario: The request is valid and an access token is issued
     Given I add user 'PASSWORD-bar' and password 'secret' in the authorization header

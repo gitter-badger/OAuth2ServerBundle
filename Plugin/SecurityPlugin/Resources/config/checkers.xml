@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.security.authentication.provider.class">SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Provider\OAuth2Provider</parameter>
+    </parameters>
+
+    <services>
+        <service id="oauth2_server.security.authentication.provider" class="%oauth2_server.security.authentication.provider.class%" public="false">
+            <argument /> <!-- user provider -->
+            <argument type="service" id="security.user_checker" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
+            <call method="setAccessTokenManager">
+                <argument type="service" id="oauth2_server.security.access_token_manager" />
+            </call>
+            <call method="setClientManagerSupervisor">
+                <argument type="service" id="oauth2_server.client_manager_supervisor" />
+            </call>
+            <call method="setEndUserManager">
+                <argument type="service" id="oauth2_server.token_endpoint.end_user_manager" />
+            </call>
+        </service>
+
+        <service id="oauth2_server.security.authentication.listener" class="%oauth2_server.security.authentication.listener.class%" public="false">
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.authentication.manager" />
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
+        </service>
+
+        <service id="oauth2_server.security.entry_point" class="%oauth2_server.security.entry_point.class%" public="false">
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAccessTokenTypeManager">
+                <argument type="service" id="oauth2_server.access_token_type_manager" />
+            </call>
+        </service>
+    </services>
+</container>

@@ -5,19 +5,19 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Contr
 use OAuth2\Client\ClientInterface;
 use OAuth2\Client\ClientManagerSupervisorInterface;
 use OAuth2\Endpoint\Authorization;
-use OAuth2\Endpoint\AuthorizationInterface;
 use OAuth2\EndUser\EndUserInterface;
-use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Scope\ScopeManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Templating\EngineInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
+use OAuth2\Endpoint\AuthorizationFactory;
 
 class AuthorizationEndpointController
 {
@@ -52,6 +52,11 @@ class AuthorizationEndpointController
     protected $scope_manager;
 
     /**
+     * @var \OAuth2\Endpoint\AuthorizationFactory
+     */
+    protected $authorization_factory;
+
+    /**
      * @var string|null
      */
     protected $x_frame_options;
@@ -63,6 +68,7 @@ class AuthorizationEndpointController
         ClientManagerSupervisorInterface $client_manager_supervisor,
         FormInterface $form,
         ScopeManagerInterface $scope_manager,
+        AuthorizationFactory $authorization_factory,
         $x_frame_options
     ) {
         $this->x_frame_options = $x_frame_options;
@@ -71,6 +77,7 @@ class AuthorizationEndpointController
         $this->form_handler = $form_handler;
         $this->client_manager_supervisor = $client_manager_supervisor;
         $this->form = $form;
+        $this->authorization_factory = $authorization_factory;
         $this->scope_manager = $scope_manager;
     }
 
@@ -82,9 +89,9 @@ class AuthorizationEndpointController
         }
 
         $response = new Response();
-        try {
+        //try {
             $authorization = $this->createAuthorization($request);
-            $authorization->setResourceOwner($user);
+            $authorization->setEndUser($user);
             $this->form->setData($authorization);
 
             if ('POST' === $request->getMethod()) {
@@ -92,18 +99,18 @@ class AuthorizationEndpointController
 
                 return $response;
             }
-        } catch (BaseExceptionInterface $e) {
+        /*} catch (BaseExceptionInterface $e) {
             $e->getHttpResponse($response);
 
             return $response;
-        }
+        }*/
 
         $this->prepareResponse($authorization, $response);
 
         return $response;
     }
 
-    private function prepareResponse(AuthorizationInterface $authorization, ResponseInterface &$response)
+    private function prepareResponse(Authorization $authorization, ResponseInterface &$response)
     {
         $content = $this->template_engine->render(
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
@@ -116,54 +123,19 @@ class AuthorizationEndpointController
         $body = new Stream('php://temp', 'wb+');
         $body->write($content);
         $response = new Response($body);
-        if (!is_null($this->x_frame_options)) {
+        if (null !== $this->x_frame_options) {
             $response = $response->withHeader('X-Frame-Options', $this->x_frame_options);
         }
     }
 
     private function createAuthorization(ServerRequestInterface $request)
     {
-        $authorization = new Authorization();
+        $authorization = $this->authorization_factory->createFromRequest($request);
 
-        $params = $request->getQueryParams();
-        $client_id = array_key_exists('client_id', $params) ? $params['client_id'] : null;
-        $this->checkClientId($client_id);
-
-        $client = $this->client_manager_supervisor->getClient($client_id);
-        $this->checkClient($client);
-
-        $response_type = array_key_exists('response_type', $params) ? $params['response_type'] : null;
-        $this->checkResponseType($response_type);
-
-        $scope = $this->scope_manager->convertToScope(array_key_exists('scope', $params) ? $params['scope'] : null);
-        $authorization->setClient($client)
-                      ->setResponseType(array_key_exists('response_type', $params) ? $params['response_type'] : null)
-                      ->setScope($scope)
-                      ->setRedirectUri(array_key_exists('redirect_uri', $params) ? $params['redirect_uri'] : null)
-                      ->setIssueRefreshToken(array_key_exists('issue_refresh_token', $params) ? $params['issue_refresh_token'] : null)
-                      ->setState(array_key_exists('state', $params) ? $params['state'] : null);
+        if (!$authorization->getClient() instanceof ClientInterface) {
+            throw new BadRequestHttpException('"client_id" parameter is missing or client is unknown.');
+        }
 
         return $authorization;
-    }
-
-    private function checkClientId($client_id)
-    {
-        if (is_null($client_id)) {
-            throw new \Exception('Client ID not valid or missing');
-        }
-    }
-
-    private function checkClient($client)
-    {
-        if (!$client instanceof ClientInterface) {
-            throw new \Exception('Client ID not valid or missing');
-        }
-    }
-
-    private function checkResponseType($response_type)
-    {
-        if (is_null($response_type)) {
-            throw new \Exception("'response_type' parameter not valid or missing");
-        }
     }
 }

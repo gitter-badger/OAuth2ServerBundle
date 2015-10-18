@@ -19,6 +19,7 @@
             <argument type="service" id="oauth2_server.client_manager_supervisor" />
             <argument type="service" id="oauth2_server.authorization_endpoint.form" />
             <argument type="service" id="oauth2_server.scope.manager" />
+            <argument type="service" id="oauth2_server.authorization_factory" />
             <argument>%oauth2_server.authorization_endpoint.security.x_frame_options%</argument>
         </service>
 

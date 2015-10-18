@@ -16,6 +16,7 @@ class ConfigurationEntryCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition('oauth2_server.configuration');
         $options = [
             'allow_password_client_credentials_in_body_request' => 'oauth2_server.password_client.allow_password_client_credentials_in_body_request',
+            'digest_authentication_key'                         => 'oauth2_server.password_client.digest_authentication_key',
         ];
 
         foreach ($options as $key => $value) {

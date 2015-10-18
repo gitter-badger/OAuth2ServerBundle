@@ -8,8 +8,10 @@
         <field name="token" column="token" type="string" unique="true" />
         <field name="expires_at" column="expires_at" type="integer" nullable="false" />
         <field name="client_public_id" column="client_public_id" type="string" nullable="false" />
+        <field name="resource_owner_public_id" column="resource_owner_public_id" type="string" nullable="false" />
         <field name="scope" column="scope" type="array" nullable="true" />
         <field name="redirect_uri" column="redirect_uri" type="string" nullable="true" />
+        <field name="query_params" column="query_params" type="array" nullable="false" />
         <property name="redirect_uri">
             <constraint name="Url" />
         </property>

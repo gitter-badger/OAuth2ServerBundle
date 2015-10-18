@@ -32,6 +32,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
 
+            new SpomkyLabs\JoseBundle\SpomkyLabsJoseBundle(),
+
             new SpomkyLabsOAuth2ServerBundle([
                 new BearerAccessTokenPlugin(),
                 new UnregisteredClientPlugin(),

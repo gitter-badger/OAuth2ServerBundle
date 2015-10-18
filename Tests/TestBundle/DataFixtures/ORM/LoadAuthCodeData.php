@@ -32,16 +32,16 @@ class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, Cont
         $code_manager = $this->container->get('oauth2_server.test_bundle.auth_code_manager');
 
         foreach ($this->getAuthCodes() as $authcode) {
-            /*
-             * @var \SpomkyLabs\TestBundle\Entity\AuthCode
+            /**
+             * @var $code \SpomkyLabs\TestBundle\Entity\AuthCode
              */
             $code = $code_manager->newAuthCode();
-            $code->setResourceOwnerPublicId($authcode['resource_owner']->getPublicId())
-                 ->setClientPublicId($authcode['client']->getPublicId())
-                 ->setToken($authcode['code'])
-                 ->setScope($authcode['scope'])
-                 ->setRedirectUri($authcode['redirect_uri'])
-                 ->setExpiresAt($authcode['expires_at']);
+            $code->setRedirectUri($authcode['redirect_uri'])
+                ->setResourceOwnerPublicId($authcode['resource_owner']->getPublicId())
+                ->setClientPublicId($authcode['client']->getPublicId())
+                ->setToken($authcode['code'])
+                ->setScope($authcode['scope'])
+                ->setExpiresAt($authcode['expires_at']);
 
             $code_manager->saveAuthCode($code);
             $this->addReference('authcode-'.$authcode['code'], $code);

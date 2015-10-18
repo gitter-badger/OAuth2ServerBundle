@@ -9,5 +9,7 @@
         <field name="expires_at" column="expires_at" type="integer" nullable="false" />
         <field name="scope" column="scope" type="array" nullable="true" />
         <field name="used" column="used" type="boolean" nullable="false" />
+        <field name="client_public_id" column="client_public_id" type="string" nullable="false" />
+        <field name="resource_owner_public_id" column="resource_owner_public_id" type="string" nullable="false" />
     </mapped-superclass>
 </doctrine-mapping>

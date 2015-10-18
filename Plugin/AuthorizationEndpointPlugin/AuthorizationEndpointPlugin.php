@@ -60,6 +60,8 @@ class AuthorizationEndpointPlugin implements BundlePlugin
             ->booleanNode('enforce_secured_redirect_uri')->defaultFalse()->end()
             ->booleanNode('enforce_registered_client_redirect_uris')->defaultFalse()->end()
             ->booleanNode('enforce_state')->defaultFalse()->end()
+            ->scalarNode('private_key_set')->defaultValue([])->end()
+            ->scalarNode('allowed_encryption_algorithms')->defaultValue([])->end()
             ->end()
             ->end()
             ->end();
@@ -90,7 +92,7 @@ class AuthorizationEndpointPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['authorization.endpoint'] as $basename) {
+        foreach (['authorization.endpoint', 'authorization.factory'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -101,10 +103,13 @@ class AuthorizationEndpointPlugin implements BundlePlugin
         $container->setParameter('oauth2_server.authorization_endpoint.form_validation_groups', $pluginConfiguration['form']['validation_groups']);
         $container->setParameter('oauth2_server.authorization_endpoint.security.x_frame_options', $this->getXFrameOptions($pluginConfiguration['security']['x_frame_options']));
 
-        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_redirect_uri', $this->getXFrameOptions($pluginConfiguration['option']['enforce_redirect_uri']));
-        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_secured_redirect_uri', $this->getXFrameOptions($pluginConfiguration['option']['enforce_secured_redirect_uri']));
-        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_registered_client_redirect_uris', $this->getXFrameOptions($pluginConfiguration['option']['enforce_registered_client_redirect_uris']));
-        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_state', $this->getXFrameOptions($pluginConfiguration['option']['enforce_state']));
+        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_redirect_uri', $pluginConfiguration['option']['enforce_redirect_uri']);
+        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_secured_redirect_uri', $pluginConfiguration['option']['enforce_secured_redirect_uri']);
+        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_registered_client_redirect_uris', $pluginConfiguration['option']['enforce_registered_client_redirect_uris']);
+        $container->setParameter('oauth2_server.authorization_endpoint.option.enforce_state', $pluginConfiguration['option']['enforce_state']);
+
+        $container->setParameter('oauth2_server.authorization_factory.private_key_set', $pluginConfiguration['option']['private_key_set']);
+        $container->setParameter('oauth2_server.authorization_factory.allowed_encryption_algorithms', $pluginConfiguration['option']['allowed_encryption_algorithms']);
     }
 
     private function getXFrameOptions($option)
