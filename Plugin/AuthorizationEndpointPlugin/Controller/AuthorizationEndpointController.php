@@ -5,7 +5,9 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Contr
 use OAuth2\Client\ClientInterface;
 use OAuth2\Client\ClientManagerSupervisorInterface;
 use OAuth2\Endpoint\Authorization;
+use OAuth2\Endpoint\AuthorizationFactory;
 use OAuth2\EndUser\EndUserInterface;
+use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Scope\ScopeManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,8 +19,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Templating\EngineInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
-use OAuth2\Endpoint\AuthorizationFactory;
-use OAuth2\Exception\BaseExceptionInterface;
 
 class AuthorizationEndpointController
 {

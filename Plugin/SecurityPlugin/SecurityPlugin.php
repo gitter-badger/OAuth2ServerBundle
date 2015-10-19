@@ -43,7 +43,7 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
 
     public function build(ContainerBuilder $container)
     {
-        /**
+        /*
          * @var \Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension
          */
         $extension = $container->getExtension('security');

@@ -7,8 +7,8 @@ use OAuth2\Client\ConfidentialClientInterface;
 use OAuth2\Client\RegisteredClientInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\OAuth2;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
 
 class ResourceOwnerTypeChecker implements CheckerInterface
 {

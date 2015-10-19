@@ -74,6 +74,7 @@ class AnnotationDriver
                     $result = $checker->check($token, $configuration);
                     if (null !== $result) {
                         $this->createAuthenticationException($event, $result, $configuration->getScope());
+
                         return;
                     }
                 }
@@ -92,9 +93,9 @@ class AnnotationDriver
         foreach ($this->getAccessTokenTypeManager()->getAccessTokenTypes() as $type) {
             $params = $type->getSchemeParameters();
             if (!empty($params)) {
-                foreach($params as $id=>$param) {
+                foreach ($params as $id => $param) {
                     if (!empty($scope)) {
-                        $params[$id] = array_merge($params[$id], ['scope'=>implode(' ', $scope)]);
+                        $params[$id] = array_merge($params[$id], ['scope' => implode(' ', $scope)]);
                     }
                 }
                 $schemes['schemes'] = array_merge($schemes['schemes'], $params);

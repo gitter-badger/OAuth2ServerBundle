@@ -52,7 +52,7 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     protected function loadKeys(array $keys)
     {
-        $prepared = ['keys'=>[]];
+        $prepared = ['keys' => []];
         foreach ($keys as $id => $data) {
             $data['kid'] = $id;
             $prepared['keys'][] = $data;
