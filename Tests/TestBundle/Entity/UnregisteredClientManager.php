@@ -18,7 +18,7 @@ class UnregisteredClientManager extends Base
          * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = parent::getClient($public_id);
-        if (is_null($client)) {
+        if (null === $client) {
             return;
         }
         $client->setAllowedGrantTypes(['token']);

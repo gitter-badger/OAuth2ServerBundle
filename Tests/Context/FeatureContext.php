@@ -703,7 +703,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
          */
         $token_manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');
         $result = $token_manager->getAccessToken($token);
-        if (!is_null($result)) {
+        if (null !== $result) {
             throw new \Exception('The access token exists.');
         }
     }
@@ -718,7 +718,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
          */
         $token_manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');
         $result = $token_manager->getAccessToken($token);
-        if (is_null($result)) {
+        if (null === $result) {
             throw new \Exception('The access token does not exist.');
         }
     }

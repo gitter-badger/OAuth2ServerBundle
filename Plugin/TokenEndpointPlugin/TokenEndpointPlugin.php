@@ -37,7 +37,7 @@ class TokenEndpointPlugin implements BundlePlugin
 
         $container->setAlias('oauth2_server.token_endpoint.access_token_manager', $pluginConfiguration['access_token_manager']);
         $container->setAlias('oauth2_server.token_endpoint.end_user_manager', $pluginConfiguration['end_user_manager']);
-        if (!is_null($pluginConfiguration['refresh_token_manager'])) {
+        if (null !== $pluginConfiguration['refresh_token_manager']) {
             $container->setAlias('oauth2_server.token_endpoint.refresh_token_manager', $pluginConfiguration['refresh_token_manager']);
         }
     }

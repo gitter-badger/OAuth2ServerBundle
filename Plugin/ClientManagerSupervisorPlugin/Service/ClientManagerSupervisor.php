@@ -4,7 +4,6 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Ser
 
 use OAuth2\Client\ClientManagerSupervisor as BaseClientManagerSupervisor;
 use Psr\Http\Message\ServerRequestInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Chain\ClientManagerChain;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PostFindClientEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PreFindClientEvent;
@@ -26,13 +25,13 @@ class ClientManagerSupervisor extends BaseClientManagerSupervisor
      */
     public function findClient(ServerRequestInterface $request)
     {
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_FIND_CLIENT, new PreFindClientEvent($request));
         }
 
         $client = parent::findClient($request);
 
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_FIND_CLIENT, new PostFindClientEvent($request, $client));
         }
 

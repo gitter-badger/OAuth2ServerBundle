@@ -65,13 +65,13 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
      */
     public function createRefreshToken(ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [])
     {
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_REFRESH_TOKEN_CREATION, new PreRefreshTokenCreationEvent($client, $scope, $resourceOwner));
         }
 
         $refresh_token = parent::createRefreshToken($client, $resourceOwner, $scope);
 
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_REFRESH_TOKEN_CREATION, new PostRefreshTokenCreationEvent($refresh_token));
         }
 

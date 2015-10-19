@@ -18,15 +18,13 @@ class ClientTypeChecker implements CheckerInterface
     public function check(OAuth2Token $token, OAuth2 $configuration)
     {
         if (null === $configuration->getClientType()) {
-            return true;
+            return;
         }
 
         $result = $this->isTypeValid($configuration->getClientType(), $token->getClient());
         if (false === $result) {
             return 'Bad client type';
         }
-
-        return true;
     }
 
     /**

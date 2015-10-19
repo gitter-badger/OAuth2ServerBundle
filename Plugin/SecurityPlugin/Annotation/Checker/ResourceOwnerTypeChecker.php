@@ -18,15 +18,13 @@ class ResourceOwnerTypeChecker implements CheckerInterface
     public function check(OAuth2Token $token, OAuth2 $configuration)
     {
         if (null === $configuration->getResourceOwnerType()) {
-            return true;
+            return;
         }
 
         $result = $this->isTypeValid($configuration->getResourceOwnerType(), $token->getResourceOwner());
         if (false === $result) {
             return 'Bad resource owner type';
         }
-
-        return true;
     }
 
     /**

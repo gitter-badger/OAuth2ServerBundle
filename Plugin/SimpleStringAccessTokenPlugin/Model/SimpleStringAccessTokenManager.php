@@ -54,7 +54,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
 
     protected function addAccessToken($token, $expiresAt, ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [], BaseRefreshTokenInterface $refresh_token = null)
     {
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PreSimpleStringAccessTokenCreationEvent($client, $scope, $resourceOwner, $refresh_token));
         }
 
@@ -67,17 +67,17 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
             ->setExpiresAt($expiresAt)
             ->setClientPublicId($client->getPublicId())
             ->setScope($scope);
-        if (!is_null($resourceOwner)) {
+        if (null !== $resourceOwner) {
             $access_token->setResourceOwnerPublicId($resourceOwner->getPublicId());
         }
-        if (!is_null($refresh_token)) {
+        if (null !== $refresh_token) {
             $access_token->setRefreshToken($refresh_token);
         }
 
         $this->getEntityManager()->persist($access_token);
         $this->getEntityManager()->flush();
 
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PostSimpleStringAccessTokenCreationEvent($access_token));
         }
 

@@ -18,6 +18,7 @@ use Symfony\Component\Templating\EngineInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
 use OAuth2\Endpoint\AuthorizationFactory;
+use OAuth2\Exception\BaseExceptionInterface;
 
 class AuthorizationEndpointController
 {
@@ -89,7 +90,7 @@ class AuthorizationEndpointController
         }
 
         $response = new Response();
-        //try {
+        try {
             $authorization = $this->createAuthorization($request);
             $authorization->setEndUser($user);
             $this->form->setData($authorization);
@@ -99,17 +100,21 @@ class AuthorizationEndpointController
 
                 return $response;
             }
-        /*} catch (BaseExceptionInterface $e) {
+        } catch (BaseExceptionInterface $e) {
             $e->getHttpResponse($response);
 
             return $response;
-        }*/
+        }
 
         $this->prepareResponse($authorization, $response);
 
         return $response;
     }
 
+    /**
+     * @param \OAuth2\Endpoint\Authorization      $authorization
+     * @param \Psr\Http\Message\ResponseInterface $response
+     */
     private function prepareResponse(Authorization $authorization, ResponseInterface &$response)
     {
         $content = $this->template_engine->render(
@@ -128,6 +133,11 @@ class AuthorizationEndpointController
         }
     }
 
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @return \OAuth2\Endpoint\Authorization
+     */
     private function createAuthorization(ServerRequestInterface $request)
     {
         $authorization = $this->authorization_factory->createFromRequest($request);

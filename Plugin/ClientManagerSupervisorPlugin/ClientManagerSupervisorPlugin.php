@@ -32,11 +32,6 @@ class ClientManagerSupervisorPlugin implements BundlePlugin
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
-        /*$pluginNode
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('supervisor')->cannotBeEmpty()->defaultValue('oauth2_server.client_manager_supervisor.default')->end()
-            ->end();*/
     }
 
     public function boot(ContainerInterface $container)

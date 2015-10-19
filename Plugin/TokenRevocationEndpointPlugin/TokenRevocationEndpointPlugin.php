@@ -44,7 +44,7 @@ class TokenRevocationEndpointPlugin implements BundlePlugin, PrependExtensionInt
 
         $container->setParameter('oauth2_server.token_revocation_endpoint.revoke_refresh_token_and_access_token', $pluginConfiguration['revoke_refresh_token_and_access_token']);
         $container->setAlias('oauth2_server.token_revocation_endpoint.access_token_manager', $pluginConfiguration['access_token_manager']);
-        if (!is_null($pluginConfiguration['refresh_token_manager'])) {
+        if (null !== $pluginConfiguration['refresh_token_manager']) {
             $container->setAlias('oauth2_server.token_revocation_endpoint.refresh_token_manager', $pluginConfiguration['refresh_token_manager']);
         }
     }

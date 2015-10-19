@@ -45,13 +45,13 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
      */
     public function createAuthCode(ClientInterface $client, EndUserInterface $end_user, array $query_params, $redirectUri, array $scope = [], $issueRefreshToken = false)
     {
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHCODE_CREATION, new PreAuthCodeCreationEvent($client, $redirectUri, $scope, $end_user, $issueRefreshToken));
         }
 
         $authcode = parent::createAuthCode($client, $end_user, $query_params, $redirectUri, $scope, $issueRefreshToken);
 
-        if (!is_null($this->event_dispatcher)) {
+        if (null !== $this->event_dispatcher) {
             $this->event_dispatcher->dispatch(Events::OAUTH2_POST_AUTHCODE_CREATION, new PostAuthCodeCreationEvent($authcode));
         }
 

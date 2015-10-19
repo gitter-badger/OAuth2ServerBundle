@@ -69,7 +69,7 @@ trait ManagerBehaviour
      */
     public function getEntityManager()
     {
-        if (is_null($this->entity_manager)) {
+        if (null === $this->entity_manager) {
             $this->entity_manager = $this->getManagerRegistry()->getManagerForClass($this->getClass());
         }
 
@@ -81,7 +81,7 @@ trait ManagerBehaviour
      */
     public function getEntityRepository()
     {
-        if (is_null($this->entity_repository)) {
+        if (null === $this->entity_repository) {
             $this->entity_repository = $this->getEntityManager()->getRepository($this->getClass());
         }
 

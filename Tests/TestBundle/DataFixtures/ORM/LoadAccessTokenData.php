@@ -44,10 +44,10 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
                 ->setClientPublicId($access_token['client_public_id'])
                 ->setScope($access_token['scope'])
                 ->setToken($access_token['token']);
-            if (!is_null($access_token['resource_owner_public_id'])) {
+            if (null !== $access_token['resource_owner_public_id']) {
                 $object->setResourceOwnerPublicId($access_token['resource_owner_public_id']);
             }
-            if (!is_null($access_token['refresh_token'])) {
+            if (null !== $access_token['refresh_token']) {
                 $object->setRefreshToken($access_token['refresh_token']);
             }
 

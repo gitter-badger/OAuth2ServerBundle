@@ -16,7 +16,7 @@ class ScopeChecker implements CheckerInterface
     public function check(OAuth2Token $token, OAuth2 $configuration)
     {
         if (null === $configuration->getScope()) {
-            return true;
+            return;
         }
 
         // If the scope of the access token are not sufficient, then returns an authentication error
@@ -25,7 +25,5 @@ class ScopeChecker implements CheckerInterface
         if (!$this->getScopeManager()->checkScopes($requiredScope, $tokenScope)) {
             return 'Insufficient scope';
         }
-
-        return true;
     }
 }

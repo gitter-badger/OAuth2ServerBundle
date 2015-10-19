@@ -24,15 +24,19 @@ class OAuth2EntryPoint implements AuthenticationEntryPointInterface
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $params = [
-            'scheme' => $this->getAccessTokenTypeManager()->getDefaultAccessTokenType()->getScheme(),
-        ];
+        $schemes = ['schemes' => []];
+        foreach ($this->getAccessTokenTypeManager()->getAccessTokenTypes() as $type) {
+            $params = $type->getSchemeParameters();
+            if (!empty($params)) {
+                $schemes['schemes'] = array_merge($schemes['schemes'], $params);
+            }
+        }
 
         $exception = $this->getExceptionManager()->getException(
             ExceptionManagerInterface::AUTHENTICATE,
             ExceptionManagerInterface::ACCESS_DENIED,
             'OAuth2 authentication required',
-            $params
+            $schemes
         );
 
         $response = new Response();
