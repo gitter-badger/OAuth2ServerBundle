@@ -17,7 +17,7 @@
         "doctrine/doctrine-bundle": "~1.0",
         "matthiasnoback/symfony-bundle-plugins": "~1.1.0",
         "spomky-labs/oauth2-server-library": "~0.0.0",
-        "spomky-labs/jose-interface": "*"
+        "spomky-labs/jose-interface": "~2.3"
     },
     "require-dev": {
         "puli/twig-extension": "~1.0",
