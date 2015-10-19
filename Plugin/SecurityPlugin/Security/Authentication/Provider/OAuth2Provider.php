@@ -61,7 +61,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
             return;
         }
 
-        /**
+        /*
          * @var $token \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token
          */
         $token_id = $token->getToken();
@@ -131,9 +131,9 @@ class OAuth2Provider implements AuthenticationProviderInterface
         foreach ($this->getAccessTokenTypeManager()->getAccessTokenTypes() as $type) {
             $params = $type->getSchemeParameters();
             if (!empty($params)) {
-                foreach($params as $id=>$param) {
+                foreach ($params as $id => $param) {
                     if (!empty($access_token->getScope())) {
-                        $params[$id] = array_merge($params[$id], ['scope'=>implode(' ', $access_token->getScope())]);
+                        $params[$id] = array_merge($params[$id], ['scope' => implode(' ', $access_token->getScope())]);
                     }
                 }
                 $schemes['schemes'] = array_merge($schemes['schemes'], $params);

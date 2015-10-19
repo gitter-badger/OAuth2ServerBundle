@@ -33,7 +33,7 @@ class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, Cont
 
         foreach ($this->getAuthCodes() as $authcode) {
             /**
-             * @var $code \SpomkyLabs\TestBundle\Entity\AuthCode
+             * @var \SpomkyLabs\TestBundle\Entity\AuthCode
              */
             $code = $code_manager->newAuthCode();
             $code->setRedirectUri($authcode['redirect_uri'])

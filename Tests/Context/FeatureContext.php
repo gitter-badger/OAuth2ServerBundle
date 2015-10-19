@@ -7,7 +7,6 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
-use SpomkyLabs\JoseBundle\Model\KeysetManagerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
@@ -56,20 +55,20 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
     {
         /**
-         * @var $key_manager \Jose\JWKManagerInterface
+         * @var \Jose\JWKManagerInterface
          */
         $key_manager = $this->getContainer()->get('jose.jwk_manager');
         $jwk1 = $key_manager->createJWK([
             'kid' => 'JWK1',
             'kty' => 'oct',
             'use' => 'enc',
-            'k' => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
+            'k'   => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
         ]);
         $jwk2 = $key_manager->createJWK([
             'kid' => 'JWK2',
             'kty' => 'oct',
             'use' => 'sig',
-            'k' => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
+            'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
         ]);
 
         $jose = $this->getContainer()->get('jose');
@@ -81,8 +80,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             'sub' => $client,
         ];
 
-        $jws = $jose->sign($input, $jwk2, ['cty' => 'JWT','alg' => 'HS512',]);
-        $jwe = $jose->encrypt($jws, $jwk1, null, ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client,]);
+        $jws = $jose->sign($input, $jwk2, ['cty' => 'JWT','alg' => 'HS512']);
+        $jwe = $jose->encrypt($jws, $jwk1, null, ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client]);
 
         $this->iAddKeyWithValueInTheBodyRequest('client_assertion_type', 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
         $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jwe);

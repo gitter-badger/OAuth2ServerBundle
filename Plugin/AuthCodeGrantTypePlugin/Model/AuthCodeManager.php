@@ -4,9 +4,7 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\ClientInterface;
-use OAuth2\EndUser\EndUser;
 use OAuth2\EndUser\EndUserInterface;
-use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
 use OAuth2\Token\AuthCodeManager as BaseManager;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
@@ -62,7 +60,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
     {
         $class = $this->getClass();
         /**
-         * @var $authcode \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
          */
         $authcode = new $class();
         $authcode->setRedirectUri($redirectUri)

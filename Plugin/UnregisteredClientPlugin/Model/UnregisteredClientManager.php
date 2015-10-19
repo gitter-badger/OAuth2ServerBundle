@@ -58,7 +58,7 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
         }
         $class = $this->getClass();
         /**
-         * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientInterface
          */
         $client = new $class();
         $client->setPublicId($public_id);

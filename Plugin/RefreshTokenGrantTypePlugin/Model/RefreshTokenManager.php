@@ -123,7 +123,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     {
         $class = $this->getClass();
         /**
-         * @var $refresh_token \OAuth2\Token\RefreshTokenInterface
+         * @var \OAuth2\Token\RefreshTokenInterface
          */
         $refresh_token = new $class();
         $refresh_token->setClientPublicId($client->getPublicId())

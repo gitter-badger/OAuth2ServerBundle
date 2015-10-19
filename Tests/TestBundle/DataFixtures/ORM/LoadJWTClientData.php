@@ -67,7 +67,7 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
                         'use' => 'sig',
                         'kty' => 'oct',
                         'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
-                    ]],
+                    ], ],
                 ],
             ],
             [
