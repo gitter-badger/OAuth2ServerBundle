@@ -4,6 +4,7 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin;
 
 use Matthias\BundlePlugins\BundlePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\DependencyInjection\Compiler\ConfigurationEntryCompilerPass;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\DependencyInjection\Compiler\ResponseModeCompilerPass;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\DependencyInjection\Compiler\ResponseTypeCompilerPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
@@ -92,7 +93,7 @@ class AuthorizationEndpointPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['authorization.endpoint', 'authorization.factory'] as $basename) {
+        foreach (['authorization.endpoint', 'authorization.factory', 'response_modes'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -130,6 +131,7 @@ class AuthorizationEndpointPlugin implements BundlePlugin
     {
         $container->addCompilerPass(new ResponseTypeCompilerPass());
         $container->addCompilerPass(new ConfigurationEntryCompilerPass());
+        $container->addCompilerPass(new ResponseModeCompilerPass());
     }
 
     public function boot(ContainerInterface $container)

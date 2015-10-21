@@ -2,6 +2,7 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\DependencyInjection\Compiler\ClientManagerCompilerPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -19,6 +20,13 @@ class ClientManagerSupervisorPlugin implements BundlePlugin
 
     public function build(ContainerBuilder $container)
     {
+        $mappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping') => 'OAuth2\Client',
+        ];
+        if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, []));
+        }
+
         $container->addCompilerPass(new ClientManagerCompilerPass());
     }
 

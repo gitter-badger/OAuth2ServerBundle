@@ -4,7 +4,7 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PasswordClientManager as Base;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientManagerBehaviour;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 
 class PasswordClientManager extends Base implements PasswordClientManagerInterface

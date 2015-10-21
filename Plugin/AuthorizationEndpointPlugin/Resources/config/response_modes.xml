@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="oauth2_server.response_mode.query.class">OAuth2\Endpoint\QueryResponseMode</parameter>
         <parameter key="oauth2_server.response_mode.fragment.class">OAuth2\Endpoint\FragmentResponseMode</parameter>
-        <parameter key="oauth2_server.response_mode.form_post.class">OAuth2\Endpoint\FormPostResponseMode</parameter>
     </parameters>
 
     <services>
@@ -15,9 +14,6 @@
             <tag name="oauth2_server.response_mode" />
         </service>
         <service id="oauth2_server.response_mode.fragment" class="%oauth2_server.response_mode.fragment.class%">
-            <tag name="oauth2_server.response_mode" />
-        </service>
-        <service id="oauth2_server.response_mode.form_post" class="%oauth2_server.response_mode.form_post.class%">
             <tag name="oauth2_server.response_mode" />
         </service>
     </services>

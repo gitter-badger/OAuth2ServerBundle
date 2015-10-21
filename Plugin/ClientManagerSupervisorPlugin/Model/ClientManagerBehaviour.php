@@ -1,6 +1,8 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model;
+
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBehaviour;
 
 trait ClientManagerBehaviour
 {
@@ -37,7 +39,7 @@ trait ClientManagerBehaviour
     }
 
     /**
-     * @return \SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientInterface
+     * @return \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface
      */
     public function createClient()
     {
@@ -47,7 +49,7 @@ trait ClientManagerBehaviour
     }
 
     /**
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ClientInterface $client
+     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface $client
      *
      * @return self
      */

@@ -18,6 +18,8 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredCl
 use SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\FormPostResponseModePlugin\OpenIdConnectFormPostResponseModePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\MultipleResponseTypesPlugin\OpenIdConnectMultipleResponseTypesPlugin;
 
 class AppKernel extends Kernel
 {
@@ -49,6 +51,8 @@ class AppKernel extends Kernel
                 new AuthorizationEndpointPlugin(),
                 new TokenEndpointPlugin(),
                 new TokenRevocationEndpointPlugin(),
+                new OpenIdConnectFormPostResponseModePlugin(),
+                new OpenIdConnectMultipleResponseTypesPlugin(),
                 new SecurityPlugin(),
             ]),
             new SpomkyLabs\TestBundle\SpomkyLabsTestBundle(),

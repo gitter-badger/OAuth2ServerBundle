@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\DependencyInjection\Compiler;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

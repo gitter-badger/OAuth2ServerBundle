@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model;
 
 use OAuth2\Client\ConfidentialClientInterface as BaseConfidentialClientInterface;
 
