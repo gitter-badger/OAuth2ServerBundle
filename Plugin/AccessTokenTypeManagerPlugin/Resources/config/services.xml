@@ -4,12 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.access_token_type_manager.class">SpomkyLabs\OAuth2ServerBundle\Plugin\AccessTokenTypeManagerPlugin\Service\AccessTokenTypeManager</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.access_token_type_manager" class="%oauth2_server.access_token_type_manager.class%">
+        <service id="oauth2_server.access_token_type_manager" class="OAuth2\Token\AccessTokenTypeManager">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>

@@ -1,9 +1,0 @@
-<?php
-
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\Grant;
-
-use OAuth2\Grant\ResourceOwnerPasswordCredentialsGrantType as BaseResourceOwnerPasswordCredentialsGrantType;
-
-class ResourceOwnerPasswordCredentialsGrantType extends BaseResourceOwnerPasswordCredentialsGrantType
-{
-}

@@ -4,13 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.refresh_token.manager.default.class">SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\RefreshTokenManager</parameter>
-        <parameter key="oauth2_server.refresh_token.grant_type.class">SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Grant\RefreshTokenGrantType</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.refresh_token.manager.default" class="%oauth2_server.refresh_token.manager.default.class%">
+        <service id="oauth2_server.refresh_token.manager.default" class="SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Model\RefreshTokenManager">
             <argument>%oauth2_server.refresh_token.token_class%</argument>
             <argument type="service" id="doctrine" />
             <argument type="service" id="event_dispatcher" on-invalid="ignore" />
@@ -22,7 +17,7 @@
             </call>
         </service>
 
-        <service id="oauth2_server.refresh_token.grant_type" class="%oauth2_server.refresh_token.grant_type.class%">
+        <service id="oauth2_server.refresh_token.grant_type" class="OAuth2\Grant\RefreshTokenGrantType">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>

@@ -4,12 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.authorization_factory.class">OAuth2\Endpoint\AuthorizationFactory</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.authorization_factory" class="%oauth2_server.authorization_factory.class%">
+        <service id="oauth2_server.authorization_factory" class="OAuth2\Endpoint\AuthorizationFactory">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>

@@ -4,9 +4,11 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model;
 
 use OAuth2\Exception\ExceptionManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBehaviour;
 
 class UnregisteredClientManager implements UnregisteredClientManagerInterface
 {
+    use ResourceOwnerManagerBehaviour;
     /**
      * @var \OAuth2\Exception\ExceptionManagerInterface
      */

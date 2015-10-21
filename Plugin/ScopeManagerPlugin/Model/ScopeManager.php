@@ -31,12 +31,4 @@ class ScopeManager extends Base
     {
         return $this->policy;
     }
-
-    public function createScope($name)
-    {
-        $scope = new Scope();
-        $scope->setName($name);
-
-        return $scope;
-    }
 }

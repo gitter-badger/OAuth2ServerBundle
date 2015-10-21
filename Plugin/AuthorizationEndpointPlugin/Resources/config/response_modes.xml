@@ -4,16 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.response_mode.query.class">OAuth2\Endpoint\QueryResponseMode</parameter>
-        <parameter key="oauth2_server.response_mode.fragment.class">OAuth2\Endpoint\FragmentResponseMode</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.response_mode.query" class="%oauth2_server.response_mode.query.class%">
+        <service id="oauth2_server.response_mode.query" class="OAuth2\Endpoint\QueryResponseMode">
             <tag name="oauth2_server.response_mode" />
         </service>
-        <service id="oauth2_server.response_mode.fragment" class="%oauth2_server.response_mode.fragment.class%">
+        <service id="oauth2_server.response_mode.fragment" class="OAuth2\Endpoint\FragmentResponseMode">
             <tag name="oauth2_server.response_mode" />
         </service>
     </services>

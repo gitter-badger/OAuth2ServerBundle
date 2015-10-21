@@ -60,31 +60,31 @@ See below details of each plugin provided by this bundle
 # Mandatory plugins
 
 The following plugins are enabled by default:
-* [Core Plugin](Resources/doc/Plugin/Core.md): provides common classes for all plugins
-* [Scope Manager Plugin](Resources/doc/Plugin/ScopeManager.md): adds scope support
-* [Configuration Plugin](Resources/doc/Plugin/Configuration.md): unified configuration for all plugins
-* [Exception Manager Plugin](Resources/doc/Plugin/ExceptionManager.md): errors are all emitted using this plugin.
-* [Client Manager Supervisor Plugin](Resources/doc/Plugin/ClientManagerSupervisor.md): required by endpoints to authenticate client using the request
-* [Token Endpoint](Resources/doc/Plugin/TokenEndpoint.md): the token endpoint
-* [Bearer Access Token](Resources/doc/Plugin/BearerAccessToken.md): bearer access token type
+* [Core Plugin](Plugin/Core.md): provides common classes for all plugins
+* [Scope Manager Plugin](Plugin/ScopeManager.md): adds scope support
+* [Configuration Plugin](Plugin/Configuration.md): unified configuration for all plugins
+* [Exception Manager Plugin](Plugin/ExceptionManager.md): errors are all emitted using this plugin.
+* [Client Manager Supervisor Plugin](Plugin/ClientManagerSupervisor.md): required by endpoints to authenticate client using the request
+* [Token Endpoint](Plugin/TokenEndpoint.md): the token endpoint
+* [Bearer Access Token](Plugin/BearerAccessToken.md): bearer access token type
 
 # Other plugins
 
 * Client:
-    * [Unregistered Client](Resources/doc/Plugin/UnregisteredClient.md)
-    * [Public Client](Resources/doc/Plugin/PublicClient.md)
-    * [Password Client](Resources/doc/Plugin/PasswordClient.md)
+    * [Unregistered Client](Plugin/UnregisteredClient.md)
+    * [Public Client](Plugin/PublicClient.md)
+    * [Password Client](Plugin/PasswordClient.md)
 * Access token manager:
-    * [SimpleString Access Token](Resources/doc/Plugin/SimpleStringAccessToken.md)
+    * [Simple String Access Token](Plugin/SimpleStringAccessToken.md)
 * Endpoints:
-    * [Authorization Endpoint](Resources/doc/Plugin/AuthorizationEndpoint.md)
-    * [Token Revocation Endpoint](Resources/doc/Plugin/TokenRevocationEndpoint.md)
+    * [Authorization Endpoint](Plugin/AuthorizationEndpoint.md)
+    * [Token Revocation Endpoint](Plugin/TokenRevocationEndpoint.md)
 * Grant types:
-    * [Authorization Code Grant Type](Resources/doc/Plugin/AuthCodeGrantType.md)
-    * [Refresh Token Grant Type](Resources/doc/Plugin/RefreshTokenGrantType.md)
-    * [Implicit Grant Type](Resources/doc/Plugin/ImplicitGrantType.md)
-    * [Resource Owner Password Credentials Grant Type](Resources/doc/Plugin/ResourceOwnerPasswordCredentialsGrantType.md)
-    * [Client Credentials Grant Type](Resources/doc/Plugin/ClientCredentialsGrantType.md)
+    * [Authorization Code Grant Type](Plugin/AuthCodeGrantType.md)
+    * [Refresh Token Grant Type](Plugin/RefreshTokenGrantType.md)
+    * [Implicit Grant Type](Plugin/ImplicitGrantType.md)
+    * [Resource Owner Password Credentials Grant Type](Plugin/ResourceOwnerPasswordCredentialsGrantType.md)
+    * [Client Credentials Grant Type](Plugin/ClientCredentialsGrantType.md)
 
 # Configure your application's security.yml
 

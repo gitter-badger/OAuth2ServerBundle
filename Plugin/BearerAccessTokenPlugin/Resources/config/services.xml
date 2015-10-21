@@ -4,12 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.bearer_access_token.class">SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\Service\BearerAccessToken</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.bearer_access_token" class="%oauth2_server.bearer_access_token.class%">
+        <service id="oauth2_server.bearer_access_token" class="OAuth2\Token\BearerAccessToken">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
