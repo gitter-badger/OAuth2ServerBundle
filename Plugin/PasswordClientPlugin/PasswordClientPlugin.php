@@ -46,7 +46,6 @@ class PasswordClientPlugin implements BundlePlugin
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('client_class')
                 ->cannotBeEmpty()->isRequired()
@@ -60,7 +59,8 @@ class PasswordClientPlugin implements BundlePlugin
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager')->end()
             ->scalarNode('digest_authentication_key')->cannotBeEmpty()->isRequired()->end()
             ->booleanNode('allow_password_client_credentials_in_body_request')->defaultTrue()->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function boot(ContainerInterface $container)
