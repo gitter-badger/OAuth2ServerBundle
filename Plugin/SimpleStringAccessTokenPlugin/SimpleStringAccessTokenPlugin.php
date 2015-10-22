@@ -47,7 +47,6 @@ class SimpleStringAccessTokenPlugin implements BundlePlugin
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('length')->cannotBeEmpty()->defaultValue(20)->end()
             ->scalarNode('charset')->cannotBeEmpty()->defaultValue('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~+/')->end()
@@ -62,7 +61,8 @@ class SimpleStringAccessTokenPlugin implements BundlePlugin
                 ->end()
             ->end()
             ->scalarNode('manager')->defaultValue('oauth2_server.simple_string_access_token.manager.default')->cannotBeEmpty()->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function boot(ContainerInterface $container)
