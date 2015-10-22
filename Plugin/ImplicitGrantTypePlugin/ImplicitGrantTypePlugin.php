@@ -30,10 +30,10 @@ class ImplicitGrantTypePlugin implements BundlePlugin, PrependExtensionInterface
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
-            ->scalarNode('access_token_manager')->isRequired()->cannotBeEmpty()->end()
-            ->end();
+                ->scalarNode('access_token_manager')->isRequired()->cannotBeEmpty()->end()
+            ->end()
+            ->isRequired();
     }
 
     public function build(ContainerBuilder $container)
