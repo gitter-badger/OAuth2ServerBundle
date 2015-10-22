@@ -46,7 +46,6 @@ class JWTBearerPlugin implements BundlePlugin
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('client_class')
                 ->cannotBeEmpty()->isRequired()
@@ -75,7 +74,8 @@ class JWTBearerPlugin implements BundlePlugin
                     ->useAttributeAsKey('key')
                     ->prototype('scalar')->end()
                 ->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function boot(ContainerInterface $container)
