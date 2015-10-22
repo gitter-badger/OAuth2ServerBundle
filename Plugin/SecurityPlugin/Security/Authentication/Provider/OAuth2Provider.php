@@ -98,6 +98,12 @@ class OAuth2Provider implements AuthenticationProviderInterface
         return $token instanceof OAuth2Token;
     }
 
+    /**
+     * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $resource_owner
+     * @param \OAuth2\Token\AccessTokenInterface           $access_token
+     * 
+     * @throws OAuth2\Exception\BaseExceptionInterface
+     */
     private function checkResourceOwner(ResourceOwnerInterface $resource_owner, AccessTokenInterface $access_token)
     {
         if ($resource_owner instanceof UserInterface) {
@@ -109,6 +115,13 @@ class OAuth2Provider implements AuthenticationProviderInterface
         }
     }
 
+    /**
+     * @param string $client_public_id
+     * 
+     * @throws OAuth2\Exception\BaseExceptionInterface
+     * 
+     * @return \OAuth2\Client\ClientInterface
+     */
     private function getClient($client_public_id)
     {
         $client = $this->getClientManagerSupervisor()->getClient($client_public_id);
@@ -118,19 +131,33 @@ class OAuth2Provider implements AuthenticationProviderInterface
         return $client;
     }
 
+    /**
+     * @param string $resource_owner_public_id
+     * 
+     * @throws OAuth2\Exception\BaseExceptionInterface
+     * 
+     * @return \OAuth2\Client\ClientInterface|\OAuth2\EndUser\EndUserInterface
+     */
     private function getResourceOwner($resource_owner_public_id)
     {
-        $r_o = $this->getClientManagerSupervisor()->getClient($resource_owner_public_id);
-        if ($r_o instanceof ClientInterface) {
-            return $r_o;
+        $resource_owner = $this->getClientManagerSupervisor()->getClient($resource_owner_public_id);
+        if ($resource_owner instanceof ClientInterface) {
+            return $resource_owner;
         }
 
         $resource_owner = $this->getEndUserManager()->getEndUser($resource_owner_public_id);
         if (!$resource_owner instanceof EndUserInterface) {
             throw $this->createException('Unknown resource owner', $access_token);
         }
+        return $resource_owner;
     }
 
+    /**
+     * @param string                            $message
+     * @param OAuth2\Token\AccessTokenInterface $access_token
+     * 
+     * @return OAuth2\Exception\BaseExceptionInterface
+     */
     private function createException($message, AccessTokenInterface $access_token)
     {
         $schemes = ['schemes' => []];
