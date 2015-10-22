@@ -145,7 +145,7 @@ class AuthorizationEndpointController
         if (!$authorization instanceof Authorization) {
             throw new BadRequestHttpException('Unable to create the authorization from the request.');
         }
-        
+
         if (!$authorization->getClient() instanceof ClientInterface) {
             throw new BadRequestHttpException('"client_id" parameter is missing or client is unknown.');
         }
