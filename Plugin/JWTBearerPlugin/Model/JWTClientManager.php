@@ -21,7 +21,6 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     private $loader;
 
-    use ManagerBehaviour;
     use ClientManagerBehaviour {
         saveClient as saveClientTrait;
     }
@@ -35,11 +34,13 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
      */
     public function __construct(
         $class,
+        $prefix,
         ManagerRegistry $manager_registry,
         array $keys,
         LoaderInterface $loader,
         JWKSetManagerInterface $keyset_manager
     ) {
+        $this->setPrefix($prefix);
         $this->setClass($class);
         $this->setManagerRegistry($manager_registry);
         $this->loader = $loader;
@@ -59,22 +60,6 @@ class JWTClientManager extends Base implements JWTClientManagerInterface
         }
 
         $this->setPrivateKeySet($prepared);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPrefix()
-    {
-        return 'JWT-';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSuffix()
-    {
-        return '';
     }
 
     /**

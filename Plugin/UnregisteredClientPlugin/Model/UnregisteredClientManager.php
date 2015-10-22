@@ -9,6 +9,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBe
 class UnregisteredClientManager implements UnregisteredClientManagerInterface
 {
     use ResourceOwnerManagerBehaviour;
+
     /**
      * @var \OAuth2\Exception\ExceptionManagerInterface
      */
@@ -21,11 +22,13 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
 
     /**
      * @param string                                      $class
+     * @param string                                      $prefix
      * @param \OAuth2\Exception\ExceptionManagerInterface $exception_manager
      */
-    public function __construct($class, ExceptionManagerInterface $exception_manager)
+    public function __construct($class, $prefix, ExceptionManagerInterface $exception_manager)
     {
         $this->class = $class;
+        $this->setPrefix($prefix);
         $this->exception_manager = $exception_manager;
     }
 
@@ -141,21 +144,5 @@ class UnregisteredClientManager implements UnregisteredClientManagerInterface
         $client = $this->getClient($result[0]);
 
         return $client;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPrefix()
-    {
-        return '**UNREGISTERED**_';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSuffix()
-    {
-        return '_**UNREGISTERED**';
     }
 }

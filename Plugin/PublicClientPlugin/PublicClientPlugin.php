@@ -25,6 +25,7 @@ class PublicClientPlugin implements BundlePlugin
         }
 
         $container->setParameter('oauth2_server.public_client.class', $pluginConfiguration['client_class']);
+        $container->setParameter('oauth2_server.public_client.prefix', $pluginConfiguration['prefix']);
         $container->setParameter('oauth2_server.public_client.manager.class', $pluginConfiguration['manager_class']);
     }
 
@@ -41,6 +42,7 @@ class PublicClientPlugin implements BundlePlugin
                     ->thenInvalid('The class does not exist')
                 ->end()
             ->end()
+            ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManager')->end()
             ->end()
             ->isRequired();

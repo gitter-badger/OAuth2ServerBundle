@@ -4,15 +4,27 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model;
 
 trait ResourceOwnerManagerBehaviour
 {
-    /**
-     * @return string
-     */
-    abstract protected function getPrefix();
+    private $prefix;
 
     /**
      * @return string
      */
-    abstract protected function getSuffix();
+    protected function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string $prefix
+     *
+     * @return self
+     */
+    protected function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
 
     /**
      * @param string $public_id
@@ -22,14 +34,6 @@ trait ResourceOwnerManagerBehaviour
     protected function isPublicIdSupported($public_id)
     {
         $prefix = $this->getPrefix();
-        if (0 === strlen($prefix) && $prefix !== substr($public_id, 0, strlen($prefix))) {
-            return false;
-        }
-        $suffix = $this->getSuffix();
-        if (0 === strlen($suffix)) {
-            return true;
-        }
-
-        return $suffix === substr($public_id, -strlen($suffix));
+        return empty($prefix) || $prefix === substr($public_id, 0, strlen($prefix));
     }
 }

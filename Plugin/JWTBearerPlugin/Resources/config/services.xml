@@ -22,6 +22,7 @@
 
         <service id="oauth2_server.jwt_bearer.manager" class="%oauth2_server.jwt_bearer.manager_class%">
             <argument>%oauth2_server.jwt_bearer.client_class%</argument>
+            <argument>%oauth2_server.jwt_bearer.prefix%</argument>
             <argument type="service" id="doctrine" />
             <argument>%oauth2_server.jwt_bearer.private_keys%</argument>
             <argument type="service" id="oauth2_server.jwt.jwt_loader" />

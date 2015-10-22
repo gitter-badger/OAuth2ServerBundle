@@ -24,6 +24,7 @@ class UnregisteredClientPlugin implements BundlePlugin
         }
 
         $container->setParameter('oauth2_server.unregistered_client.class', $pluginConfiguration['client_class']);
+        $container->setParameter('oauth2_server.unregistered_client.prefix', $pluginConfiguration['prefix']);
         $container->setParameter('oauth2_server.unregistered_client.manager.class', $pluginConfiguration['manager_class']);
     }
 
@@ -40,6 +41,7 @@ class UnregisteredClientPlugin implements BundlePlugin
                     ->thenInvalid('The class does not exist')
                 ->end()
             ->end()
+            ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientManager')->end()
             ->end()
             ->isRequired();

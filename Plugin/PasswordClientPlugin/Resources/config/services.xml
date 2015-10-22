@@ -7,6 +7,7 @@
     <services>
         <service id="oauth2_server.password_client.manager" class="%oauth2_server.password_client.manager_class%">
             <argument>%oauth2_server.password_client.client_class%</argument>
+            <argument>%oauth2_server.password_client.prefix%</argument>
             <argument type="service" id="doctrine" />
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />

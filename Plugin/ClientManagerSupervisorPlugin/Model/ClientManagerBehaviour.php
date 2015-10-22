@@ -2,26 +2,13 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model;
 
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBehaviour;
 
 trait ClientManagerBehaviour
 {
     use ResourceOwnerManagerBehaviour;
-
-    /**
-     * @return string
-     */
-    abstract protected function getClass();
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    abstract protected function getEntityRepository();
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    abstract protected function getEntityManager();
+    use ManagerBehaviour;
 
     /**
      * @param string $public_id
@@ -44,8 +31,16 @@ trait ClientManagerBehaviour
     public function createClient()
     {
         $class = $this->getClass();
+        /**
+         * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface
+         */
+        $client = new $class();
 
-        return new $class();
+        if (!empty($this->getPrefix())) {
+            $client->setPublicId($this->getPrefix().$client->getPublicId());
+        }
+
+        return$client;
     }
 
     /**

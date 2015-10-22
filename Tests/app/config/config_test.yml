@@ -63,12 +63,15 @@ oauth2_server:
         default_scope: 'scope1'
         available_scope: 'scope1 scope2 scope3 scope4'
     unregistered_client:
+        prefix: "**UNREGISTERED**-"
         client_class: SpomkyLabs\TestBundle\Entity\UnregisteredClient
         manager_class: SpomkyLabs\TestBundle\Entity\UnregisteredClientManager
     public_client:
+        prefix: PUBLIC-
         client_class: SpomkyLabs\TestBundle\Entity\PublicClient
         manager_class: SpomkyLabs\TestBundle\Entity\PublicClientManager
     password_client:
+        prefix: PASSWORD-
         client_class: SpomkyLabs\TestBundle\Entity\PasswordClient
         manager_class: SpomkyLabs\TestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
@@ -89,6 +92,7 @@ oauth2_server:
     jwt_bearer:
         jwt_loader: jose.loader
         keyset_manager: jose.jwkset_manager
+        prefix: JWT-
         client_class: SpomkyLabs\TestBundle\Entity\JWTClient
         allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
         private_keys:

@@ -38,6 +38,7 @@ class PasswordClientPlugin implements BundlePlugin
         }
 
         $container->setParameter('oauth2_server.password_client.client_class', $pluginConfiguration['client_class']);
+        $container->setParameter('oauth2_server.password_client.prefix', $pluginConfiguration['prefix']);
         $container->setParameter('oauth2_server.password_client.manager_class', $pluginConfiguration['manager_class']);
         $container->setParameter('oauth2_server.password_client.allow_password_client_credentials_in_body_request', $pluginConfiguration['allow_password_client_credentials_in_body_request']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_key', $pluginConfiguration['digest_authentication_key']);
@@ -56,6 +57,7 @@ class PasswordClientPlugin implements BundlePlugin
                     ->thenInvalid('The class does not exist')
                 ->end()
             ->end()
+            ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager')->end()
             ->scalarNode('digest_authentication_key')->cannotBeEmpty()->isRequired()->end()
             ->booleanNode('allow_password_client_credentials_in_body_request')->defaultTrue()->end()

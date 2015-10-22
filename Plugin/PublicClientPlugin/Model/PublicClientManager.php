@@ -6,33 +6,21 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\Client\PublicClientManager as BaseManager;
 use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientManagerBehaviour;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 
 class PublicClientManager extends BaseManager implements PublicClientManagerInterface
 {
-    use ManagerBehaviour;
     use ClientManagerBehaviour;
 
     /**
      * @param string                                       $class
+     * @param string                                       $prefix
      * @param \Doctrine\Common\Persistence\ManagerRegistry $manager_registry
      */
-    public function __construct(
-        $class,
-        ManagerRegistry $manager_registry
-    ) {
+    public function __construct($class, $prefix, ManagerRegistry $manager_registry)
+    {
+        $this->setPrefix($prefix);
         $this->setClass($class);
         $this->setManagerRegistry($manager_registry);
-    }
-
-    protected function getPrefix()
-    {
-        return 'PUBLIC-';
-    }
-
-    protected function getSuffix()
-    {
-        return '';
     }
 
     /**

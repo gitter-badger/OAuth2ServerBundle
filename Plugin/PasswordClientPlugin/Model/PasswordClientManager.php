@@ -9,37 +9,20 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 
 class PasswordClientManager extends Base implements PasswordClientManagerInterface
 {
-    use ManagerBehaviour;
     use ClientManagerBehaviour {
         saveClient as saveClientTrait;
     }
 
     /**
      * @param string                                       $class
+     * @param string                                       $prefix
      * @param \Doctrine\Common\Persistence\ManagerRegistry $manager_registry
      */
-    public function __construct(
-        $class,
-        ManagerRegistry $manager_registry
-    ) {
+    public function __construct($class, $prefix, ManagerRegistry $manager_registry)
+    {
+        $this->setPrefix($prefix);
         $this->setClass($class);
         $this->setManagerRegistry($manager_registry);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPrefix()
-    {
-        return 'PASSWORD-';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSuffix()
-    {
-        return '';
     }
 
     /**
