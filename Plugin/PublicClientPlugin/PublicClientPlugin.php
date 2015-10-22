@@ -31,7 +31,6 @@ class PublicClientPlugin implements BundlePlugin
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('client_class')
                 ->cannotBeEmpty()->isRequired()
@@ -43,7 +42,8 @@ class PublicClientPlugin implements BundlePlugin
                 ->end()
             ->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManager')->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function build(ContainerBuilder $container)
