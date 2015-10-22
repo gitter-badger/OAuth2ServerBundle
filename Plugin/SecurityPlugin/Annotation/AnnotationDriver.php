@@ -24,7 +24,7 @@ class AnnotationDriver
     private $reader;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
     private $token_storage;
 
