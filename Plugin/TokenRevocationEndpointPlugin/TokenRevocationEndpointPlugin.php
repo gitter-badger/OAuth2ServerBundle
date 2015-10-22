@@ -26,13 +26,13 @@ class TokenRevocationEndpointPlugin implements BundlePlugin, PrependExtensionInt
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('access_token_manager')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('refresh_token_manager')->defaultNull()->end()
             ->booleanNode('revoke_refresh_token_and_access_token')->defaultTrue()->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function load(array $pluginConfiguration, ContainerBuilder $container)
