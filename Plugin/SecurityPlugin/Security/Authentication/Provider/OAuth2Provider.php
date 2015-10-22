@@ -8,6 +8,7 @@ use OAuth2\Behaviour\HasClientManagerSupervisor;
 use OAuth2\Behaviour\HasEndUserManager;
 use OAuth2\Behaviour\HasExceptionManager;
 use OAuth2\Client\ClientInterface;
+use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Exception\BaseExceptionInterface;
 use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
@@ -77,16 +78,9 @@ class OAuth2Provider implements AuthenticationProviderInterface
 
         try {
             $resource_owner = $this->getResourceOwner($access_token->getResourceOwnerPublicId());
-            if (null === $resource_owner) {
-                throw $this->createException('Unknown resource owner', $access_token);
-            }
             $this->checkResourceOwner($resource_owner, $access_token);
             $token->setResourceOwner($resource_owner);
-
-            $client = $this->getClientManagerSupervisor()->getClient($access_token->getClientPublicId());
-            if (null === $client) {
-                throw $this->createException('Unknown client', $access_token);
-            }
+            $client = $this->getClient($access_token->getClientPublicId());
             $token->setClient($client);
             $token->setAuthenticated(true);
 
@@ -115,6 +109,15 @@ class OAuth2Provider implements AuthenticationProviderInterface
         }
     }
 
+    private function getClient($client_public_id)
+    {
+        $client = $this->getClientManagerSupervisor()->getClient($access_token->getClientPublicId());
+        if (null === $client) {
+            throw $this->createException('Unknown client', $access_token);
+        }
+        return $client;
+    }
+
     private function getResourceOwner($resource_owner_public_id)
     {
         $r_o = $this->getClientManagerSupervisor()->getClient($resource_owner_public_id);
@@ -122,7 +125,10 @@ class OAuth2Provider implements AuthenticationProviderInterface
             return $r_o;
         }
 
-        return $this->getEndUserManager()->getEndUser($resource_owner_public_id);
+        $resource_owner = $this->getEndUserManager()->getEndUser($resource_owner_public_id);
+        if (!$resource_owner instanceof EndUserInterface) {
+            throw $this->createException('Unknown resource owner', $access_token);
+        }
     }
 
     private function createException($message, AccessTokenInterface $access_token)
