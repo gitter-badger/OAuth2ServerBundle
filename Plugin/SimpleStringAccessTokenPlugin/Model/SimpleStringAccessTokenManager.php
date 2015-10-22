@@ -71,7 +71,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
             $access_token->setResourceOwnerPublicId($resourceOwner->getPublicId());
         }
         if (null !== $refresh_token) {
-            $access_token->setRefreshToken($refresh_token);
+            $access_token->setRefreshToken($refresh_token->getToken());
         }
 
         $this->getEntityManager()->persist($access_token);
