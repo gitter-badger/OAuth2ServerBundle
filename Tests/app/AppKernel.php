@@ -6,6 +6,8 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTok
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\FormPostResponseModePlugin\OpenIdConnectFormPostResponseModePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\MultipleResponseTypesPlugin\OpenIdConnectMultipleResponseTypesPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\RefreshTokenGrantTypePlugin;
@@ -18,8 +20,6 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredCl
 use SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\FormPostResponseModePlugin\OpenIdConnectFormPostResponseModePlugin;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\MultipleResponseTypesPlugin\OpenIdConnectMultipleResponseTypesPlugin;
 
 class AppKernel extends Kernel
 {
