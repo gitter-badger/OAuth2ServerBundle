@@ -31,10 +31,10 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('access_token_manager')->isRequired()->cannotBeEmpty()->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function boot(ContainerInterface $container)
