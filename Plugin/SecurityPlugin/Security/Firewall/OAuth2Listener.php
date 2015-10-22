@@ -17,7 +17,7 @@ class OAuth2Listener implements ListenerInterface
     use HasAccessTokenTypeManager;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
     private $token_storage;
 
@@ -27,8 +27,8 @@ class OAuth2Listener implements ListenerInterface
     private $authentication_manager;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface                      $token_storage
-     * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authentication_manager
+     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $token_storage
+     * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface      $authentication_manager
      */
     public function __construct(TokenStorageInterface $token_storage, AuthenticationManagerInterface $authentication_manager)
     {
