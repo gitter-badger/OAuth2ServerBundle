@@ -111,7 +111,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
 
     private function getClient($client_public_id)
     {
-        $client = $this->getClientManagerSupervisor()->getClient($access_token->getClientPublicId());
+        $client = $this->getClientManagerSupervisor()->getClient($client_public_id);
         if (null === $client) {
             throw $this->createException('Unknown client', $access_token);
         }
