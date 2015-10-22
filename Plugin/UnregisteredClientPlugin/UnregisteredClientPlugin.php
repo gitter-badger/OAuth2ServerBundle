@@ -30,7 +30,6 @@ class UnregisteredClientPlugin implements BundlePlugin
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
     {
         $pluginNode
-            ->isRequired()
             ->children()
             ->scalarNode('client_class')
                 ->cannotBeEmpty()->isRequired()
@@ -42,7 +41,8 @@ class UnregisteredClientPlugin implements BundlePlugin
                 ->end()
             ->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientManager')->end()
-            ->end();
+            ->end()
+            ->isRequired();
     }
 
     public function build(ContainerBuilder $container)
