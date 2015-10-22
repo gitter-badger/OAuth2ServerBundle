@@ -6,11 +6,9 @@ use OAuth2\Behaviour\HasAccessTokenManager;
 use OAuth2\Behaviour\HasAccessTokenTypeManager;
 use OAuth2\Behaviour\HasClientManagerSupervisor;
 use OAuth2\Behaviour\HasEndUserManager;
-use OAuth2\Behaviour\HasExceptionManager;
 use OAuth2\Client\ClientInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Exception\BaseExceptionInterface;
-use OAuth2\Exception\ExceptionManagerInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AccessTokenInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token;
@@ -19,13 +17,13 @@ use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProvid
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuth2Provider implements AuthenticationProviderInterface
 {
-    use HasExceptionManager;
     use HasEndUserManager;
     use HasClientManagerSupervisor;
     use HasAccessTokenManager;
@@ -62,25 +60,25 @@ class OAuth2Provider implements AuthenticationProviderInterface
             return;
         }
 
-        /*
+        /**
          * @var $token \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token
          */
         $token_id = $token->getToken();
 
         $access_token = $this->getAccessTokenManager()->getAccessToken($token_id);
         if (!$access_token instanceof AccessTokenInterface) {
-            throw new AuthenticationException('Unknown access token');
+            throw new BadCredentialsException('Access token is missing');
         }
         if (false === $this->getAccessTokenManager()->isAccessTokenValid($access_token)) {
-            throw new AuthenticationException('Access token is not valid');
+            throw new BadCredentialsException('Access token is not valid');
         }
         $token->setAccessToken($access_token);
 
         try {
-            $resource_owner = $this->getResourceOwner($access_token->getResourceOwnerPublicId());
-            $this->checkResourceOwner($resource_owner, $access_token);
+            $resource_owner = $this->getResourceOwner($access_token);
+            $this->checkResourceOwner($resource_owner);
             $token->setResourceOwner($resource_owner);
-            $client = $this->getClient($access_token->getClientPublicId());
+            $client = $this->getClient($access_token);
             $token->setClient($client);
             $token->setAuthenticated(true);
 
@@ -100,84 +98,53 @@ class OAuth2Provider implements AuthenticationProviderInterface
 
     /**
      * @param \OAuth2\ResourceOwner\ResourceOwnerInterface $resource_owner
-     * @param \OAuth2\Token\AccessTokenInterface           $access_token
      * 
-     * @throws OAuth2\Exception\BaseExceptionInterface
+     * @throws \OAuth2\Exception\BaseExceptionInterface
      */
-    private function checkResourceOwner(ResourceOwnerInterface $resource_owner, AccessTokenInterface $access_token)
+    private function checkResourceOwner(ResourceOwnerInterface $resource_owner)
     {
         if ($resource_owner instanceof UserInterface) {
             try {
                 $this->user_checker->checkPostAuth($resource_owner);
             } catch (AccountStatusException $e) {
-                throw $this->createException($e->getMessage(), $access_token);
+                throw new BadCredentialsException($e->getMessage());
             }
         }
     }
 
     /**
-     * @param string $client_public_id
+     * @param \OAuth2\Token\AccessTokenInterface $access_token
      * 
-     * @throws OAuth2\Exception\BaseExceptionInterface
+     * @throws \OAuth2\Exception\BaseExceptionInterface
      * 
      * @return \OAuth2\Client\ClientInterface
      */
-    private function getClient($client_public_id)
+    private function getClient(AccessTokenInterface $access_token)
     {
-        $client = $this->getClientManagerSupervisor()->getClient($client_public_id);
+        $client = $this->getClientManagerSupervisor()->getClient($access_token->getClientPublicId());
         if (null === $client) {
-            throw $this->createException('Unknown client', $access_token);
+            throw new BadCredentialsException('Unknown client');
         }
         return $client;
     }
 
     /**
-     * @param string $resource_owner_public_id
-     * 
-     * @throws OAuth2\Exception\BaseExceptionInterface
-     * 
+     * @param \OAuth2\Token\AccessTokenInterface $access_token
+     *
      * @return \OAuth2\Client\ClientInterface|\OAuth2\EndUser\EndUserInterface
+     * @throws \OAuth2\Exception\BaseExceptionInterface
      */
-    private function getResourceOwner($resource_owner_public_id)
+    private function getResourceOwner(AccessTokenInterface $access_token)
     {
-        $resource_owner = $this->getClientManagerSupervisor()->getClient($resource_owner_public_id);
+        $resource_owner = $this->getClientManagerSupervisor()->getClient($access_token->getResourceOwnerPublicId());
         if ($resource_owner instanceof ClientInterface) {
             return $resource_owner;
         }
 
-        $resource_owner = $this->getEndUserManager()->getEndUser($resource_owner_public_id);
+        $resource_owner = $this->getEndUserManager()->getEndUser($access_token->getResourceOwnerPublicId());
         if (!$resource_owner instanceof EndUserInterface) {
-            throw $this->createException('Unknown resource owner', $access_token);
+            throw new BadCredentialsException('Unknown resource owner');
         }
         return $resource_owner;
-    }
-
-    /**
-     * @param string                            $message
-     * @param OAuth2\Token\AccessTokenInterface $access_token
-     * 
-     * @return OAuth2\Exception\BaseExceptionInterface
-     */
-    private function createException($message, AccessTokenInterface $access_token)
-    {
-        $schemes = ['schemes' => []];
-        foreach ($this->getAccessTokenTypeManager()->getAccessTokenTypes() as $type) {
-            $params = $type->getSchemeParameters();
-            if (!empty($params)) {
-                foreach ($params as $id => $param) {
-                    if (!empty($access_token->getScope())) {
-                        $params[$id] = array_merge($params[$id], ['scope' => implode(' ', $access_token->getScope())]);
-                    }
-                }
-                $schemes['schemes'] = array_merge($schemes['schemes'], $params);
-            }
-        }
-
-        return $this->getExceptionManager()->getException(
-            ExceptionManagerInterface::AUTHENTICATE,
-            ExceptionManagerInterface::ACCESS_DENIED,
-            $message,
-            $schemes
-        );
     }
 }

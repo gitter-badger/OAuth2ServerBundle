@@ -43,9 +43,24 @@ class AnnotationDriver
         $this->token_storage = $token_storage;
     }
 
+    /**
+     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\Checker\CheckerInterface $checker
+     *
+     * @return self
+     */
     public function addChecker(CheckerInterface $checker)
     {
         $this->checkers[] = $checker;
+
+        return $this;
+    }
+
+    /**
+     * @return \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Annotation\Checker\CheckerInterface[]
+     */
+    public function getCheckers()
+    {
+        return $this->checkers;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -70,7 +85,7 @@ class AnnotationDriver
                     return;
                 }
 
-                foreach ($this->checkers as $checker) {
+                foreach ($this->getCheckers() as $checker) {
                     $result = $checker->check($token, $configuration);
                     if (null !== $result) {
                         $this->createAuthenticationException($event, $result, $configuration->getScope());

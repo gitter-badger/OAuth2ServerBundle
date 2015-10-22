@@ -3,6 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin;
 
 use Matthias\BundlePlugins\BundlePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\DependencyInjection\Compiler\CheckerCompilerPass;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\DependencyInjection\Security\Factory\OAuth2Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
@@ -21,7 +22,7 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['security', 'annotations'] as $basename) {
+        foreach (['security', 'annotations', 'checkers'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -48,6 +49,7 @@ class SecurityPlugin implements BundlePlugin, PrependExtensionInterface
          */
         $extension = $container->getExtension('security');
         $extension->addSecurityListenerFactory(new OAuth2Factory());
+        $container->addCompilerPass(new CheckerCompilerPass());
     }
 
     public function prepend(ContainerBuilder $container)

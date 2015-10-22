@@ -693,6 +693,17 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Then the response has no content
+     */
+    public function theResponseHasNoContent()
+    {
+        $content = $this->getSession()->getPage()->getContent();
+        if (!empty($content)) {
+            throw new \Exception('The content is : '.$content);
+        }
+    }
+
+    /**
      * @Then the access token :token does not exist
      */
     public function theAccessTokenDoesNotExist($token)
@@ -753,6 +764,20 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             throw new \Exception('The '.$id.' is "'.$matches[0][3].'" ("'.$value.'" expected)');
         }
     }
+
+    /**
+     * @Then the www-authenticate header has no :parameter parameter
+     */
+    public function theWwwAuthenticateHeaderHasNoParameter($parameter)
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+        $authentication = substr(current($headers['www-authenticate']), 7);
+        preg_match_all('@('.$parameter.')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authentication, $matches, PREG_SET_ORDER);
+        if (0 < count($matches)) {
+            throw new \Exception('There is a parameter "'.$id.'". Its values are "%s"', json_encode($matches));
+        }
+    }
+
 
     /**
      * @Given I add key :key with public id of :username in the body request

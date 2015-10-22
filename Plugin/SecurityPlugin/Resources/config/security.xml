@@ -4,19 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="oauth2_server.security.authentication.provider.class">SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Provider\OAuth2Provider</parameter>
-        <parameter key="oauth2_server.security.authentication.listener.class">SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Firewall\OAuth2Listener</parameter>
-        <parameter key="oauth2_server.security.entry_point.class">SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\EntryPoint\OAuth2EntryPoint</parameter>
-    </parameters>
-
     <services>
-        <service id="oauth2_server.security.authentication.provider" class="%oauth2_server.security.authentication.provider.class%" public="false">
+        <service id="oauth2_server.security.authentication.provider" class="SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Provider\OAuth2Provider" public="false">
             <argument /> <!-- user provider -->
             <argument type="service" id="security.user_checker" />
-            <call method="setExceptionManager">
-                <argument type="service" id="oauth2_server.exception.manager" />
-            </call>
             <call method="setAccessTokenTypeManager">
                 <argument type="service" id="oauth2_server.access_token_type_manager" />
             </call>
@@ -31,7 +22,7 @@
             </call>
         </service>
 
-        <service id="oauth2_server.security.authentication.listener" class="%oauth2_server.security.authentication.listener.class%" public="false">
+        <service id="oauth2_server.security.authentication.listener" class="SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Firewall\OAuth2Listener" public="false">
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="security.authentication.manager" />
             <call method="setAccessTokenTypeManager">
@@ -39,7 +30,7 @@
             </call>
         </service>
 
-        <service id="oauth2_server.security.entry_point" class="%oauth2_server.security.entry_point.class%" public="false">
+        <service id="oauth2_server.security.entry_point" class="SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\EntryPoint\OAuth2EntryPoint" public="false">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
