@@ -24,7 +24,7 @@ trait RequestContext
      * @return \Behat\Mink\Session
      */
     abstract public function getSession($name = null);
-    
+
     /**
      * @param string $uri
      *
