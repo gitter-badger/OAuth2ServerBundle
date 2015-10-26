@@ -5,6 +5,7 @@ namespace SpomkyLabs\JWTTestBundle\Entity;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\EndUser\EndUserManagerInterface;
+use SpomkyLabs\SimpleStringTestBundle\Entity\EndUser;
 
 class EndUserManager implements EndUserManagerInterface
 {
@@ -39,6 +40,9 @@ class EndUserManager implements EndUserManagerInterface
 
     public function checkEndUserPasswordCredentials(EndUserInterface $end_user, $password)
     {
+        if (!$end_user instanceof EndUser) {
+            return false;
+        }
         return $end_user->getPassword() === $password;
     }
 

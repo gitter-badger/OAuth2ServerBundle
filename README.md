@@ -22,7 +22,7 @@ It provides the following official plugins:
 
 * [x] Access token manager:
     * [x] Simple string access token
-    * [ ] JWT access token
+    * [x] JWT access token
 * [ ] Access token type:
     * [x] Bearer access token ([RFC6750](https://tools.ietf.org/html/rfc6750))
     * [ ] MAC access ([IETF draft](https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05)) - *The implementation is stopped until the specification has not reach maturity*

@@ -174,11 +174,12 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     {
         $session = new Session();
         $client = $this->getSession()->getDriver()->getClient();
-        $client->getCookieJar()->set(new Cookie($session->getName(), true));
 
-        $session = $client->getContainer()->get('session');
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
 
-        $user = $this->kernel->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
+        $session = $this->getContainer()->get('session');
+
+        $user = $this->getKernel()->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
 
         if (null === $user) {
             throw new \Exception('Unknown user');
@@ -199,7 +200,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function iTheRequestTo($method, $uri)
     {
         $client = $this->getSession()->getDriver()->getClient();
-        //$client->followRedirects(false);
+        $client->followRedirects(false);
 
         $this->getRequestBuilder()->setUri($this->locatePath($uri));
         try {
@@ -214,7 +215,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         } catch (\Exception $e) {
             $this->exception = $e;
         }
-        //$client->followRedirects(true);
+        $client->followRedirects(true);
     }
 
     /**
@@ -222,6 +223,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iShouldReceiveAResponse($content_type)
     {
+        $headers = $this->getSession()->getResponseHeaders();
         if (!isset($headers['content-type']) || !in_array($content_type, $headers['content-type'])) {
             throw new \Exception('The response header does not contain "'.$content_type.'"');
         }
@@ -421,6 +423,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iClickOn($name)
     {
+        $content = $this->getSession()->getPage()->getContent();
+        print_r(2500<strlen($content)?substr($content,0,2500):$content);
         $this->getSession()->getDriver()->getClient()->followRedirects(false);
 
         $button = $this->fixStepArgument($name);
@@ -752,7 +756,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenManager
          */
-        $access_token_manager = $manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');
+        $access_token_manager = $this->getKernel()->getContainer()->get('oauth2_server.simple_string_access_token.manager');
         $access_tokens = $access_token_manager->getEntityRepository()->findBy(['client_public_id' => $client_id]);
 
         if ((int) $count !== count($access_tokens)) {
@@ -785,7 +789,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         $authentication = substr(current($headers['www-authenticate']), 7);
         preg_match_all('@('.$parameter.')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $authentication, $matches, PREG_SET_ORDER);
         if (0 < count($matches)) {
-            throw new \Exception('There is a parameter "'.$id.'". Its values are "%s"', json_encode($matches));
+            throw new \Exception('There is a parameter "'.$parameter.'". Its values are "%s"', json_encode($matches));
         }
     }
 
@@ -794,7 +798,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iAddKeyWithPublicIdOfInTheBodyRequest($key, $username)
     {
-        $user = $this->kernel->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
+        $user = $this->getKernel()->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
 
         if (null === $user) {
             throw new \Exception('Unknown user');

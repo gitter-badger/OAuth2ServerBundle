@@ -1,25 +1,29 @@
 default:
+    formatters:
+        pretty: true
     autoload:
-        '': %paths.base%/Tests
+        '': %paths.base%
     extensions:
         Behat\Symfony2Extension:
             kernel:
-                env: jwt
+                env: simple_string
                 debug: true
-                path: Tests/app/AppKernel.php
-                bootstrap: Tests/app/autoload.php
+                path: app/AppKernel.php
+                bootstrap: app/autoload.php
         VIPSoft\DoctrineDataFixturesExtension\Extension:
             lifetime:    scenario
             autoload:    true
         Behat\MinkExtension:
+            base_url: https://oauth2.test/
             sessions:
-                default:
+                symfony2: # bleeding fast, CLI, no browser
                     symfony2: ~
     suites:
         default:
             paths:
-                - %paths.base%/Features/JWT
+                - %paths.base%/../Features/SimpleString
             contexts:
                 - SpomkyLabs\OAuth2ServerBundle\Features\Context\FeatureContext
-            mink_session: default
+            type: symfony_bundle
+            mink_session: symfony2
             bundle: SpomkyLabsOAuth2ServerBundle

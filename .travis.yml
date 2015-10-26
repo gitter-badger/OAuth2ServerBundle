@@ -23,5 +23,5 @@ before_script:
     - composer update
 
 script:
-    - vendor/bin/behat --config behat-jwt.yml
-    - vendor/bin/behat --config behat-simple-string.yml
+    - vendor/bin/behat --config Tests/behat-jwt.yml
+    - vendor/bin/behat --config Tests/behat-simple-string.yml

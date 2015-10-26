@@ -39,6 +39,9 @@ class EndUserManager implements EndUserManagerInterface
 
     public function checkEndUserPasswordCredentials(EndUserInterface $end_user, $password)
     {
+        if (!$end_user instanceof EndUser) {
+            return false;
+        }
         return $end_user->getPassword() === $password;
     }
 
