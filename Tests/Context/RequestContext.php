@@ -24,6 +24,13 @@ trait RequestContext
      * @return \Behat\Mink\Session
      */
     abstract public function getSession($name = null);
+    
+    /**
+     * @param string $uri
+     *
+     * @return string
+     */
+    abstract public function locatePath($uri);
 
     /**
      * @return \SpomkyLabs\OAuth2ServerBundle\Features\Context\RequestBuilder
