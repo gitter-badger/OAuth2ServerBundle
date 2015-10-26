@@ -2,19 +2,8 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
-use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
-use OAuth2\Token\RefreshTokenInterface;
 use SpomkyLabs\Jose\EncryptionInstruction;
 use SpomkyLabs\Jose\SignatureInstruction;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 trait JWTContext
 {
@@ -41,7 +30,7 @@ trait JWTContext
      */
     public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
     {
-        /**
+        /*
          * @var \Jose\JWKManagerInterface
          */
         $key_manager = $this->getContainer()->get('jose.jwk_manager');
