@@ -56,7 +56,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
     {
-        /**
+        /*
          * @var \Jose\JWKManagerInterface
          */
         $key_manager = $this->getContainer()->get('jose.jwk_manager');
@@ -788,7 +788,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             throw new \Exception('There is a parameter "'.$id.'". Its values are "%s"', json_encode($matches));
         }
     }
-
 
     /**
      * @Given I add key :key with public id of :username in the body request

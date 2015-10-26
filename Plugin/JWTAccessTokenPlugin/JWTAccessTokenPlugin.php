@@ -2,7 +2,6 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Matthias\BundlePlugins\BundlePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\DependencyInjection\Compiler\ConfigurationEntryCompilerPass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

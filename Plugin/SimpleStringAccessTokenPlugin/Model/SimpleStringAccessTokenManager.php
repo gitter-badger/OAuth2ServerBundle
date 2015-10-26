@@ -60,7 +60,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
 
         $class = $this->getClass();
         /**
-         * @var $access_token \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
          */
         $access_token = new $class();
         $access_token->setToken($token)

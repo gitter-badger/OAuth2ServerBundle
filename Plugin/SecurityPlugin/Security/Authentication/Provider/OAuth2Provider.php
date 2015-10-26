@@ -60,7 +60,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
             return;
         }
 
-        /**
+        /*
          * @var $token \SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\Security\Authentication\Token\OAuth2Token
          */
         $token_id = $token->getToken();
@@ -125,14 +125,16 @@ class OAuth2Provider implements AuthenticationProviderInterface
         if (null === $client) {
             throw new BadCredentialsException('Unknown client');
         }
+
         return $client;
     }
 
     /**
      * @param \OAuth2\Token\AccessTokenInterface $access_token
      *
-     * @return \OAuth2\Client\ClientInterface|\OAuth2\EndUser\EndUserInterface
      * @throws \OAuth2\Exception\BaseExceptionInterface
+     *
+     * @return \OAuth2\Client\ClientInterface|\OAuth2\EndUser\EndUserInterface
      */
     private function getResourceOwner(AccessTokenInterface $access_token)
     {
@@ -145,6 +147,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
         if (!$resource_owner instanceof EndUserInterface) {
             throw new BadCredentialsException('Unknown resource owner');
         }
+
         return $resource_owner;
     }
 }

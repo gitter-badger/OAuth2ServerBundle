@@ -34,6 +34,7 @@ trait ResourceOwnerManagerBehaviour
     protected function isPublicIdSupported($public_id)
     {
         $prefix = $this->getPrefix();
+
         return empty($prefix) || $prefix === substr($public_id, 0, strlen($prefix));
     }
 }
