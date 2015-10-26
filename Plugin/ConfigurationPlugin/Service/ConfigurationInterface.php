@@ -8,7 +8,7 @@ use OAuth2\Configuration\ConfigurationInterface as Base;
  * This interface is based on the OAuth2\Configuration\ConfigurationInterface interface and adds additional methods
  * to ease configuration management.
  */
-interface ConfigurationInterface extends  Base
+interface ConfigurationInterface extends Base
 {
     /**
      * Remove a configuration key and its value.
