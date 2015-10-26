@@ -43,6 +43,7 @@ class EndUserManager implements EndUserManagerInterface
         if (!$end_user instanceof EndUser) {
             return false;
         }
+
         return $end_user->getPassword() === $password;
     }
 

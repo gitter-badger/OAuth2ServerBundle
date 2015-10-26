@@ -33,6 +33,7 @@ trait RequestContext
         if (null === $this->request_builder) {
             $this->request_builder = new RequestBuilder();
         }
+
         return $this->request_builder;
     }
 
