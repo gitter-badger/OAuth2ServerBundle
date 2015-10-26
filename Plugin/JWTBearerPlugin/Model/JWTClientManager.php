@@ -3,15 +3,11 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Jose\JWKSetManagerInterface;
-use Jose\LoaderInterface;
 use OAuth2\Client\JWTClientManager as Base;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientManagerBehaviour;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 
 class JWTClientManager extends Base implements JWTClientManagerInterface
 {
-
     use ClientManagerBehaviour {
         saveClient as saveClientTrait;
     }

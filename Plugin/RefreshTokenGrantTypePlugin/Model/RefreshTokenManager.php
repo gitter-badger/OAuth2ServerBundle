@@ -122,7 +122,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     protected function addRefreshToken($token, $expiresAt, ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [])
     {
         $class = $this->getClass();
-        /**
+        /*
          * @var \OAuth2\Token\RefreshTokenInterface
          */
         $refresh_token = new $class();

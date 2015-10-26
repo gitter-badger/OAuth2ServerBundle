@@ -59,7 +59,7 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
     protected function addAuthCode($code, $expiresAt, ClientInterface $client, EndUserInterface $end_user, array $query_params, $redirectUri, array $scope = [], $issueRefreshToken = false)
     {
         $class = $this->getClass();
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Model\AuthCodeInterface
          */
         $authcode = new $class();

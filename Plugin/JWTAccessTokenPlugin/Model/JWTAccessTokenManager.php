@@ -18,8 +18,7 @@ class JWTAccessTokenManager extends BaseManager implements JWTAccessTokenManager
      */
     public function __construct(
         EventDispatcherInterface $event_dispatcher = null
-    )
-    {
+    ) {
         $this->event_dispatcher = $event_dispatcher;
     }
 

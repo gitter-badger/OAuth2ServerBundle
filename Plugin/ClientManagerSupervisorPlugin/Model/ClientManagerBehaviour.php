@@ -32,7 +32,7 @@ trait ClientManagerBehaviour
     {
         $class = $this->getClass();
         /**
-         * @var $client \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface
          */
         $client = new $class();
 
