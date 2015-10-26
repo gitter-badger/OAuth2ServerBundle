@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="oauth2_server.jwt_access_token.manager" class="SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\Model\JWTAccessTokenManager">
+            <argument type="service" id="event_dispatcher" on-invalid="ignore" />
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt_access_token.jwt_loader" />
+            </call>
+            <call method="setJWTSigner">
+                <argument type="service" id="oauth2_server.jwt_access_token.jwt_signer" />
+            </call>
+            <call method="setJWTEncrypter">
+                <argument type="service" id="oauth2_server.jwt_access_token.jwt_encrypter" />
+            </call>
+            <call method="setConfiguration">
+                <argument type="service" id="oauth2_server.configuration" />
+            </call>
+        </service>
+    </services>
+</container>

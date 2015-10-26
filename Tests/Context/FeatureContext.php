@@ -7,6 +7,8 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
+use SpomkyLabs\Jose\EncryptionInstruction;
+use SpomkyLabs\Jose\SignatureInstruction;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
@@ -80,8 +82,16 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
             'sub' => $client,
         ];
 
-        $jws = $jose->sign($input, $jwk2, ['cty' => 'JWT','alg' => 'HS512']);
-        $jwe = $jose->encrypt($jws, $jwk1, null, ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client]);
+        $signature_instruction = new SignatureInstruction();
+        $signature_instruction->setKey($jwk2)
+            ->setProtectedHeader(['cty' => 'JWT','alg' => 'HS512'])
+            ->setUnprotectedHeader([]);
+
+        $encryption_instruction = new EncryptionInstruction();
+        $encryption_instruction->setRecipientKey($jwk1);
+
+        $jws = $jose->sign($input, [$signature_instruction]);
+        $jwe = $jose->encrypt($jws, [$encryption_instruction], ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client]);
 
         $this->iAddKeyWithValueInTheBodyRequest('client_assertion_type', 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
         $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jwe);
@@ -245,6 +255,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         $content = $this->getSession()->getPage()->getContent();
         $data = json_decode($content, true);
         if (!isset($data['access_token'])) {
+            throw new \Exception('The response does not contain an access token');
         }
     }
 

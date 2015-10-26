@@ -5,6 +5,7 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Authorizati
 use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\JWTAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\FormPostResponseModePlugin\OpenIdConnectFormPostResponseModePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\MultipleResponseTypesPlugin\OpenIdConnectMultipleResponseTypesPlugin;
@@ -34,15 +35,35 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
 
-            new SpomkyLabs\JoseBundle\SpomkyLabsJoseBundle(),
-
-            new SpomkyLabsOAuth2ServerBundle([
-                new BearerAccessTokenPlugin(),
-                new UnregisteredClientPlugin(),
+        ];
+        if ('simple_string' === $this->getEnvironment()) {
+            $bundles[] = new SpomkyLabs\SimpleStringTestBundle\SpomkyLabsSimpleStringTestBundle();
+            $bundles[] = new SpomkyLabsOAuth2ServerBundle([
+                    new BearerAccessTokenPlugin(),
+                    new UnregisteredClientPlugin(),
+                    new PublicClientPlugin(),
+                    new PasswordClientPlugin(),
+                    new AuthCodeGrantTypePlugin(),
+                    new RefreshTokenGrantTypePlugin(),
+                    new ImplicitGrantTypePlugin(),
+                    new ResourceOwnerPasswordCredentialsGrantTypePlugin(),
+                    new ClientCredentialsGrantTypePlugin(),
+                    new SimpleStringAccessTokenPlugin(),
+                    new AuthorizationEndpointPlugin(),
+                    new TokenEndpointPlugin(),
+                    new TokenRevocationEndpointPlugin(),
+                    new OpenIdConnectFormPostResponseModePlugin(),
+                    new OpenIdConnectMultipleResponseTypesPlugin(),
+                    new SecurityPlugin(),
+            ]);
+        } elseif ('jwt' === $this->getEnvironment()) {
+            $bundles[] = new SpomkyLabs\JoseBundle\SpomkyLabsJoseBundle();
+            $bundles[] = new SpomkyLabs\JWTTestBundle\SpomkyLabsJWTTestBundle();
+            $bundles[] = new SpomkyLabsOAuth2ServerBundle([
                 new PublicClientPlugin(),
-                new PasswordClientPlugin(),
+                new BearerAccessTokenPlugin(),
                 new JWTBearerPlugin(),
-                new SimpleStringAccessTokenPlugin(),
+                new JWTAccessTokenPlugin(),
                 new AuthCodeGrantTypePlugin(),
                 new RefreshTokenGrantTypePlugin(),
                 new ImplicitGrantTypePlugin(),
@@ -54,17 +75,15 @@ class AppKernel extends Kernel
                 new OpenIdConnectFormPostResponseModePlugin(),
                 new OpenIdConnectMultipleResponseTypesPlugin(),
                 new SecurityPlugin(),
-            ]),
-            new SpomkyLabs\TestBundle\SpomkyLabsTestBundle(),
-
-        ];
+            ]);
+        }
 
         return $bundles;
     }
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/SpomkyLabsTestBundle';
+        return sys_get_temp_dir().'/'.$this->getEnvironment().'/SpomkyLabsTestBundle';
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

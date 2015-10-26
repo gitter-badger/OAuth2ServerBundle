@@ -17,7 +17,8 @@
         "doctrine/doctrine-bundle": "~1.0",
         "matthiasnoback/symfony-bundle-plugins": "~1.1.0",
         "spomky-labs/oauth2-server-library": "~0.0.0",
-        "spomky-labs/jose-interface": "~2.3"
+        "spomky-labs/jose-interface": "~2.3",
+        "symfony/psr-http-message-bridge": "~0.2"
     },
     "require-dev": {
         "puli/twig-extension": "~1.0",
@@ -25,7 +26,6 @@
         "puli/discovery": "~1.0",
         "puli/symfony-bundle": "~1.0",
         "spomky-labs/jose-bundle": "dev-master",
-        "symfony/psr-http-message-bridge": "~0.2",
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "vipsoft/doctrine-data-fixtures-extension": "*",
         "sensio/framework-extra-bundle": "^3.0",
@@ -56,7 +56,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SpomkyLabs\\TestBundle\\": "Tests/TestBundle",
+            "SpomkyLabs\\JWTTestBundle\\": "Tests/JWTTestBundle",
+            "SpomkyLabs\\SimpleStringTestBundle\\": "Tests/SimpleStringTestBundle",
             "SpomkyLabs\\OAuth2ServerBundle\\Features\\Context\\": "Tests/Context"
         }
     },

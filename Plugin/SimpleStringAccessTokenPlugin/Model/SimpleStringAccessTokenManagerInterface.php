@@ -15,7 +15,7 @@ interface SimpleStringAccessTokenManagerInterface
     public function getEntityManager();
 
     /**
-     * @return self
+     * @return int
      */
     public function deleteExpired();
 }

@@ -59,7 +59,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         }
 
         $class = $this->getClass();
-        /*
+        /**
          * @var $access_token \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
          */
         $access_token = new $class();
@@ -84,11 +84,17 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         return $access_token;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAccessToken($token)
     {
         return $this->getEntityRepository()->findOneBy(['token' => $token]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function revokeAccessToken(AccessTokenInterface $access_token)
     {
         if ($access_token instanceof SimpleStringAccessTokenInterface) {
@@ -99,16 +105,25 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEntityRepository()
     {
         return $this->entity_repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEntityManager()
     {
         return $this->entity_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteExpired()
     {
         $qb = $this->getEntityRepository()->createQueryBuilder('t');

@@ -5,36 +5,45 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="oauth2_server.jwt_bearer_grant_type" class="SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Grant\JWTBearerGrantType">
-            <argument type="service" id="oauth2_server.jwt.jwt_loader" />
-            <argument type="service" id="oauth2_server.jwt.keyset_manager" />
+        <service id="oauth2_server.jwt_bearer.grant_type" class="OAuth2\Grant\JWTBearerGrantType">
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
             <call method="setConfiguration">
                 <argument type="service" id="oauth2_server.configuration" />
             </call>
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt_bearer.jwt_loader" />
+            </call>
+            <tag name="oauth2_server.grant_type" />
+        </service>
+
+        <service id="oauth2_server.jwt_bearer.jwt_loader" class="SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Service\JWTLoader">
+            <argument type="service" id="oauth2_server.jwt.keyset_manager" />
+            <argument>%oauth2_server.jwt_bearer.private_keys%</argument>
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
             <call method="setAllowedEncryptionAlgorithms">
                 <argument>%oauth2_server.jwt_bearer.allowed_encryption_algorithms%</argument>
             </call>
-            <tag name="oauth2_server.grant_type" />
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt.jwt_loader" />
+            </call>
         </service>
 
         <service id="oauth2_server.jwt_bearer.manager" class="%oauth2_server.jwt_bearer.manager_class%">
             <argument>%oauth2_server.jwt_bearer.client_class%</argument>
             <argument>%oauth2_server.jwt_bearer.prefix%</argument>
             <argument type="service" id="doctrine" />
-            <argument>%oauth2_server.jwt_bearer.private_keys%</argument>
-            <argument type="service" id="oauth2_server.jwt.jwt_loader" />
-            <argument type="service" id="oauth2_server.jwt.keyset_manager" />
             <call method="setExceptionManager">
                 <argument type="service" id="oauth2_server.exception.manager" />
             </call>
             <call method="setConfiguration">
                 <argument type="service" id="oauth2_server.configuration" />
             </call>
-            <call method="setAllowedEncryptionAlgorithms">
-                <argument>%oauth2_server.jwt_bearer.allowed_encryption_algorithms%</argument>
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt_bearer.jwt_loader" />
             </call>
             <tag name="oauth2_server.client_manager" />
         </service>

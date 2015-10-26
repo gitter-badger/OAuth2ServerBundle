@@ -1,0 +1,84 @@
+imports:
+    - { resource: security.yml }
+
+framework:
+    test: ~
+    secret: test
+    translator: ~
+    default_locale:  "en"
+    form: ~
+    csrf_protection: ~
+    validation:
+        enable_annotations: true
+    session:
+        storage_id: session.storage.mock_file
+    router:
+        resource: "%kernel.root_dir%/config/routing_simple_string.yml"
+        strict_requirements: ~
+    templating:
+        engines: ['twig']
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            true
+    strict_variables: true
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     localhost
+        port:
+        path:     "%kernel.cache_dir%/project_simple_string.db"
+        user:     root
+        password:
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true
+
+oauth2_server:
+    scope:
+        policy: 'default'
+        default_scope: 'scope1'
+        available_scope: 'scope1 scope2 scope3 scope4'
+    unregistered_client:
+        prefix: "**UNREGISTERED**-"
+        client_class: SpomkyLabs\SimpleStringTestBundle\Entity\UnregisteredClient
+        manager_class: SpomkyLabs\SimpleStringTestBundle\Entity\UnregisteredClientManager
+    public_client:
+        prefix: PUBLIC-
+        client_class: SpomkyLabs\SimpleStringTestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\SimpleStringTestBundle\Entity\PublicClientManager
+    password_client:
+        prefix: PASSWORD-
+        client_class: SpomkyLabs\SimpleStringTestBundle\Entity\PasswordClient
+        manager_class: SpomkyLabs\SimpleStringTestBundle\Entity\PasswordClientManager
+        digest_authentication_key: abcdefghijklmnop
+    refresh_token:
+        token_class: SpomkyLabs\SimpleStringTestBundle\Entity\RefreshToken
+        token_manager: oauth2_server.test_bundle.refresh_token_manager
+    auth_code:
+        class: SpomkyLabs\SimpleStringTestBundle\Entity\AuthCode
+        manager: oauth2_server.test_bundle.auth_code_manager
+        length: 50
+    simple_string_access_token:
+        length: 50
+        lifetime: 7200
+        class: SpomkyLabs\SimpleStringTestBundle\Entity\SimpleStringAccessToken
+        manager: oauth2_server.test_bundle.access_token_manager
+    token_endpoint:
+        access_token_manager: oauth2_server.simple_string_access_token.manager
+        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
+        end_user_manager: oauth2_server.test_bundle.end_user_manager
+    authorization_endpoint:
+        security:
+            x_frame_options: deny
+        option:
+            enforce_redirect_uri: true
+            enforce_secured_redirect_uri: true
+            enforce_registered_client_redirect_uris: true
+            enforce_state: true

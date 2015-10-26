@@ -1,0 +1,134 @@
+imports:
+    - { resource: security.yml }
+
+framework:
+    test: ~
+    secret: test
+    translator: ~
+    default_locale:  "en"
+    form: ~
+    csrf_protection: ~
+    validation:
+        enable_annotations: true
+    session:
+        storage_id: session.storage.mock_file
+    router:
+        resource: "%kernel.root_dir%/config/routing_jwt.yml"
+        strict_requirements: ~
+    templating:
+        engines: ['twig']
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            true
+    strict_variables: true
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     localhost
+        port:
+        path:     "%kernel.cache_dir%/project_jwt.db"
+        user:     root
+        password:
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true
+
+jose:
+    server_name: My Authorization Server
+    use_controller: true
+    storage:
+        enabled: true
+        class: SpomkyLabs\JWTTestBundle\Entity\Jot
+    compression_methods: [DEF,GZ,ZLIB]
+    algorithms:
+        - all
+        - !none
+        - !A128GCMKW
+        - !A192GCMKW
+        - !A256GCMKW
+        - !A128GCM
+        - !A192GCM
+        - !A256GCM
+
+oauth2_server:
+    scope:
+        policy: 'default'
+        default_scope: 'scope1'
+        available_scope: 'scope1 scope2 scope3 scope4'
+    public_client:
+        prefix: PUBLIC-
+        client_class: SpomkyLabs\JWTTestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\JWTTestBundle\Entity\PublicClientManager
+    refresh_token:
+        token_class: SpomkyLabs\JWTTestBundle\Entity\RefreshToken
+        token_manager: oauth2_server.test_bundle.refresh_token_manager
+    auth_code:
+        class: SpomkyLabs\JWTTestBundle\Entity\AuthCode
+        manager: oauth2_server.test_bundle.auth_code_manager
+        length: 50
+    token_endpoint:
+        access_token_manager: oauth2_server.jwt_access_token.manager
+        refresh_token_manager: oauth2_server.test_bundle.refresh_token_manager
+        end_user_manager: oauth2_server.test_bundle.end_user_manager
+    jwt_access_token:
+        audience: My Resource Server
+        issuer: My Authorization Server
+        encrypt_token: true
+        jwt_loader: jose
+        jwt_signer: jose
+        jwt_encrypter: jose
+        jwt_key_manager: jose.jwk_manager
+        jwt_keyset_manager: jose.jwkset_manager
+        signature_algorithm: HS512
+        key_encryption_algorithm: A256KW
+        content_encryption_algorithm: A256CBC-HS512
+        allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
+        signature_key:
+            kid: JWK2
+            kty: oct
+            use: sig
+            k: AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow
+        encryption_key:
+            kid: JWK1
+            kty: oct
+            use: enc
+            k: ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8
+        private_keys:
+            JWK1:
+              kty: oct
+              use: enc
+              k: ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8
+            JWK2:
+              kty: oct
+              use: sig
+              k: AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow
+    jwt_bearer:
+        jwt_loader: jose
+        keyset_manager: jose.jwkset_manager
+        prefix: JWT-
+        client_class: SpomkyLabs\JWTTestBundle\Entity\JWTClient
+        allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
+        private_keys:
+            JWK1:
+                kty: oct
+                use: enc
+                k: ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8
+            JWK2:
+                kty: oct
+                use: sig
+                k: AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow
+    authorization_endpoint:
+        security:
+            x_frame_options: deny
+        option:
+            enforce_redirect_uri: true
+            enforce_secured_redirect_uri: true
+            enforce_registered_client_redirect_uris: true
+            enforce_state: true

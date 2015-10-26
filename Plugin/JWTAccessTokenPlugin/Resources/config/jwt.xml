@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="oauth2_server.jwt_access_token.jwt_loader" class="SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\Service\JWTLoader">
+            <argument type="service" id="oauth2_server.jwt_access_token.keyset_manager" />
+            <argument>%oauth2_server.jwt_access_token.private_keys%</argument>
+            <call method="setExceptionManager">
+                <argument type="service" id="oauth2_server.exception.manager" />
+            </call>
+            <call method="setAllowedEncryptionAlgorithms">
+                <argument>%oauth2_server.jwt_access_token.allowed_encryption_algorithms%</argument>
+            </call>
+            <call method="setJWTLoader">
+                <argument type="service" id="oauth2_server.jwt_access_token.loader" />
+            </call>
+        </service>
+
+        <service id="oauth2_server.jwt_access_token.jwt_signer" class="OAuth2\Util\JWTSigner">
+            <call method="setKeyManager">
+                <argument type="service" id="oauth2_server.jwt_access_token.key_manager" />
+            </call>
+            <call method="setSignatureKey">
+                <argument>%oauth2_server.jwt_access_token.signature_key%</argument>
+            </call>
+            <call method="setJWTSigner">
+                <argument type="service" id="oauth2_server.jwt_access_token.signer" />
+            </call>
+        </service>
+
+        <service id="oauth2_server.jwt_access_token.jwt_encrypter" class="OAuth2\Util\JWTEncrypter">
+            <call method="setKeyManager">
+                <argument type="service" id="oauth2_server.jwt_access_token.key_manager" />
+            </call>
+            <call method="setKeyEncryptionKey">
+                <argument>%oauth2_server.jwt_access_token.encryption_key%</argument>
+            </call>
+            <call method="setJWTEncrypter">
+                <argument type="service" id="oauth2_server.jwt_access_token.encrypter" />
+            </call>
+        </service>
+    </services>
+</container>

@@ -1,0 +1,25 @@
+default:
+    autoload:
+        '': %paths.base%/Tests
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: jwt
+                debug: true
+                path: Tests/app/AppKernel.php
+                bootstrap: Tests/app/autoload.php
+        VIPSoft\DoctrineDataFixturesExtension\Extension:
+            lifetime:    scenario
+            autoload:    true
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    symfony2: ~
+    suites:
+        default:
+            paths:
+                - %paths.base%/Features/JWT
+            contexts:
+                - SpomkyLabs\OAuth2ServerBundle\Features\Context\FeatureContext
+            mink_session: default
+            bundle: SpomkyLabsOAuth2ServerBundle
