@@ -424,7 +424,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     public function iClickOn($name)
     {
         $content = $this->getSession()->getPage()->getContent();
-        print_r(2500 < strlen($content) ? substr($content, 0, 2500) : $content);
         $this->getSession()->getDriver()->getClient()->followRedirects(false);
 
         $button = $this->fixStepArgument($name);
