@@ -5,7 +5,7 @@ namespace SpomkyLabs\JWTTestBundle\Entity;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\EndUser\EndUserManagerInterface;
-use SpomkyLabs\SimpleStringTestBundle\Entity\EndUser;
+use SpomkyLabs\JWTTestBundle\Entity\EndUser;
 
 class EndUserManager implements EndUserManagerInterface
 {
