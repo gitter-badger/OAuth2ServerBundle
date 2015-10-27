@@ -6,3 +6,7 @@ revocation_endpoint:
 
 authorization_endpoint:
     resource: "@SpomkyLabsOAuth2ServerBundle/Plugin/AuthorizationEndpointPlugin/Resources/config/routing/authorization_endpoint.xml"
+
+api:
+    resource: "@SpomkyLabsCommonTestBundle/Controller"
+    type:     annotation

@@ -58,6 +58,7 @@
         "psr-4": {
             "SpomkyLabs\\JWTTestBundle\\": "Tests/JWTTestBundle",
             "SpomkyLabs\\SimpleStringTestBundle\\": "Tests/SimpleStringTestBundle",
+            "SpomkyLabs\\CommonTestBundle\\": "Tests/CommonTestBundle",
             "SpomkyLabs\\OAuth2ServerBundle\\Features\\Context\\": "Tests/Context"
         }
     },

@@ -32,7 +32,7 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
         /*
          * @var \SpomkyLabs\TestBundle\Entity\Entity\SimpleStringAccessTokenManager
          */
-        $client_manager = $this->container->get('oauth2_server.test_bundle.access_token_manager');
+        $client_manager = $this->container->get('oauth2_server.simple_string_test_bundle.access_token_manager');
 
         foreach ($this->getAccessTokens() as $access_token) {
             /*

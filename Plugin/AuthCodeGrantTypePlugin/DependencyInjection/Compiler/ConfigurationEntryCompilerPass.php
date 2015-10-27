@@ -16,6 +16,7 @@ class ConfigurationEntryCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition('oauth2_server.configuration');
         $options = [
             'auth_code_length'   => 'oauth2_server.auth_code.length',
+            'auth_code_charset'  => 'oauth2_server.auth_code.length',
             'auth_code_lifetime' => 'oauth2_server.auth_code.lifetime',
         ];
 

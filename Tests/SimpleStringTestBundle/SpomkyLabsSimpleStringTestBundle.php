@@ -9,6 +9,6 @@ class SpomkyLabsSimpleStringTestBundle extends Bundle
 {
     public function getContainerExtension()
     {
-        return new TestExtension('test');
+        return new TestExtension('simple_string_test');
     }
 }

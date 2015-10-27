@@ -9,6 +9,6 @@ class SpomkyLabsJWTTestBundle extends Bundle
 {
     public function getContainerExtension()
     {
-        return new TestExtension('test');
+        return new TestExtension('jwt_test');
     }
 }

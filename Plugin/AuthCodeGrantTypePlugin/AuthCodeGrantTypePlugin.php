@@ -37,6 +37,10 @@ class AuthCodeGrantTypePlugin implements BundlePlugin
             ->info('The length of authorization codes produced by this bundle. Should be at least 20.')
             ->defaultValue(20)->cannotBeEmpty()
             ->end()
+            ->scalarNode('charset')
+            ->info('The charset of authorization codes. Default is "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~+/"')
+            ->defaultNull()
+            ->end()
             ->integerNode('lifetime')
             ->info('The lifetime (in seconds) of authorization codes. Should be less than 1 minute.')
             ->defaultValue(30)->cannotBeEmpty()
@@ -54,6 +58,7 @@ class AuthCodeGrantTypePlugin implements BundlePlugin
         $container->setParameter('oauth2_server.auth_code.class', $pluginConfiguration['class']);
         $container->setAlias('oauth2_server.auth_code.manager', $pluginConfiguration['manager']);
         $container->setParameter('oauth2_server.auth_code.length', $pluginConfiguration['length']);
+        $container->setParameter('oauth2_server.auth_code.charset', $pluginConfiguration['charset']);
         $container->setParameter('oauth2_server.auth_code.lifetime', $pluginConfiguration['lifetime']);
     }
 

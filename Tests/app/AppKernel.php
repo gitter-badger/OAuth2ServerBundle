@@ -34,7 +34,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
-
+            new SpomkyLabs\CommonTestBundle\SpomkyLabsCommonTestBundle(),
         ];
         if ('simple_string' === $this->getEnvironment()) {
             $bundles[] = new SpomkyLabs\SimpleStringTestBundle\SpomkyLabsSimpleStringTestBundle();
@@ -61,6 +61,7 @@ class AppKernel extends Kernel
             $bundles[] = new SpomkyLabs\JWTTestBundle\SpomkyLabsJWTTestBundle();
             $bundles[] = new SpomkyLabsOAuth2ServerBundle([
                 new PublicClientPlugin(),
+                new PasswordClientPlugin(),
                 new BearerAccessTokenPlugin(),
                 new JWTBearerPlugin(),
                 new JWTAccessTokenPlugin(),

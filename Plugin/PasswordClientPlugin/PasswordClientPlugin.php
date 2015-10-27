@@ -40,7 +40,11 @@ class PasswordClientPlugin implements BundlePlugin
         $container->setParameter('oauth2_server.password_client.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.password_client.prefix', $pluginConfiguration['prefix']);
         $container->setParameter('oauth2_server.password_client.manager_class', $pluginConfiguration['manager_class']);
+        $container->setParameter('oauth2_server.password_client.enable_digest_authentication_scheme', $pluginConfiguration['enable_digest_authentication_scheme']);
+        $container->setParameter('oauth2_server.password_client.digest_authentication_scheme_algorithm', $pluginConfiguration['digest_authentication_scheme_algorithm']);
+        $container->setParameter('oauth2_server.password_client.digest_authentication_scheme_quality_of_protection', $pluginConfiguration['digest_authentication_scheme_quality_of_protection']);
         $container->setParameter('oauth2_server.password_client.allow_password_client_credentials_in_body_request', $pluginConfiguration['allow_password_client_credentials_in_body_request']);
+        $container->setParameter('oauth2_server.password_client.digest_authentication_nonce_lifetime', $pluginConfiguration['digest_authentication_nonce_lifetime']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_key', $pluginConfiguration['digest_authentication_key']);
     }
 
@@ -60,7 +64,11 @@ class PasswordClientPlugin implements BundlePlugin
             ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
             ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager')->end()
             ->scalarNode('digest_authentication_key')->cannotBeEmpty()->isRequired()->end()
+            ->scalarNode('digest_authentication_scheme_quality_of_protection')->cannotBeEmpty()->defaultValue('auth,auth-int')->end()
+            ->scalarNode('digest_authentication_scheme_algorithm')->cannotBeEmpty()->defaultValue('MD5')->end()
+            ->booleanNode('enable_digest_authentication_scheme')->defaultTrue()->end()
             ->booleanNode('allow_password_client_credentials_in_body_request')->defaultTrue()->end()
+            ->integerNode('digest_authentication_nonce_lifetime')->defaultValue(300)->end()
             ->end()
             ->isRequired();
     }

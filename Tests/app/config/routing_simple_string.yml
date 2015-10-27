@@ -1,6 +1,2 @@
 _main:
     resource: routing.yml
-
-api:
-    resource: "@SpomkyLabsSimpleStringTestBundle/Controller"
-    type:     annotation

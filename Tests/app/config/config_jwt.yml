@@ -64,13 +64,18 @@ oauth2_server:
         available_scope: 'scope1 scope2 scope3 scope4'
     public_client:
         prefix: PUBLIC-
-        client_class: SpomkyLabs\JWTTestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\JWTTestBundle\Entity\PublicClientManager
+        client_class: SpomkyLabs\CommonTestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\CommonTestBundle\Entity\PublicClientManager
+    password_client:
+        prefix: PASSWORD-
+        client_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClient
+        manager_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClientManager
+        digest_authentication_key: abcdefghijklmnop
     refresh_token:
-        token_class: SpomkyLabs\JWTTestBundle\Entity\RefreshToken
+        token_class: SpomkyLabs\CommonTestBundle\Entity\RefreshToken
         token_manager: oauth2_server.test_bundle.refresh_token_manager
     auth_code:
-        class: SpomkyLabs\JWTTestBundle\Entity\AuthCode
+        class: SpomkyLabs\CommonTestBundle\Entity\AuthCode
         manager: oauth2_server.test_bundle.auth_code_manager
         length: 50
     token_endpoint:

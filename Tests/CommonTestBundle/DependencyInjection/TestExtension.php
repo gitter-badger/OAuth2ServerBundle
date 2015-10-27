@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\JWTTestBundle\DependencyInjection;
+namespace SpomkyLabs\CommonTestBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,6 +21,10 @@ class TestExtension extends Extension
 
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        foreach (['services'] as $basename) {
+            $loader->load(sprintf('%s.xml', $basename));
+        }
     }
 
     /**
