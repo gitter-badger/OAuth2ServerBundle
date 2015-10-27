@@ -18,6 +18,7 @@ before_script:
     - composer require symfony/routing:${SYMFONY_VERSION} --no-update
     - composer require symfony/translation:${SYMFONY_VERSION} --no-update
     - composer require symfony/http-kernel:${SYMFONY_VERSION} --no-update
+    - composer require symfony/config:${SYMFONY_VERSION} --no-update
     - composer require symfony/security-bundle:${SYMFONY_VERSION} --no-update
     - composer require symfony/finder:${SYMFONY_VERSION} --no-update
     - composer require symfony/form:${SYMFONY_VERSION} --no-update
