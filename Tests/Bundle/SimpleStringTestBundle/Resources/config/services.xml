@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.simple_string_test_bundle.access_token_manager.class">SpomkyLabs\Bundle\SimpleStringTestBundle\Entity\SimpleStringAccessTokenManager</parameter>
+    </parameters>
+    <services>
+        <service id="oauth2_server.simple_string_test_bundle.access_token_manager" class="%oauth2_server.simple_string_test_bundle.access_token_manager.class%" parent="oauth2_server.simple_string_access_token.manager.default">
+            <tag name="oauth2_server.cleaner" />
+        </service>
+    </services>
+</container>

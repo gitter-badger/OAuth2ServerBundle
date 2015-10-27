@@ -47,28 +47,28 @@ oauth2_server:
         available_scope: 'scope1 scope2 scope3 scope4'
     unregistered_client:
         prefix: "**UNREGISTERED**-"
-        client_class: SpomkyLabs\CommonTestBundle\Entity\UnregisteredClient
-        manager_class: SpomkyLabs\CommonTestBundle\Entity\UnregisteredClientManager
+        client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\UnregisteredClient
+        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\UnregisteredClientManager
     public_client:
         prefix: PUBLIC-
-        client_class: SpomkyLabs\CommonTestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\CommonTestBundle\Entity\PublicClientManager
+        client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
     password_client:
         prefix: PASSWORD-
-        client_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClient
-        manager_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClientManager
+        client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClient
+        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
     refresh_token:
-        token_class: SpomkyLabs\CommonTestBundle\Entity\RefreshToken
+        token_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\RefreshToken
         token_manager: oauth2_server.test_bundle.refresh_token_manager
     auth_code:
-        class: SpomkyLabs\CommonTestBundle\Entity\AuthCode
+        class: SpomkyLabs\Bundle\CommonTestBundle\Entity\AuthCode
         manager: oauth2_server.test_bundle.auth_code_manager
         length: 50
     simple_string_access_token:
         length: 50
         lifetime: 7200
-        class: SpomkyLabs\SimpleStringTestBundle\Entity\SimpleStringAccessToken
+        class: SpomkyLabs\Bundle\SimpleStringTestBundle\Entity\SimpleStringAccessToken
         manager: oauth2_server.simple_string_test_bundle.access_token_manager
     token_endpoint:
         access_token_manager: oauth2_server.simple_string_access_token.manager

@@ -34,10 +34,10 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Puli\SymfonyBundle\PuliBundle(),
-            new SpomkyLabs\CommonTestBundle\SpomkyLabsCommonTestBundle(),
+            new SpomkyLabs\Bundle\CommonTestBundle\SpomkyLabsCommonTestBundle(),
         ];
         if ('simple_string' === $this->getEnvironment()) {
-            $bundles[] = new SpomkyLabs\SimpleStringTestBundle\SpomkyLabsSimpleStringTestBundle();
+            $bundles[] = new SpomkyLabs\Bundle\SimpleStringTestBundle\SpomkyLabsSimpleStringTestBundle();
             $bundles[] = new SpomkyLabsOAuth2ServerBundle([
                     new BearerAccessTokenPlugin(),
                     new UnregisteredClientPlugin(),
@@ -58,7 +58,7 @@ class AppKernel extends Kernel
             ]);
         } elseif ('jwt' === $this->getEnvironment()) {
             $bundles[] = new SpomkyLabs\JoseBundle\SpomkyLabsJoseBundle();
-            $bundles[] = new SpomkyLabs\JWTTestBundle\SpomkyLabsJWTTestBundle();
+            $bundles[] = new SpomkyLabs\Bundle\JWTTestBundle\SpomkyLabsJWTTestBundle();
             $bundles[] = new SpomkyLabsOAuth2ServerBundle([
                 new PublicClientPlugin(),
                 new PasswordClientPlugin(),

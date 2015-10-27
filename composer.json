@@ -47,7 +47,7 @@
     },
     "minimum-stability": "beta",
     "suggest": {
-        "spomky-labs/jose-bundle" : "To use JWT (OpenID Connect or JWT assertions)"
+        "spomky-labs/jose-bundle" : "To use JWT (OpenID Connect, JWT clients (confidential clients), JWT access tokens or JWT bearer grant type)"
     },
     "autoload": {
         "psr-4": {
@@ -56,9 +56,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SpomkyLabs\\JWTTestBundle\\": "Tests/JWTTestBundle",
-            "SpomkyLabs\\SimpleStringTestBundle\\": "Tests/SimpleStringTestBundle",
-            "SpomkyLabs\\CommonTestBundle\\": "Tests/CommonTestBundle",
+            "SpomkyLabs\\Bundle\\": "Tests/Bundle",
             "SpomkyLabs\\OAuth2ServerBundle\\Features\\Context\\": "Tests/Context"
         }
     },

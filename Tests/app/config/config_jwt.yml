@@ -45,7 +45,7 @@ jose:
     use_controller: true
     storage:
         enabled: true
-        class: SpomkyLabs\JWTTestBundle\Entity\Jot
+        class: SpomkyLabs\Bundle\JWTTestBundle\Entity\Jot
     compression_methods: [DEF,GZ,ZLIB]
     algorithms:
         - all
@@ -64,18 +64,18 @@ oauth2_server:
         available_scope: 'scope1 scope2 scope3 scope4'
     public_client:
         prefix: PUBLIC-
-        client_class: SpomkyLabs\CommonTestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\CommonTestBundle\Entity\PublicClientManager
+        client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClient
+        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
     password_client:
         prefix: PASSWORD-
-        client_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClient
-        manager_class: SpomkyLabs\CommonTestBundle\Entity\PasswordClientManager
+        client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClient
+        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
     refresh_token:
-        token_class: SpomkyLabs\CommonTestBundle\Entity\RefreshToken
+        token_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\RefreshToken
         token_manager: oauth2_server.test_bundle.refresh_token_manager
     auth_code:
-        class: SpomkyLabs\CommonTestBundle\Entity\AuthCode
+        class: SpomkyLabs\Bundle\CommonTestBundle\Entity\AuthCode
         manager: oauth2_server.test_bundle.auth_code_manager
         length: 50
     token_endpoint:
@@ -118,7 +118,7 @@ oauth2_server:
         jwt_loader: jose
         keyset_manager: jose.jwkset_manager
         prefix: JWT-
-        client_class: SpomkyLabs\JWTTestBundle\Entity\JWTClient
+        client_class: SpomkyLabs\Bundle\JWTTestBundle\Entity\JWTClient
         allowed_encryption_algorithms: ['A256KW', 'A256CBC-HS512']
         private_keys:
             JWK1:

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="oauth2_server.test_bundle.end_user.class">SpomkyLabs\Bundle\CommonTestBundle\Entity\EndUser</parameter>
+        <parameter key="oauth2_server.test_bundle.end_user_manager.class">SpomkyLabs\Bundle\CommonTestBundle\Entity\EndUserManager</parameter>
+        <parameter key="oauth2_server.test_bundle.user_provider.class">SpomkyLabs\Bundle\CommonTestBundle\Service\UserProvider</parameter>
+        <parameter key="oauth2_server.test_bundle.refresh_token_manager.class">SpomkyLabs\Bundle\CommonTestBundle\Entity\RefreshTokenManager</parameter>
+        <parameter key="oauth2_server.test_bundle.auth_code_manager.class">SpomkyLabs\Bundle\CommonTestBundle\Entity\AuthCodeManager</parameter>
+    </parameters>
+    <services>
+        <service id="oauth2_server.test_bundle.end_user_manager" class="%oauth2_server.test_bundle.end_user_manager.class%">
+            <argument>%oauth2_server.test_bundle.end_user.class%</argument>
+            <argument type="service" id="doctrine" />
+        </service>
+
+        <service id="oauth2_server.test_bundle.user_provider" class="%oauth2_server.test_bundle.user_provider.class%">
+            <argument type="service" id="oauth2_server.test_bundle.end_user_manager" />
+        </service>
+
+        <service id="oauth2_server.test_bundle.refresh_token_manager" class="%oauth2_server.test_bundle.refresh_token_manager.class%" parent="oauth2_server.refresh_token.manager.default">
+            <tag name="oauth2_server.cleaner" />
+        </service>
+
+        <service id="oauth2_server.test_bundle.auth_code_manager" class="%oauth2_server.test_bundle.auth_code_manager.class%" parent="oauth2_server.auth_code.manager.default">
+            <tag name="oauth2_server.cleaner" />
+        </service>
+    </services>
+</container>
