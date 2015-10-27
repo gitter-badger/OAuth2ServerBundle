@@ -16,6 +16,7 @@ before_script:
     - composer require symfony/dependency-injection:${SYMFONY_VERSION} --no-update
     - composer require symfony/security:${SYMFONY_VERSION} --no-update
     - composer require symfony/routing:${SYMFONY_VERSION} --no-update
+    - composer require symfony/translation:${SYMFONY_VERSION} --no-update
     - composer require symfony/security-bundle:${SYMFONY_VERSION} --no-update
     - composer require symfony/finder:${SYMFONY_VERSION} --no-update
     - composer require symfony/form:${SYMFONY_VERSION} --no-update
