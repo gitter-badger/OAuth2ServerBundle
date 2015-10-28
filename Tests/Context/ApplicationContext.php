@@ -3,7 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
+use SpomkyLabs\OAuth2ServerBundle\Command\CleanCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
