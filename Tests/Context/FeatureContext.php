@@ -400,7 +400,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         }
 
         if (mb_strlen($uri['query'][$param]) !== (int) $value) {
-            throw new \Exception(sprintf('The length is %u',mb_strlen($uri['query'][$param])));
+            throw new \Exception(sprintf('The length is %u', mb_strlen($uri['query'][$param])));
         }
     }
 
@@ -417,7 +417,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         }
 
         if (mb_strlen($uri['query'][$param]) < (int) $min || mb_strlen($uri['query'][$param]) > (int) $max) {
-            throw new \Exception(sprintf('The length is %u',mb_strlen($uri['query'][$param])));
+            throw new \Exception(sprintf('The length is %u', mb_strlen($uri['query'][$param])));
         }
     }
 

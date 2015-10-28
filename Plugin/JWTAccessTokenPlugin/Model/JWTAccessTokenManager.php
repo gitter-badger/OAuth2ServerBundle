@@ -6,10 +6,10 @@ use OAuth2\Client\ClientInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\JWTAccessTokenManager as BaseManager;
 use OAuth2\Token\RefreshTokenInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAccessTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAccessTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JWTAccessTokenManager extends BaseManager implements JWTAccessTokenManagerInterface, CleanerInterface

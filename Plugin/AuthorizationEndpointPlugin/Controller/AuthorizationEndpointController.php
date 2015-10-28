@@ -109,6 +109,7 @@ class AuthorizationEndpointController
                 if (null !== $this->event_dispatcher) {
                     $this->event_dispatcher->dispatch(Events::OAUTH2_POST_AUTHORIZATION, new PostAuthorizationEvent($authorization));
                 }
+
                 return $response;
             }
         } catch (BaseExceptionInterface $e) {
@@ -131,7 +132,7 @@ class AuthorizationEndpointController
         $content = $this->template_engine->render(
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
             [
-                'form'   => $this->form->createView(),
+                'form'          => $this->form->createView(),
                 'authorization' => $authorization,
             ]
         );
