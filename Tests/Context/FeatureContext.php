@@ -3,16 +3,10 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use OAuth2\Token\RefreshTokenInterface;
-use SpomkyLabs\Jose\EncryptionInstruction;
-use SpomkyLabs\Jose\SignatureInstruction;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Command\CleanCommand;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -22,128 +16,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class FeatureContext extends MinkContext implements SnippetAcceptingContext
 {
     use KernelDictionary;
+    use JWTContext;
+    use RequestContext;
+    use ApplicationContext;
 
-    private $request_builder;
-    private $exception;
-    private $application = null;
-    private $command_output = null;
     private $oauth2_response = null;
-
-    /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context object.
-     * You can also pass arbitrary arguments to the context constructor through behat.yml.
-     */
-    public function __construct()
-    {
-        $this->exception = null;
-        $this->request_builder = new RequestBuilder();
-    }
-
-    public function getRequestBuilder()
-    {
-        return $this->request_builder;
-    }
-
-    public function getException()
-    {
-        return $this->exception;
-    }
-
-    /**
-     * @Given I have a valid client assertion for client :client in the body request
-     */
-    public function IHaveAValidClientAssertionForClientInTheBodyRequest($client)
-    {
-        /*
-         * @var \Jose\JWKManagerInterface
-         */
-        $key_manager = $this->getContainer()->get('jose.jwk_manager');
-        $jwk1 = $key_manager->createJWK([
-            'kid' => 'JWK1',
-            'kty' => 'oct',
-            'use' => 'enc',
-            'k'   => 'ABEiM0RVZneImaq7zN3u_wABAgMEBQYHCAkKCwwNDg8',
-        ]);
-        $jwk2 = $key_manager->createJWK([
-            'kid' => 'JWK2',
-            'kty' => 'oct',
-            'use' => 'sig',
-            'k'   => 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
-        ]);
-
-        $jose = $this->getContainer()->get('jose');
-
-        $input = [
-            'exp' => time() + 3600,
-            'aud' => 'My Authorization Server',
-            'iss' => 'My JWT issuer',
-            'sub' => $client,
-        ];
-
-        $signature_instruction = new SignatureInstruction();
-        $signature_instruction->setKey($jwk2)
-            ->setProtectedHeader(['cty' => 'JWT','alg' => 'HS512'])
-            ->setUnprotectedHeader([]);
-
-        $encryption_instruction = new EncryptionInstruction();
-        $encryption_instruction->setRecipientKey($jwk1);
-
-        $jws = $jose->sign($input, [$signature_instruction]);
-        $jwe = $jose->encrypt($jws, [$encryption_instruction], ['cty' => 'JWT', 'alg' => 'A256KW', 'enc' => 'A256CBC-HS512', 'exp' => time() + 3600, 'aud' => 'My Authorization Server', 'iss' => 'My JWT issuer', 'sub' => $client]);
-
-        $this->iAddKeyWithValueInTheBodyRequest('client_assertion_type', 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
-        $this->iAddKeyWithValueInTheBodyRequest('client_assertion', $jwe);
-    }
-
-    /**
-     * @Given I add key :key with value :value in the header
-     */
-    public function iAddKeyWithValueInTheHeader($key, $value)
-    {
-        $this->getRequestBuilder()->addHeader($key, $value);
-    }
-
-    /**
-     * @Given I add key :key with value :value in the query parameter
-     */
-    public function iAddKeyWithValueInTheQueryParameter($key, $value)
-    {
-        $this->getRequestBuilder()->addQueryParameter($key, $value);
-    }
-
-    /**
-     * @Given I add user :user and password :secret in the authorization header
-     */
-    public function iAddUserAndPasswordInTheAuthorizationHeader($user, $secret)
-    {
-        $this->getRequestBuilder()->addHeader('Authorization', 'Basic '.base64_encode("$user:$secret"));
-    }
-
-    /**
-     * @Given I add key :key with value :value in the body request
-     */
-    public function iAddKeyWithValueInTheBodyRequest($key, $value)
-    {
-        $this->getRequestBuilder()->addContentParameter($key, $value);
-    }
-
-    /**
-     * @Given the content type is :content_type
-     */
-    public function theContentTypeIs($content_type)
-    {
-        $this->getRequestBuilder()->addServer('CONTENT_TYPE', $content_type);
-    }
-
-    /**
-     * @Given the request is not secured
-     */
-    public function theRequestIsNotSecured()
-    {
-        $this->getRequestBuilder()->addServer('HTTPS', 'off');
-    }
 
     /**
      * @Given the response header :header value is :value
@@ -157,14 +34,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         if (!in_array($value, $headers[strtolower($header)])) {
             throw new \Exception('Header parameter value is not "'.$value.'"');
         }
-    }
-
-    /**
-     * @Given the request is secured
-     */
-    public function theRequestIsSecured()
-    {
-        $this->getRequestBuilder()->addServer('HTTPS', 'on');
     }
 
     /**
@@ -190,32 +59,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
 
         $cookie = new Cookie($session->getName(), $session->getId());
         $client->getCookieJar()->set($cookie);
-    }
-
-    /**
-     * @When I :method the request to :uri
-     *
-     * @param string $method
-     */
-    public function iTheRequestTo($method, $uri)
-    {
-        $client = $this->getSession()->getDriver()->getClient();
-        $client->followRedirects(false);
-
-        $this->getRequestBuilder()->setUri($this->locatePath($uri));
-        try {
-            $client->request(
-                $method,
-                $this->getRequestBuilder()->getUri(),
-                [],
-                [],
-                $this->getRequestBuilder()->getServer(),
-                $this->getRequestBuilder()->getContent()
-            );
-        } catch (\Exception $e) {
-            $this->exception = $e;
-        }
-        $client->followRedirects(true);
     }
 
     /**
@@ -344,30 +187,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Then I should not receive an exception
-     */
-    public function iShouldNotReceiveAnException()
-    {
-        if ($this->getException() instanceof \Exception) {
-            throw $this->getException();
-        }
-    }
-
-    /**
-     * @Then I should receive an exception :message
-     */
-    public function iShouldReceiveAnException($message)
-    {
-        if (!$this->getException() instanceof \Exception) {
-            throw new \Exception('No exception catched');
-        }
-
-        if ($message !== $this->getException()->getMessage()) {
-            throw new \Exception('The exception has not the expected message: "'.$message.'"');
-        }
-    }
-
-    /**
      * @Then I should receive an error :message
      */
     public function iShouldReceiveAnError($message)
@@ -408,14 +227,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         if ($scheme !== $uri['scheme']) {
             throw new \Exception('The redirection Uri does not use "'.$scheme.'" scheme');
         }
-    }
-
-    /**
-     * @Given I am on the page :url
-     */
-    public function iAmOnThePage($url)
-    {
-        $this->iTheRequestTo('GET', $url);
     }
 
     /**
@@ -573,32 +384,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
 
         if ($data[$param] !== $value) {
             throw new \Exception('The access token contains parameter "'.$param.'", but its value is "'.$data[$param].'"');
-        }
-    }
-
-    /**
-     * @When I run :line command
-     */
-    public function iRunCommand($line)
-    {
-        if (null === $this->application) {
-            $this->application = new Application($this->getKernel());
-            $this->application->add(new CleanCommand());
-        }
-
-        $command = $this->application->find($line);
-        $tester = new CommandTester($command);
-        $tester->execute(['command' => $command->getName()]);
-        $this->command_output = $tester->getDisplay();
-    }
-
-    /**
-     * @Then I should see
-     */
-    public function iShouldSee(PyStringNode $result)
-    {
-        if ($this->command_output !== $result->getRaw()) {
-            throw new \Exception('The output of the command is not the same as expected. I got '.$this->command_output.'');
         }
     }
 
@@ -789,18 +574,5 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         if (0 < count($matches)) {
             throw new \Exception('There is a parameter "'.$parameter.'". Its values are "%s"', json_encode($matches));
         }
-    }
-
-    /**
-     * @Given I add key :key with public id of :username in the body request
-     */
-    public function iAddKeyWithPublicIdOfInTheBodyRequest($key, $username)
-    {
-        $user = $this->getKernel()->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
-
-        if (null === $user) {
-            throw new \Exception('Unknown user');
-        }
-        $this->iAddKeyWithValueInTheBodyRequest($key, $user->getPublicId());
     }
 }

@@ -109,6 +109,19 @@ trait RequestContext
     }
 
     /**
+     * @Given I add key :key with public id of :username in the body request
+     */
+    public function iAddKeyWithPublicIdOfInTheBodyRequest($key, $username)
+    {
+        $user = $this->getContainer()->get('oauth2_server.test_bundle.end_user_manager')->getEndUserByUsername($username);
+
+        if (null === $user) {
+            throw new \Exception('Unknown user');
+        }
+        $this->iAddKeyWithValueInTheBodyRequest($key, $user->getPublicId());
+    }
+
+    /**
      * @When I :method the request to :uri
      *
      * @param string $method
@@ -135,6 +148,14 @@ trait RequestContext
             $this->exception = $e;
         }
         $client->followRedirects(true);
+    }
+
+    /**
+     * @Given I am on the page :url
+     */
+    public function iAmOnThePage($url)
+    {
+        $this->iTheRequestTo('GET', $url);
     }
 
     /**
