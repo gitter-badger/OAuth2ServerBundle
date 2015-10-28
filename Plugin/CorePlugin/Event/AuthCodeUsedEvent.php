@@ -1,11 +1,11 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event;
 
 use OAuth2\Token\AuthCodeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class PostAuthCodeCreationEvent extends Event
+class AuthCodeUsedEvent extends Event
 {
     protected $authcode;
 

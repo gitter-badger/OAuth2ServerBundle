@@ -238,7 +238,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         $result = $this->getSession()->getPage()->getContent();
         $data = json_decode($result, true);
         if (!isset($headers['content-type']) && $headers['content-type'] !== 'application/json') {
-            throw new \Exception('The result is not an OAuth2 response (not JSON object).');
+            throw new \Exception('The result is not an OAuth2 response (not "application/json" content type).');
         }
         if (!is_array($data)) {
             throw new \Exception('The result is not an OAuth2 response (not JSON object).');

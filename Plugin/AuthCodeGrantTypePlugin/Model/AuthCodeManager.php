@@ -7,9 +7,10 @@ use OAuth2\Client\ClientInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
 use OAuth2\Token\AuthCodeManager as BaseManager;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\Events;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PostAuthCodeCreationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\Event\PreAuthCodeCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\AuthCodeUsedEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAuthCodeCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -85,6 +86,10 @@ class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, C
 
     public function markAuthCodeAsUsed(BaseAuthCodeInterface $authcode)
     {
+        if (null !== $this->event_dispatcher) {
+            $this->event_dispatcher->dispatch(Events::OAUTH2_AUTHCODE_USED, new AuthCodeUsedEvent($authcode));
+        }
+
         $this->getEntityManager()->remove($authcode);
         $this->getEntityManager()->flush();
     }

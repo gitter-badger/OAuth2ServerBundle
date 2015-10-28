@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event;
 
 use OAuth2\Token\RefreshTokenInterface;
 use Symfony\Component\EventDispatcher\Event;

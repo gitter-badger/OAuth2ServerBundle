@@ -4,9 +4,9 @@ namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Ser
 
 use OAuth2\Client\ClientManagerSupervisor as BaseClientManagerSupervisor;
 use Psr\Http\Message\ServerRequestInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\Events;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PostFindClientEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event\PreFindClientEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostFindClientEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreFindClientEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClientManagerSupervisor extends BaseClientManagerSupervisor

@@ -1,9 +1,9 @@
 <p>
-    {{ 'authorization.form.message'|trans({'%client_id%': client.getPublicId()}, 'SpomkyLabsOAuth2Server') }}<br />
-{% if scopes|length > 0 %}
+    {{ 'authorization.form.message'|trans({'%client_id%': authorization.getClient().getPublicId()}, 'SpomkyLabsOAuth2Server') }}<br />
+{% if authorization.getScope()|length > 0 %}
     {{ 'authorization.form.scope'|trans({}, 'SpomkyLabsOAuth2Server') }}
     <ul>
-        {% for scope in scopes %}
+        {% for scope in authorization.getScope() %}
             <li>{{ scope }}</li>
         {% endfor %}
     </ul>

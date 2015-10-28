@@ -12,6 +12,10 @@ use OAuth2\Scope\ScopeManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAuthorizationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAuthorizationEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -62,6 +66,11 @@ class AuthorizationEndpointController
      */
     protected $x_frame_options;
 
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface|null
+     */
+    protected $event_dispatcher;
+
     public function __construct(
         TokenStorageInterface $token_storage,
         EngineInterface $template_engine,
@@ -70,7 +79,8 @@ class AuthorizationEndpointController
         FormInterface $form,
         ScopeManagerInterface $scope_manager,
         AuthorizationFactory $authorization_factory,
-        $x_frame_options
+        $x_frame_options,
+        EventDispatcherInterface $event_dispatcher = null
     ) {
         $this->x_frame_options = $x_frame_options;
         $this->token_storage = $token_storage;
@@ -80,24 +90,25 @@ class AuthorizationEndpointController
         $this->form = $form;
         $this->authorization_factory = $authorization_factory;
         $this->scope_manager = $scope_manager;
+        $this->event_dispatcher = $event_dispatcher;
     }
 
     public function authorizationAction(ServerRequestInterface $request)
     {
-        $user = $this->token_storage->getToken()->getUser();
-        if (!$user instanceof EndUserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
-
         $response = new Response();
         try {
             $authorization = $this->createAuthorization($request);
-            $authorization->setEndUser($user);
+            if (null !== $this->event_dispatcher) {
+                $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_AUTHORIZATION, new PreAuthorizationEvent($authorization));
+            }
             $this->form->setData($authorization);
 
             if ('POST' === $request->getMethod()) {
                 $this->form_handler->handle($this->form, $request, $response, $authorization);
 
+                if (null !== $this->event_dispatcher) {
+                    $this->event_dispatcher->dispatch(Events::OAUTH2_POST_AUTHORIZATION, new PostAuthorizationEvent($authorization));
+                }
                 return $response;
             }
         } catch (BaseExceptionInterface $e) {
@@ -121,8 +132,7 @@ class AuthorizationEndpointController
             '/spomky-labs/oauth2-server/authorization/template/Authorization/authorization.html.twig',
             [
                 'form'   => $this->form->createView(),
-                'client' => $authorization->getClient(),
-                'scopes' => $authorization->getScope(),
+                'authorization' => $authorization,
             ]
         );
         $body = new Stream('php://temp', 'wb+');
@@ -140,6 +150,11 @@ class AuthorizationEndpointController
      */
     private function createAuthorization(ServerRequestInterface $request)
     {
+        $user = $this->token_storage->getToken()->getUser();
+        if (!$user instanceof EndUserInterface) {
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+
         $authorization = $this->authorization_factory->createFromRequest($request);
 
         if (!$authorization instanceof Authorization) {
@@ -149,6 +164,8 @@ class AuthorizationEndpointController
         if (!$authorization->getClient() instanceof ClientInterface) {
             throw new BadRequestHttpException('"client_id" parameter is missing or client is unknown.');
         }
+
+        $authorization->setEndUser($user);
 
         return $authorization;
     }

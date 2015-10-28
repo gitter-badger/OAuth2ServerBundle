@@ -8,10 +8,11 @@ use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\AccessTokenInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\SimpleStringAccessTokenManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\AccessTokenRevocationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\Events;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PostSimpleStringAccessTokenCreationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Event\PreSimpleStringAccessTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAccessTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAccessTokenCreationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SimpleStringAccessTokenManager extends BaseManager implements SimpleStringAccessTokenManagerInterface, CleanerInterface
@@ -55,7 +56,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
     protected function addAccessToken($token, $expiresAt, ClientInterface $client, ResourceOwnerInterface $resourceOwner, array $scope = [], BaseRefreshTokenInterface $refresh_token = null)
     {
         if (null !== $this->event_dispatcher) {
-            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PreSimpleStringAccessTokenCreationEvent($client, $scope, $resourceOwner, $refresh_token));
+            $this->event_dispatcher->dispatch(Events::OAUTH2_PRE_ACCESS_TOKEN_CREATION, new PreAccessTokenCreationEvent($client, $scope, $resourceOwner, $refresh_token));
         }
 
         $class = $this->getClass();
@@ -78,7 +79,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         $this->getEntityManager()->flush();
 
         if (null !== $this->event_dispatcher) {
-            $this->event_dispatcher->dispatch(Events::OAUTH2_POST_SIMPLE_STRING_ACCESS_TOKEN_CREATION, new PostSimpleStringAccessTokenCreationEvent($access_token));
+            $this->event_dispatcher->dispatch(Events::OAUTH2_POST_ACCESS_TOKEN_CREATION, new PostAccessTokenCreationEvent($access_token));
         }
 
         return $access_token;
@@ -98,6 +99,10 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
     public function revokeAccessToken(AccessTokenInterface $access_token)
     {
         if ($access_token instanceof SimpleStringAccessTokenInterface) {
+            if (null !== $this->event_dispatcher) {
+                $this->event_dispatcher->dispatch(Events::OAUTH2_ACCESS_TOKEN_REVOCATION, new AccessTokenRevocationEvent($access_token));
+            }
+
             $this->getEntityManager()->remove($access_token);
             $this->getEntityManager()->flush();
         }

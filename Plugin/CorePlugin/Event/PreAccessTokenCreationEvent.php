@@ -1,13 +1,13 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\Event;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event;
 
 use OAuth2\Client\ClientInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\RefreshTokenInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class PreJWTAccessTokenCreationEvent extends Event
+class PreAccessTokenCreationEvent extends Event
 {
     /**
      * @var ClientInterface

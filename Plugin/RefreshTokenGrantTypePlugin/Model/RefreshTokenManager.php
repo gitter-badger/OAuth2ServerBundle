@@ -8,10 +8,11 @@ use OAuth2\Client\TokenLifetimeExtensionInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\RefreshTokenManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\RefreshTokenRevocationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\Events;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PostRefreshTokenCreationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\Event\PreRefreshTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostRefreshTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreRefreshTokenCreationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInterface, CleanerInterface
@@ -79,9 +80,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     }
 
     /**
-     * @param \OAuth2\Token\RefreshTokenInterface $refreshToken
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function save(BaseRefreshTokenInterface $refreshToken)
     {
@@ -92,9 +91,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     }
 
     /**
-     * @param \OAuth2\Token\RefreshTokenInterface $refreshToken
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function markRefreshTokenAsUsed(BaseRefreshTokenInterface $refreshToken)
     {
@@ -104,8 +101,15 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function revokeRefreshToken(BaseRefreshTokenInterface $refresh_token)
     {
+        if (null !== $this->event_dispatcher) {
+            $this->event_dispatcher->dispatch(Events::OAUTH2_REFRESH_TOKEN_CREATION, new RefreshTokenRevocationEvent($refresh_token));
+        }
+
         $this->getEntityManager()->remove($refresh_token);
         $this->getEntityManager()->flush();
     }
@@ -138,9 +142,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     }
 
     /**
-     * @param string $token
-     *
-     * @return object
+     * {@inheritdoc}
      */
     public function getRefreshToken($token)
     {
@@ -148,7 +150,7 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * {@inheritdoc}
      */
     public function getEntityRepository()
     {
@@ -156,13 +158,16 @@ class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInte
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|null
+     * {@inheritdoc}
      */
     public function getEntityManager()
     {
         return $this->entity_manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteExpired()
     {
         $qb = $this->getEntityRepository()->createQueryBuilder('t');

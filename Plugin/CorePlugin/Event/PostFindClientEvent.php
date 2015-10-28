@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Event;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event;
 
 use OAuth2\Client\ClientInterface;
 use Psr\Http\Message\ServerRequestInterface;
