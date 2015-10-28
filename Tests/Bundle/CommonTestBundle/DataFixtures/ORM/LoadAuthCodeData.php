@@ -32,7 +32,7 @@ class LoadAuthCodeData extends AbstractFixture implements FixtureInterface, Cont
         $code_manager = $this->container->get('oauth2_server.test_bundle.auth_code_manager');
 
         foreach ($this->getAuthCodes() as $authcode) {
-            /**
+            /*
              * @var \SpomkyLabs\Bundle\CommonTestBundle\Entity\AuthCode
              */
             $code = $code_manager->newAuthCode();

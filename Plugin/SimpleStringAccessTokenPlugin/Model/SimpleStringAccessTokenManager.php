@@ -9,10 +9,10 @@ use OAuth2\Token\AccessTokenInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\SimpleStringAccessTokenManager as BaseManager;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\AccessTokenRevocationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAccessTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAccessTokenCreationEvent;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SimpleStringAccessTokenManager extends BaseManager implements SimpleStringAccessTokenManagerInterface, CleanerInterface
@@ -60,7 +60,7 @@ class SimpleStringAccessTokenManager extends BaseManager implements SimpleString
         }
 
         $class = $this->getClass();
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\Model\SimpleStringAccessTokenInterface
          */
         $access_token = new $class();

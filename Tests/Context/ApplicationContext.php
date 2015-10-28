@@ -64,7 +64,7 @@ trait ApplicationContext
      */
     public function iRunCommand($line)
     {
-        $command = $this-> getApplication()->find($line);
+        $command = $this->getApplication()->find($line);
         $tester = new CommandTester($command);
         $tester->execute(['command' => $command->getName()]);
         $this->setCommandOutput($tester->getDisplay());
