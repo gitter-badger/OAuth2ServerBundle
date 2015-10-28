@@ -59,14 +59,18 @@ oauth2_server:
         manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
     refresh_token:
+        min_length: 50
+        max_length: 100
         token_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\RefreshToken
         token_manager: oauth2_server.test_bundle.refresh_token_manager
     auth_code:
         class: SpomkyLabs\Bundle\CommonTestBundle\Entity\AuthCode
         manager: oauth2_server.test_bundle.auth_code_manager
-        length: 50
+        min_length: 50
+        max_length: 100
     simple_string_access_token:
-        length: 50
+        min_length: 50
+        max_length: 100
         lifetime: 7200
         class: SpomkyLabs\Bundle\SimpleStringTestBundle\Entity\SimpleStringAccessToken
         manager: oauth2_server.simple_string_test_bundle.access_token_manager

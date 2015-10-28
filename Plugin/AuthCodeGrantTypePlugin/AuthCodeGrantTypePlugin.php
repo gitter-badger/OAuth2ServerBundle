@@ -33,9 +33,13 @@ class AuthCodeGrantTypePlugin implements BundlePlugin
             ->defaultValue('oauth2_server.auth_code.manager.default')
             ->cannotBeEmpty()
             ->end()
-            ->integerNode('length')
-            ->info('The length of authorization codes produced by this bundle. Should be at least 20.')
+            ->integerNode('min_length')
+            ->info('The minimum length of authorization codes produced by this bundle. Should be at least 20.')
             ->defaultValue(20)->cannotBeEmpty()
+            ->end()
+            ->integerNode('max_length')
+            ->info('The maximum length of authorization codes produced by this bundle. Should be at least 30.')
+            ->defaultValue(30)->cannotBeEmpty()
             ->end()
             ->scalarNode('charset')
             ->info('The charset of authorization codes. Default is "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~+/"')
@@ -57,7 +61,8 @@ class AuthCodeGrantTypePlugin implements BundlePlugin
 
         $container->setParameter('oauth2_server.auth_code.class', $pluginConfiguration['class']);
         $container->setAlias('oauth2_server.auth_code.manager', $pluginConfiguration['manager']);
-        $container->setParameter('oauth2_server.auth_code.length', $pluginConfiguration['length']);
+        $container->setParameter('oauth2_server.auth_code.min_length', $pluginConfiguration['min_length']);
+        $container->setParameter('oauth2_server.auth_code.max_length', $pluginConfiguration['max_length']);
         $container->setParameter('oauth2_server.auth_code.charset', $pluginConfiguration['charset']);
         $container->setParameter('oauth2_server.auth_code.lifetime', $pluginConfiguration['lifetime']);
     }

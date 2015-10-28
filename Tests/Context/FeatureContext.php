@@ -400,7 +400,24 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         }
 
         if (mb_strlen($uri['query'][$param]) !== (int) $value) {
-            throw new \Exception('The length is not "'.$value.'", I got "'.mb_strlen($uri['query'][$param]).'"');
+            throw new \Exception(sprintf('The length is %u',mb_strlen($uri['query'][$param])));
+        }
+    }
+
+    /**
+     * @Then the redirect query should contain parameter :param with length between :min and :max
+     */
+    public function theRedirectQueryShouldContainParameterWithLengthBetweenAnd($param, $min, $max)
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+        $uri = parse_url(current($headers['location']));
+        parse_str($uri['query'], $uri['query']);
+        if (!isset($uri['query'][$param])) {
+            throw new \Exception('The query does not contain parameter "'.$param.'"');
+        }
+
+        if (mb_strlen($uri['query'][$param]) < (int) $min || mb_strlen($uri['query'][$param]) > (int) $max) {
+            throw new \Exception(sprintf('The length is %u',mb_strlen($uri['query'][$param])));
         }
     }
 

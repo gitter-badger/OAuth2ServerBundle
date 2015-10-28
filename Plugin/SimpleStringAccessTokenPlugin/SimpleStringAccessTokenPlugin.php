@@ -38,7 +38,8 @@ class SimpleStringAccessTokenPlugin implements BundlePlugin
         }
 
         $container->setAlias('oauth2_server.simple_string_access_token.manager', $pluginConfiguration['manager']);
-        $container->setParameter('oauth2_server.simple_string_access_token.length', $pluginConfiguration['length']);
+        $container->setParameter('oauth2_server.simple_string_access_token.min_length', $pluginConfiguration['min_length']);
+        $container->setParameter('oauth2_server.simple_string_access_token.max_length', $pluginConfiguration['max_length']);
         $container->setParameter('oauth2_server.simple_string_access_token.charset', $pluginConfiguration['charset']);
         $container->setParameter('oauth2_server.simple_string_access_token.lifetime', $pluginConfiguration['lifetime']);
         $container->setParameter('oauth2_server.simple_string_access_token.class', $pluginConfiguration['class']);
@@ -48,7 +49,8 @@ class SimpleStringAccessTokenPlugin implements BundlePlugin
     {
         $pluginNode
             ->children()
-            ->scalarNode('length')->cannotBeEmpty()->defaultValue(20)->end()
+            ->scalarNode('min_length')->cannotBeEmpty()->defaultValue(20)->end()
+            ->scalarNode('max_length')->cannotBeEmpty()->defaultValue(30)->end()
             ->scalarNode('charset')->cannotBeEmpty()->defaultValue('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~+/')->end()
             ->scalarNode('lifetime')->cannotBeEmpty()->defaultValue(3600)->end()
             ->scalarNode('class')

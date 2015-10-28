@@ -15,7 +15,7 @@ Feature: A client requests an authorization
     And the status code of the response is "302"
     And the redirection starts with "https://example.com/redirection/callback"
     And the redirect query should contain parameter "code"
-    And the redirect query should contain parameter "code" with length "50"
+    And the redirect query should contain parameter "code" with length between "50" and "100"
 
   Scenario: A resource owner rejected the client
     Given I am logged in as "john"

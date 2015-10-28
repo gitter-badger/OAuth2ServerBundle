@@ -39,8 +39,9 @@ class RefreshTokenGrantTypePlugin implements BundlePlugin
 
         $container->setAlias('oauth2_server.refresh_token.token_manager', $pluginConfiguration['token_manager']);
         $container->setParameter('oauth2_server.refresh_token.token_class', $pluginConfiguration['token_class']);
-        $container->setParameter('oauth2_server.refresh_token.token_length', $pluginConfiguration['token_length']);
-        $container->setParameter('oauth2_server.refresh_token.token_lifetime', $pluginConfiguration['token_lifetime']);
+        $container->setParameter('oauth2_server.refresh_token.min_length', $pluginConfiguration['min_length']);
+        $container->setParameter('oauth2_server.refresh_token.max_length', $pluginConfiguration['max_length']);
+        $container->setParameter('oauth2_server.refresh_token.lifetime', $pluginConfiguration['lifetime']);
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
@@ -49,8 +50,9 @@ class RefreshTokenGrantTypePlugin implements BundlePlugin
             ->isRequired()
             ->addDefaultsIfNotSet()
             ->children()
-            ->scalarNode('token_length')->defaultValue(20)->cannotBeEmpty()->end()
-            ->scalarNode('token_lifetime')->defaultValue(1209600)->cannotBeEmpty()->end()
+            ->scalarNode('min_length')->defaultValue(20)->cannotBeEmpty()->end()
+            ->scalarNode('max_length')->defaultValue(30)->cannotBeEmpty()->end()
+            ->scalarNode('lifetime')->defaultValue(1209600)->cannotBeEmpty()->end()
             ->scalarNode('token_class')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('token_manager')->defaultValue('oauth2_server.refresh_token.manager.default')->cannotBeEmpty()->end()
             ->end();
