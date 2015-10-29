@@ -18,14 +18,21 @@ use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Authorizati
 use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\JWTAccessTokenPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\JWTBearerPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\FormPostResponseModePlugin\OpenIdConnectFormPostResponseModePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\OpenIdConnect\MultipleResponseTypesPlugin\OpenIdConnectMultipleResponseTypesPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\PasswordClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\PublicClientPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\RefreshTokenGrantTypePlugin\RefreshTokenGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ResourceOwnerPasswordCredentialsGrantTypePlugin\ResourceOwnerPasswordCredentialsGrantTypePlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\SecurityPlugin\SecurityPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\SimpleStringAccessTokenPlugin\SimpleStringAccessTokenPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenEndpointPlugin\TokenEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\TokenRevocationEndpointPlugin\TokenRevocationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\UnregisteredClientPlugin;
+
+...
 
 public function registerBundles()
 {
@@ -33,18 +40,27 @@ public function registerBundles()
         ...
         new Puli\SymfonyBundle\PuliBundle(),
         new SpomkyLabs\OAuth2ServerBundle\SpomkyLabsOAuth2ServerBundle([
-           new UnregisteredClientPlugin(), // Unregistered clients support
-           new PublicClientPlugin(), // Public clients support
-           new PasswordClientPlugin(), // Password clients support
-           new SimpleStringAccessTokenPlugin(), // Access token (Simple string)
-           new AuthorizationEndpointPlugin(), // Authorization endpoint
-           new TokenEndpointPlugin(), // Token endpoint
-           new TokenRevocationEndpointPlugin(), // Token revocation endpoint
-           new AuthCodeGrantTypePlugin(), // Authorization code grant type
-           new RefreshTokenGrantTypePlugin(), // Refresh token grant type
-           new ImplicitGrantTypePlugin(), // Implicit grant type
-           new ResourceOwnerPasswordCredentialsGrantTypePlugin(), // Resource owner password credentials grant type
-           new ClientCredentialsGrantTypePlugin(), // Client credentials grant type
+            new BearerAccessTokenPlugin(), // Bearer access token support
+            new UnregisteredClientPlugin(), // Unregistered clients support
+            new PublicClientPlugin(), // Public clients support
+            new PasswordClientPlugin(), // Password clients support
+            new SimpleStringAccessTokenPlugin(), // Access token (Simple string)
+            new JWTAccessTokenPlugin(), // Access token (JWT)
+            new AuthorizationEndpointPlugin(), // Authorization endpoint
+            new TokenEndpointPlugin(), // Token endpoint
+            new TokenRevocationEndpointPlugin(), // Token revocation endpoint
+            new AuthCodeGrantTypePlugin(), // Authorization code grant type
+            new RefreshTokenGrantTypePlugin(), // Refresh token grant type
+            new ImplicitGrantTypePlugin(), // Implicit grant type
+            new ResourceOwnerPasswordCredentialsGrantTypePlugin(), // Resource owner password credentials grant type
+            new ClientCredentialsGrantTypePlugin(), // Client credentials grant type
+            new JWTBearerPlugin(), // JWT Bearer grant type and JWT client assertion
+            new SecurityPlugin(), // API protection
+            
+            // The following plugins are part of the OpenID Connect Framework Protocol.
+            // You should not use them as this protocol is not yet supported.
+            new OpenIdConnectFormPostResponseModePlugin(), // Form Post response type mode support
+            new OpenIdConnectMultipleResponseTypesPlugin(), // Multiple response types support
        ]),
     );
 }
