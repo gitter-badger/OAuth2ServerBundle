@@ -10,7 +10,7 @@ class RequestBuilder
     private $fragment = [];
     private $server = [];
     private $header = [];
-    private $content_parameter = [];
+    private $request_parameter = [];
     private $content = null;
     private $method = 'GET';
     private $uri = '/';
@@ -96,18 +96,23 @@ class RequestBuilder
         return $this;
     }
 
-    public function addContentParameter($key, $value)
+    public function addRequestParameter($key, $value)
     {
-        $this->content_parameter[$key] = $value;
+        $this->request_parameter[$key] = $value;
 
         return $this;
     }
 
-    public function removeContentParameter($key)
+    public function removeRequestParameter($key)
     {
-        unset($this->content_parameter[$key]);
+        unset($this->request_parameter[$key]);
 
         return $this;
+    }
+
+    public function getRequestParameters()
+    {
+        return $this->request_parameter;
     }
 
     public function setContent($content)
@@ -167,12 +172,7 @@ class RequestBuilder
 
     public function getContent()
     {
-        if ($this->content !== null) {
-            return $this->content;
-        }
-        if (count($this->content_parameter) > 0) {
-            return http_build_query($this->content_parameter);
-        }
+        return $this->content;
     }
 
     public function getRequest()
@@ -180,7 +180,7 @@ class RequestBuilder
         return Request::create(
             $this->getUri(),
             $this->method,
-            [],
+            $this->getRequestParameters(),
             [],
             [],
             $this->getServer(),

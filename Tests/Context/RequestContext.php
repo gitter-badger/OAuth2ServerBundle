@@ -81,7 +81,7 @@ trait RequestContext
      */
     public function iAddKeyWithValueInTheBodyRequest($key, $value)
     {
-        $this->getRequestBuilder()->addContentParameter($key, $value);
+        $this->getRequestBuilder()->addRequestParameter($key, $value);
     }
 
     /**
@@ -131,6 +131,9 @@ trait RequestContext
         if (!$this->getSession()->getDriver() instanceof BrowserKitDriver) {
             throw new \RuntimeException('Unsupported driver.');
         }
+        /**
+         * @var $client \Symfony\Component\BrowserKit\Client
+         */
         $client = $this->getSession()->getDriver()->getClient();
         $client->followRedirects(false);
 
@@ -139,7 +142,7 @@ trait RequestContext
             $client->request(
                 $method,
                 $this->getRequestBuilder()->getUri(),
-                [],
+                $this->getRequestBuilder()->getRequestParameters(),
                 [],
                 $this->getRequestBuilder()->getServer(),
                 $this->getRequestBuilder()->getContent()
