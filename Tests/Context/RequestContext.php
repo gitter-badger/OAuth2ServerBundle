@@ -132,7 +132,7 @@ trait RequestContext
             throw new \RuntimeException('Unsupported driver.');
         }
         /**
-         * @var $client \Symfony\Component\BrowserKit\Client
+         * @var \Symfony\Component\BrowserKit\Client
          */
         $client = $this->getSession()->getDriver()->getClient();
         $client->followRedirects(false);
