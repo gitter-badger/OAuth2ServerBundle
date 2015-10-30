@@ -2,6 +2,7 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model;
 
+use OAuth2\Client\ClientInterface as BaseClientInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ResourceOwnerManagerBehaviour;
 
@@ -44,11 +45,11 @@ trait ClientManagerBehaviour
     }
 
     /**
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface $client
+     * @param \OAuth2\Client\ClientInterface $client
      *
      * @return self
      */
-    public function saveClient(ClientInterface $client)
+    public function saveClient(BaseClientInterface $client)
     {
         $this->getEntityManager()->persist($client);
         $this->getEntityManager()->flush();

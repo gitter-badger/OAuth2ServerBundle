@@ -1,11 +1,11 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service;
 
 class Cleaner implements CleanerManagerInterface
 {
     /**
-     * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface[]
+     * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service\CleanerInterface[]
      */
     private $cleaners = [];
 

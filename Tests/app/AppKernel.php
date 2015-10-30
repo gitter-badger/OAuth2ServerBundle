@@ -3,6 +3,7 @@
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthCodeGrantTypePlugin\AuthCodeGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\AuthorizationEndpointPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\BearerAccessTokenPlugin\BearerAccessTokenPlugin;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\CleanerPlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientCredentialsGrantTypePlugin\ClientCredentialsGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ImplicitGrantTypePlugin\ImplicitGrantTypePlugin;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\JWTAccessTokenPlugin\JWTAccessTokenPlugin;
@@ -39,6 +40,7 @@ class AppKernel extends Kernel
         if ('simple_string' === $this->getEnvironment()) {
             $bundles[] = new SpomkyLabs\Bundle\SimpleStringTestBundle\SpomkyLabsSimpleStringTestBundle();
             $bundles[] = new SpomkyLabsOAuth2ServerBundle([
+                    new CleanerPlugin(),
                     new BearerAccessTokenPlugin(),
                     new UnregisteredClientPlugin(),
                     new PublicClientPlugin(),

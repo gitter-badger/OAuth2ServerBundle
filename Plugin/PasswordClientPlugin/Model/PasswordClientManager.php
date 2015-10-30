@@ -3,6 +3,7 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use OAuth2\Client\ClientInterface as BaseClientInterface;
 use OAuth2\Client\PasswordClientManager as Base;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientManagerBehaviour;
 
@@ -25,12 +26,15 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
     }
 
     /**
-     * @param \SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientInterface $client
+     * @param \OAuth2\Client\ClientInterface $client
      *
      * @return self
      */
-    public function saveClient(PasswordClientInterface $client)
+    public function saveClient(BaseClientInterface $client)
     {
+        if (!$client instanceof PasswordClientInterface) {
+            throw new \InvalidArgumentException('Argument must be an instance of PasswordClientInterface');
+        }
         $this->updateClientCredentials($client);
         $this->saveClientTrait($client);
 

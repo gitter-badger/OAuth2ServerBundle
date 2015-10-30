@@ -5,6 +5,6 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="oauth2_server.cleaner" class="SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\Cleaner" />
+        <service id="oauth2_server.cleaner" class="SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service\Cleaner" />
     </services>
 </container>

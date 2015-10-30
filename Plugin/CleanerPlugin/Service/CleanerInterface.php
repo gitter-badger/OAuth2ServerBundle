@@ -1,6 +1,6 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service;
 
 interface CleanerInterface
 {

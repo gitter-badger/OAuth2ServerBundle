@@ -8,11 +8,11 @@ use OAuth2\Client\TokenLifetimeExtensionInterface;
 use OAuth2\ResourceOwner\ResourceOwnerInterface;
 use OAuth2\Token\RefreshTokenInterface as BaseRefreshTokenInterface;
 use OAuth2\Token\RefreshTokenManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostRefreshTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreRefreshTokenCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\RefreshTokenRevocationEvent;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RefreshTokenManager extends BaseManager implements RefreshTokenManagerInterface, CleanerInterface

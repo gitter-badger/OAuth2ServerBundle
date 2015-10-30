@@ -7,12 +7,12 @@ use OAuth2\Client\ClientInterface;
 use OAuth2\EndUser\EndUserInterface;
 use OAuth2\Token\AuthCodeInterface as BaseAuthCodeInterface;
 use OAuth2\Token\AuthCodeManager as BaseManager;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\CleanerPlugin\Service\CleanerInterface;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\AuthCodeUsedEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\Events;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PostAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Event\PreAuthCodeCreationEvent;
 use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Model\ManagerBehaviour;
-use SpomkyLabs\OAuth2ServerBundle\Plugin\CorePlugin\Service\CleanerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AuthCodeManager extends BaseManager implements AuthCodeManagerInterface, CleanerInterface
