@@ -51,9 +51,19 @@ trait ClientManagerBehaviour
      */
     public function saveClient(BaseClientInterface $client)
     {
+        $this->checkClientSupported($client);
         $this->getEntityManager()->persist($client);
         $this->getEntityManager()->flush();
 
         return $this;
+    }
+
+    protected function checkClientSupported(BaseClientInterface $client)
+    {
+        $class = $this->getClass();
+        if (!$client instanceof $class) {
+            throw new \InvalidArgumentException(sprintf('Argument must be an instance of "%s"', $class));
+
+        }
     }
 }

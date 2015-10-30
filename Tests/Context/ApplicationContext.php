@@ -11,10 +11,29 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 trait ApplicationContext
 {
+    /**
+     * @var null
+     */
     private $application = null;
+
+    /**
+     * @var null|string
+     */
     private $command_output = null;
+
+    /**
+     * @var null|\Exception
+     */
     private $command_exception = null;
+
+    /**
+     * @var null|int
+     */
     private $command_exit_code = null;
+
+    /**
+     * @var array
+     */
     private $command_parameters = [];
 
     /**
@@ -60,7 +79,7 @@ trait ApplicationContext
     }
 
     /**
-     * @return null|int
+     * @return null|\Exception
      */
     protected function getCommandException()
     {
@@ -99,9 +118,8 @@ trait ApplicationContext
         $tester = new CommandTester($command);
 
         try {
-            $this->exit_code = $tester->execute($this->getCommandParams($command));
+            $this->command_exit_code = $tester->execute($this->getCommandParams($command));
             $this->command_exception = null;
-            $this->command_exit_code = null;
         } catch (\Exception $e) {
             $this->command_exception = $e;
             $this->command_exit_code = $e->getCode();
@@ -149,45 +167,29 @@ trait ApplicationContext
      */
     public function theCommandExceptionShouldBeThrown($exception)
     {
-        /*$this->checkThatCommandHasRun();
-        $this
-            ->getSubcontext('exception')
-            ->setException($this->commandException)
-            ->assertException($exceptionClass)*/
-        ;
+        if (!$this->getCommandException() instanceof $exception) {
+            throw new \Exception('The expected exception was not thrown.');
+        }
     }
     /**
      * @Then The command exit code should be :code
      */
     public function theCommandExitCodeShouldBe($code)
     {
-        /*$this->checkThatCommandHasRun();
-        assertEquals($exitCode, $this->exitCode);*/
+        if ($this->getCommandExitCode() !== (int)$code) {
+            throw new \Exception(sprintf('The exit code is %u.',$this->getCommandExitCode()));
+        }
     }
-    /**
-     * @Then I should see :regexp in the command output
-     */
-    public function iShouldSeeInTheCommandOutput($regexp)
-    {
-        /*$this->checkThatCommandHasRun();
 
-        assertRegExp($regexp, $this->tester->getDisplay());*/
-    }
     /**
      * @Then The command exception :exception with message :message should be thrown
      */
     public function theCommandExceptionWithMessageShouldBeThrown($exception, $message)
     {
-        /*$this->checkThatCommandHasRun();
-        $this
-            ->getSubcontext('exception')
-            ->setException($this->getCommandException())
-            ->assertException($exception)
-        ;
-        $this
-            ->getSubcontext('exception')
-            ->assertExceptionMessage($message)
-        ;*/
+        $this->theCommandExceptionShouldBeThrown($exception);
+        if (!$this->getCommandException()->getMessage() instanceof $message) {
+            throw new \Exception(sprintf('The message of the exception is "%s".',$this->getCommandException()->getMessage()));
+        }
     }
 
     /**

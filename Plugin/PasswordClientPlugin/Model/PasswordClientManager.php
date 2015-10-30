@@ -32,9 +32,7 @@ class PasswordClientManager extends Base implements PasswordClientManagerInterfa
      */
     public function saveClient(BaseClientInterface $client)
     {
-        if (!$client instanceof PasswordClientInterface) {
-            throw new \InvalidArgumentException('Argument must be an instance of PasswordClientInterface');
-        }
+        $this->checkClientSupported($client);
         $this->updateClientCredentials($client);
         $this->saveClientTrait($client);
 
