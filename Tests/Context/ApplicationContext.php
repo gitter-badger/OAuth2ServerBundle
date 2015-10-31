@@ -32,6 +32,42 @@ trait ApplicationContext
     private $command_exit_code = null;
 
     /**
+     * @param array $command_parameters
+     *
+     * @return self
+     */
+    public function setCommandParameters($command_parameters)
+    {
+        $this->command_parameters = $command_parameters;
+
+        return $this;
+    }
+
+    /**
+     * @param int|null $command_exit_code
+     *
+     * @return self
+     */
+    public function setCommandExitCode($command_exit_code)
+    {
+        $this->command_exit_code = $command_exit_code;
+
+        return $this;
+    }
+
+    /**
+     * @param \Exception|null $command_exception
+     *
+     * @return self
+     */
+    public function setCommandException($command_exception)
+    {
+        $this->command_exception = $command_exception;
+
+        return $this;
+    }
+
+    /**
      * @var array
      */
     private $command_parameters = [];
@@ -114,25 +150,31 @@ trait ApplicationContext
      */
     public function iRunCommand($line)
     {
-        $command = $this->getApplication()->find($line);
+        try {
+            $command = $this->getApplication()->find($line);
+        } catch (\Exception $e) {
+            $this->setCommandException($e);
+            return;
+        }
         $tester = new CommandTester($command);
 
         try {
-            $this->command_exit_code = $tester->execute($this->getCommandParams($command));
-            $this->command_exception = null;
+            $this->setCommandExitCode($tester->execute($this->getCommandParams($command)));
+            $this->setCommandException(null);
         } catch (\Exception $e) {
-            $this->command_exception = $e;
-            $this->command_exit_code = $e->getCode();
+            $this->setCommandException($e);
+            $this->setCommandExitCode($e->getCode());
         }
         $this->setCommandOutput($tester->getDisplay());
     }
+
     /**
      * @Given I run command :line with parameters
      */
     public function iRunACommandWithParameters($line, PyStringNode $parameterJson)
     {
-        $this->command_parameters = json_decode($parameterJson->getRaw(), true);
-        if (null === $this->command_parameters) {
+        $this->setCommandParameters(json_decode($parameterJson->getRaw(), true));
+        if (null === $this->getCommandParameters()) {
             throw new \InvalidArgumentException(
                 "PyStringNode could not be converted to json."
             );
@@ -163,6 +205,16 @@ trait ApplicationContext
     }
 
     /**
+     * @Then The command exception should not be thrown
+     */
+    public function theCommandExceptionShouldNotBeThrown()
+    {
+        if ($this->getCommandException() instanceof \Exception) {
+            throw new \Exception(sprintf('An exception was not thrown: "%s".', $this->getCommandException()->getMessage()));
+        }
+    }
+
+    /**
      * @Then The command exception :exception should be thrown
      */
     public function theCommandExceptionShouldBeThrown($exception)
@@ -171,6 +223,7 @@ trait ApplicationContext
             throw new \Exception('The expected exception was not thrown.');
         }
     }
+
     /**
      * @Then The command exit code should be :code
      */
@@ -182,12 +235,12 @@ trait ApplicationContext
     }
 
     /**
-     * @Then The command exception :exception with message :message should be thrown
+     * @Then The command exception :exception with message should be thrown
      */
-    public function theCommandExceptionWithMessageShouldBeThrown($exception, $message)
+    public function theCommandExceptionWithMessageShouldBeThrown($exception, PyStringNode $message)
     {
         $this->theCommandExceptionShouldBeThrown($exception);
-        if (!$this->getCommandException()->getMessage() instanceof $message) {
+        if ($this->getCommandException()->getMessage() !== $message->getRaw()) {
             throw new \Exception(sprintf('The message of the exception is "%s".',$this->getCommandException()->getMessage()));
         }
     }

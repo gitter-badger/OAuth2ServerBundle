@@ -35,6 +35,6 @@ class AuthorizationFormType extends AbstractType
      */
     public function getName()
     {
-        return 'oauth2_server_authorization_endpoint';
+        return 'oauth2_server_authorization';
     }
 }

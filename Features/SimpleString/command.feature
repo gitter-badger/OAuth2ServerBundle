@@ -15,4 +15,5 @@ Feature: A Console Command exists to remove old tokens
 
   Scenario: I create a new public client
     When I run command "spomky-labs:oauth2-server:public-client:create"
-    Then I should see something like '/Public ID is \"(PUBLIC-[^.]+)\"/'
+    Then The command exception should not be thrown
+    And I should see something like '/Public ID is \"(PUBLIC-[^.]+)\"/'

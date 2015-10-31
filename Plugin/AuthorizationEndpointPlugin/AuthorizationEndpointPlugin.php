@@ -38,9 +38,9 @@ class AuthorizationEndpointPlugin implements BundlePlugin
             ->arrayNode('form')
             ->addDefaultsIfNotSet()
             ->children()
-            ->scalarNode('type')->defaultValue('oauth2_server_authorization_endpoint')->end()
+            ->scalarNode('type')->defaultValue('oauth2_server_authorization')->end()
             ->scalarNode('handler')->defaultValue('oauth2_server.authorization_endpoint.form_handler.default')->end()
-            ->scalarNode('name')->defaultValue('oauth2_server_authorization_endpoint_form')->cannotBeEmpty()->end()
+            ->scalarNode('name')->defaultValue('oauth2_server_authorization_form')->cannotBeEmpty()->end()
             ->arrayNode('validation_groups')
             ->prototype('scalar')->end()
             ->defaultValue(['Authorization', 'Default'])
@@ -93,7 +93,7 @@ class AuthorizationEndpointPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['authorization.endpoint', 'authorization.factory', 'response_modes'] as $basename) {
+        foreach (['authorization.endpoint', 'authorization.factory', 'authorization.form', 'response_modes'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 

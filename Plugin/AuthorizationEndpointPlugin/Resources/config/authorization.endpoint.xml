@@ -27,22 +27,5 @@
                 <argument type="service" id="oauth2_server.scope.manager" />
             </call>
         </service>
-
-        <service id="oauth2_server.authorization_endpoint.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
-            <argument>%oauth2_server.authorization_endpoint.form_name%</argument>
-            <argument>%oauth2_server.authorization_endpoint.form_type%</argument>
-            <argument>null</argument>
-            <argument type="collection">
-                <argument key="validation_groups">%oauth2_server.authorization_endpoint.form_validation_groups%</argument>
-            </argument>
-        </service>
-
-        <service id="oauth2_server.authorization_endpoint.form_type" class="SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Type\AuthorizationFormType">
-            <tag name="form.type" alias="oauth2_server_authorization_endpoint" />
-        </service>
-
-        <service id="oauth2_server.authorization_endpoint.form_handler.default" class="SpomkyLabs\OAuth2ServerBundle\Plugin\AuthorizationEndpointPlugin\Form\Handler\AuthorizationFormHandler" scope="request">
-            <argument type="service" id="oauth2_server.authorization_endpoint" />
-        </service>
     </services>
 </container>

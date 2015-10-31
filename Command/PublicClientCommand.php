@@ -3,8 +3,8 @@
 namespace SpomkyLabs\OAuth2ServerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PublicClientCommand extends ContainerAwareCommand
@@ -17,15 +17,19 @@ class PublicClientCommand extends ContainerAwareCommand
         $this
             ->setName('spomky-labs:oauth2-server:public-client:create')
             ->setDescription('Create a new public client')
-            ->addArgument(
+            ->addOption(
                 'allowed_grant_types',
-                InputArgument::OPTIONAL,
-                'Allowed grant types (comma separated)'
+                null,
+                InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY,
+                'Allowed grant types',
+                []
             )
-            ->addArgument(
+            ->addOption(
                 'redirect_uris',
-                InputArgument::IS_ARRAY|InputArgument::OPTIONAL,
-                'Redirect URIs'
+                null,
+                InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY,
+                'Redirect URIs',
+                []
             )
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will create a new public client.
@@ -40,25 +44,21 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (false === $this->getContainer()->has('oauth2_server.public_client.manager')) {
-            $output->writeln('Public client plugin is not enabled.');
-            return;
-        }
         /**
          * @var $service \SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManagerInterface
          */
         $service = $this->getContainer()->get('oauth2_server.public_client.manager');
         $client = $service->createClient();
-        foreach(['redirect_uris'=>'setRedirectUris'] as $argument=>$method) {
-            if (null !== ($value = $input->getArgument($argument))) {
-                $client->$method($value);
-            }
-        }
-        if (null !== ($value = $input->getArgument('allowed_grant_types'))) {
-            $client->setAllowedGrantTypes(explode(',',$value));
+        foreach(['allowed_grant_types'=>'setAllowedGrantTypes', 'redirect_uris'=>'setRedirectUris'] as $option=>$method) {
+            $client->$method($input->getOption($option));
         }
         $service->saveClient($client);
 
         $output->writeln(sprintf('Public client successfully created. Public ID is <info>"%s"</info>.', $client->getPublicId()));
+    }
+
+    public function isEnabled()
+    {
+        return $this->getContainer()->has('oauth2_server.public_client.manager');
     }
 }

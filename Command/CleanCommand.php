@@ -29,10 +29,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (false === $this->getContainer()->has('oauth2_server.cleaner')) {
-            $output->writeln('Cleaner plugin is not enabled.');
-            return;
-        }
         $service = $this->getContainer()->get('oauth2_server.cleaner');
         $result = $service->clean();
         foreach ($result as $cleaner => $data) {
@@ -40,5 +36,10 @@ EOT
                 $output->writeln(sprintf('Cleaner <info>"%s"</info> removed <info>%d %s</info> from storage.', $cleaner, $counter, $name));
             }
         }
+    }
+
+    public function isEnabled()
+    {
+        return $this->getContainer()->has('oauth2_server.cleaner');
     }
 }
