@@ -8,10 +8,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PasswordClientFormType extends AbstractType
 {
+    private $class;
+
+    /**
+     * @param string $class The User class name
+     */
+    public function __construct($class)
+    {
+        $this->class = $class;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('plainPassword', 'repeated', [
+            ->add('plaintext_secret', 'repeated', [
                 'type' => 'password',
                 'first_options' => ['label' => 'password_client.form.password'],
                 'second_options' => ['label' => 'password_client.form.password_confirmation'],
@@ -27,7 +37,7 @@ class PasswordClientFormType extends AbstractType
     {
         $resolver->setDefaults([
             'translation_domain' => 'SpomkyLabsOAuth2Server',
-            'data_class'         => 'SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClient',
+            'data_class'         => $this->class,
         ]);
     }
 

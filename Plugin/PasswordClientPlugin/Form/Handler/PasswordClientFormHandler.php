@@ -24,10 +24,9 @@ class PasswordClientFormHandler
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return false;
+            $this->manager->saveClient($form->getData());
+            return true;
         }
-        var_dump($form->getData());
-        $this->manager->saveClient($form->getData());
-        return true;
+        return false;
     }
 }
