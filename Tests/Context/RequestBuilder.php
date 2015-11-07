@@ -6,15 +6,49 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestBuilder
 {
+    /**
+     * @var array
+     */
     private $query = [];
+
+    /**
+     * @var array
+     */
     private $fragment = [];
+
+    /**
+     * @var array
+     */
     private $server = [];
+
+    /**
+     * @var array
+     */
     private $header = [];
+
+    /**
+     * @var array
+     */
     private $request_parameter = [];
+
+    /**
+     * @var null|string
+     */
     private $content = null;
+
+    /**
+     * @var string
+     */
     private $method = 'GET';
+
+    /**
+     * @var string
+     */
     private $uri = '/';
 
+    /**
+     * @return string
+     */
     public function getUri()
     {
         $parse_url = parse_url($this->uri);
@@ -37,6 +71,12 @@ class RequestBuilder
             .((isset($parse_url['fragment'])) ? '#'.http_build_query($parse_url['fragment']) : '');
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return self
+     */
     public function addFragmentParameter($key, $value)
     {
         $this->fragment[$key] = $value;
@@ -44,6 +84,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return self
+     */
     public function removeFragmentParameter($key)
     {
         unset($this->fragment[$key]);
@@ -51,6 +96,12 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return self
+     */
     public function addQueryParameter($key, $value)
     {
         $this->query[$key] = $value;
@@ -58,6 +109,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return self
+     */
     public function removeQueryParameter($key)
     {
         unset($this->query[$key]);
@@ -67,6 +123,9 @@ class RequestBuilder
 
     /**
      * @param string $key
+     * @param string $value
+     *
+     * @return self
      */
     public function addServer($key, $value)
     {
@@ -75,6 +134,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param $key
+     *
+     * @return self
+     */
     public function removeServer($key)
     {
         unset($this->server[$key]);
@@ -82,6 +146,12 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return self
+     */
     public function addHeader($key, $value)
     {
         $this->header[$key] = $value;
@@ -89,6 +159,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return self
+     */
     public function removeHeader($key)
     {
         unset($this->header[$key]);
@@ -96,6 +171,12 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return self
+     */
     public function addRequestParameter($key, $value)
     {
         $this->request_parameter[$key] = $value;
@@ -103,6 +184,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return self
+     */
     public function removeRequestParameter($key)
     {
         unset($this->request_parameter[$key]);
@@ -110,11 +196,19 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getRequestParameters()
     {
         return $this->request_parameter;
     }
 
+    /**
+     * @param $content
+     *
+     * @return self
+     */
     public function setContent($content)
     {
         $this->content = $content;
@@ -122,6 +216,9 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @return self
+     */
     public function unsetContent()
     {
         $this->content = null;
@@ -129,6 +226,11 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param string $method
+     *
+     * @return self
+     */
     public function setMethod($method)
     {
         $this->method = $method;
@@ -136,6 +238,9 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @return self
+     */
     public function unsetMethod()
     {
         $this->method = 'GET';
@@ -144,7 +249,9 @@ class RequestBuilder
     }
 
     /**
-     * @param string $uri
+     * @param $uri
+     *
+     * @return self
      */
     public function setUri($uri)
     {
@@ -153,6 +260,9 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @return self
+     */
     public function unsetUri()
     {
         $this->uri = '/';
@@ -160,6 +270,9 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getServer()
     {
         $data = $this->server;
@@ -170,11 +283,17 @@ class RequestBuilder
         return $data;
     }
 
+    /**
+     * @return null|string
+     */
     public function getContent()
     {
         return $this->content;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
     public function getRequest()
     {
         return Request::create(

@@ -53,7 +53,7 @@ EOT
         /**
          * @var $service \SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManagerInterface
          */
-        $service = $this->getContainer()->get('oauth2_server.password_client.manager');
+        $service = $this->getContainer()->get('oauth2_server.password_client.client_manager');
         $client = $service->createClient();
         foreach(['password'=>'setPlaintextSecret'] as $argument=>$method) {
             $client->$method($input->getArgument($argument));
@@ -68,6 +68,6 @@ EOT
 
     public function isEnabled()
     {
-        return $this->getContainer()->has('oauth2_server.password_client.manager');
+        return $this->getContainer()->has('oauth2_server.password_client.client_manager');
     }
 }

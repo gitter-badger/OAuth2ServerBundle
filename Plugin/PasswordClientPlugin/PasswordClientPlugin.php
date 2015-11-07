@@ -39,7 +39,7 @@ class PasswordClientPlugin implements BundlePlugin
 
         $container->setParameter('oauth2_server.password_client.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.password_client.prefix', $pluginConfiguration['prefix']);
-        $container->setParameter('oauth2_server.password_client.manager_class', $pluginConfiguration['manager_class']);
+        $container->setParameter('oauth2_server.password_client.client_manager_class', $pluginConfiguration['client_manager_class']);
         $container->setParameter('oauth2_server.password_client.enable_digest_authentication_scheme', $pluginConfiguration['enable_digest_authentication_scheme']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_scheme_algorithm', $pluginConfiguration['digest_authentication_scheme_algorithm']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_scheme_quality_of_protection', $pluginConfiguration['digest_authentication_scheme_quality_of_protection']);
@@ -69,7 +69,7 @@ class PasswordClientPlugin implements BundlePlugin
                 ->end()
             ->end()
             ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
-            ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager')->end()
+            ->scalarNode('client_manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManager')->end()
             ->scalarNode('digest_authentication_key')->cannotBeEmpty()->isRequired()->end()
             ->scalarNode('digest_authentication_scheme_quality_of_protection')->cannotBeEmpty()->defaultValue('auth,auth-int')->end()
             ->scalarNode('digest_authentication_scheme_algorithm')->cannotBeEmpty()->defaultValue('MD5')->end()

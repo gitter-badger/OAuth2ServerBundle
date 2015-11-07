@@ -1,0 +1,8 @@
+{% extends "/spomky-labs/oauth2-server/password-client/template/layout.html.twig" %}
+
+{% block oauth2_content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Create</button>
+    {{ form_end(form) }}
+{% endblock oauth2_content %}

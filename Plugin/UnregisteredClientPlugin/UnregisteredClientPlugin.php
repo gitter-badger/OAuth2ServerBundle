@@ -23,9 +23,9 @@ class UnregisteredClientPlugin implements BundlePlugin
             $loader->load(sprintf('%s.xml', $basename));
         }
 
-        $container->setParameter('oauth2_server.unregistered_client.class', $pluginConfiguration['client_class']);
+        $container->setParameter('oauth2_server.unregistered_client.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.unregistered_client.prefix', $pluginConfiguration['prefix']);
-        $container->setParameter('oauth2_server.unregistered_client.manager.class', $pluginConfiguration['manager_class']);
+        $container->setParameter('oauth2_server.unregistered_client.client_manager.class', $pluginConfiguration['client_manager_class']);
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
@@ -42,7 +42,7 @@ class UnregisteredClientPlugin implements BundlePlugin
                 ->end()
             ->end()
             ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
-            ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientManager')->end()
+            ->scalarNode('client_manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\UnregisteredClientPlugin\Model\UnregisteredClientManager')->end()
             ->end()
             ->isRequired();
     }

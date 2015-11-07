@@ -32,13 +32,13 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
         /*
          * @var \SpomkyLabs\TestBundle\Entity\Entity\SimpleStringAccessTokenManager
          */
-        $client_manager = $this->container->get('oauth2_server.simple_string_test_bundle.access_token_manager');
+        $manager = $this->container->get('oauth2_server.simple_string_test_bundle.access_token_manager');
 
         foreach ($this->getAccessTokens() as $access_token) {
             /*
              * @var \SpomkyLabs\TestBundle\Entity\SimpleStringAccessToken
              */
-            $object = $client_manager->createToken();
+            $object = $manager->createToken();
 
             $object->setExpiresAt($access_token['expires_at'])
                 ->setClientPublicId($access_token['client_public_id'])
@@ -51,7 +51,7 @@ class LoadAccessTokenData extends AbstractFixture implements FixtureInterface, C
                 $object->setRefreshToken($access_token['refresh_token']);
             }
 
-            $client_manager->saveToken($object);
+            $manager->saveToken($object);
 
             $this->addReference('access-token-'.$access_token['id'], $object);
         }

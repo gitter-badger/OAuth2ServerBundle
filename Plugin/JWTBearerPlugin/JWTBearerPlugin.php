@@ -39,7 +39,7 @@ class JWTBearerPlugin implements BundlePlugin
 
         $container->setParameter('oauth2_server.jwt_bearer.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.jwt_bearer.prefix', $pluginConfiguration['prefix']);
-        $container->setParameter('oauth2_server.jwt_bearer.manager_class', $pluginConfiguration['manager_class']);
+        $container->setParameter('oauth2_server.jwt_bearer.client_manager_class', $pluginConfiguration['client_manager_class']);
         $container->setParameter('oauth2_server.jwt_bearer.allowed_encryption_algorithms', $pluginConfiguration['allowed_encryption_algorithms']);
         $container->setParameter('oauth2_server.jwt_bearer.private_keys', $pluginConfiguration['private_keys']);
     }
@@ -61,7 +61,7 @@ class JWTBearerPlugin implements BundlePlugin
             ->scalarNode('prefix')->isRequired()->cannotBeEmpty()->defaultNull()->end()
             ->scalarNode('jwt_loader')->cannotBeEmpty()->isRequired()->end()
             ->scalarNode('keyset_manager')->cannotBeEmpty()->isRequired()->end()
-            ->scalarNode('manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model\JWTClientManager')->end()
+            ->scalarNode('client_manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\JWTBearerPlugin\Model\JWTClientManager')->end()
             ->arrayNode('allowed_encryption_algorithms')
                 ->cannotBeEmpty()->isRequired()
                 ->useAttributeAsKey('key')

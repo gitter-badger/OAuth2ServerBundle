@@ -184,4 +184,16 @@ trait RequestContext
             throw new \Exception(sprintf('The exception has not the expected message: "%s"', $message));
         }
     }
+
+    /**
+     * @Then print partial response
+     */
+    public function printPartialResponse()
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+        $result = $this->getSession()->getPage()->getContent();
+
+        var_dump($headers);
+        print_r(2500<strlen($result)?substr($result,0,2500):$result);
+    }
 }

@@ -62,7 +62,7 @@ oauth2_server:
 # How to extend the scope class?
 
 At the moment, it is not possible to extend the scope class.
-But this feature is planned for a next release. You will be able to add properties (e.g. description) and manage them with a dedicated scope manager (e.g. store scopes in a database).
+But this feature is planned for a next release. You will be able to add properties (e.g. description) and manage them with a dedicated scope client_manager (e.g. store scopes in a database).
 
 
 [Go back](../Use.md)

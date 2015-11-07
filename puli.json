@@ -2,7 +2,9 @@
     "version": "1.0",
     "name": "spomky-labs/oauth2-server-bundle",
     "path-mappings": {
-        "/spomky-labs/oauth2-server/authorization/template": "Plugin/AuthorizationEndpointPlugin/Resources/views"
+        "/spomky-labs/oauth2-server/authorization/template": "Plugin/AuthorizationEndpointPlugin/Resources/views",
+        "/spomky-labs/oauth2-server/public-client/template": "Plugin/PublicClientPlugin/Resources/views",
+        "/spomky-labs/oauth2-server/password-client/template": "Plugin/PasswordClientPlugin/Resources/views"
     },
     "config": {
         "bootstrap-file": "vendor/autoload.php"
@@ -73,7 +75,7 @@
             "installer": "composer"
         },
         "doctrine/doctrine-cache-bundle": {
-            "install-path": "vendor/doctrine/doctrine-cache-bundle/Doctrine/Bundle/DoctrineCacheBundle",
+            "install-path": "vendor/doctrine/doctrine-cache-bundle",
             "installer": "composer"
         },
         "doctrine/doctrine-fixtures-bundle": {

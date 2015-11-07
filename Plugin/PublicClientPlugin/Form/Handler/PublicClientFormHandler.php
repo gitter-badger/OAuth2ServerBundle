@@ -1,16 +1,16 @@
 <?php
 
-namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Form\Handler;
+namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Form\Handler;
 
-use SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model\PasswordClientManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class PasswordClientFormHandler
+class PublicClientFormHandler
 {
     protected $manager;
 
-    public function __construct(PasswordClientManagerInterface $manager)
+    public function __construct(PublicClientManagerInterface $manager)
     {
         $this->manager = $manager;
     }

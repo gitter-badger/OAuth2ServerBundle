@@ -48,15 +48,15 @@ oauth2_server:
     unregistered_client:
         prefix: "**UNREGISTERED**-"
         client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\UnregisteredClient
-        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\UnregisteredClientManager
+        client_manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\UnregisteredClientManager
     public_client:
         prefix: PUBLIC-
         client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
+        client_manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
     password_client:
         prefix: PASSWORD-
         client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClient
-        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
+        client_manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
     refresh_token:
         min_length: 50

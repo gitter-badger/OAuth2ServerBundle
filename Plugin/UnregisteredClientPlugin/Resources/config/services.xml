@@ -5,8 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="oauth2_server.unregistered_client.manager" class="%oauth2_server.unregistered_client.manager.class%">
-            <argument>%oauth2_server.unregistered_client.class%</argument>
+        <service id="oauth2_server.unregistered_client.client_manager" class="%oauth2_server.unregistered_client.client_manager.class%">
+            <argument>%oauth2_server.unregistered_client.client_class%</argument>
             <argument>%oauth2_server.unregistered_client.prefix%</argument>
             <argument type="service" id="oauth2_server.exception.manager" />
             <tag name="oauth2_server.client_manager" />

@@ -90,7 +90,7 @@ The following plugins are enabled by default:
     * [Unregistered Client](Plugin/UnregisteredClient.md)
     * [Public Client](Plugin/PublicClient.md)
     * [Password Client](Plugin/PasswordClient.md)
-* Access token manager:
+* Access token client_manager:
     * [Simple String Access Token](Plugin/SimpleStringAccessToken.md)
 * Endpoints:
     * [Authorization Endpoint](Plugin/AuthorizationEndpoint.md)

@@ -65,11 +65,11 @@ oauth2_server:
     public_client:
         prefix: PUBLIC-
         client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClient
-        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
+        client_manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PublicClientManager
     password_client:
         prefix: PASSWORD-
         client_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClient
-        manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
+        client_manager_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\PasswordClientManager
         digest_authentication_key: abcdefghijklmnop
     refresh_token:
         token_class: SpomkyLabs\Bundle\CommonTestBundle\Entity\RefreshToken

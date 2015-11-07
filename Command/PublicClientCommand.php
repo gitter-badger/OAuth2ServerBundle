@@ -47,7 +47,7 @@ EOT
         /**
          * @var $service \SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManagerInterface
          */
-        $service = $this->getContainer()->get('oauth2_server.public_client.manager');
+        $service = $this->getContainer()->get('oauth2_server.public_client.client_manager');
         $client = $service->createClient();
         foreach(['allowed_grant_types'=>'setAllowedGrantTypes', 'redirect_uris'=>'setRedirectUris'] as $option=>$method) {
             $client->$method($input->getOption($option));
@@ -59,6 +59,6 @@ EOT
 
     public function isEnabled()
     {
-        return $this->getContainer()->has('oauth2_server.public_client.manager');
+        return $this->getContainer()->has('oauth2_server.public_client.client_manager');
     }
 }

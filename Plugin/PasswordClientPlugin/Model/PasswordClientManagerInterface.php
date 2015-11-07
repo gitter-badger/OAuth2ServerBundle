@@ -2,20 +2,9 @@
 
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\PasswordClientPlugin\Model;
 
-use OAuth2\Client\ClientInterface;
-use OAuth2\Client\ClientManagerInterface;
+use OAuth2\Client\ClientManagerInterface as BaseClientManagerInterface;
+use SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientManagerInterface;
 
-interface PasswordClientManagerInterface extends ClientManagerInterface
+interface PasswordClientManagerInterface extends ClientManagerInterface, BaseClientManagerInterface
 {
-    /**
-     * @return \SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientInterface
-     */
-    public function createClient();
-
-    /**
-     * @param \OAuth2\Client\ClientInterface $client
-     *
-     * @return self
-     */
-    public function saveClient(ClientInterface $client);
 }

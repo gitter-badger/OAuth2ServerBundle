@@ -29,7 +29,7 @@ class LoadPasswordClientData extends AbstractFixture implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $manager = $this->container->get('oauth2_server.password_client.manager');
+        $manager = $this->container->get('oauth2_server.password_client.client_manager');
 
         foreach ($this->getClients() as $password_client) {
             $client = $manager->createClient();

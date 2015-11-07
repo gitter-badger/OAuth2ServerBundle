@@ -29,10 +29,10 @@ class LoadJWTClientData extends AbstractFixture implements FixtureInterface, Con
      */
     public function load(ObjectManager $manager)
     {
-        if (!$this->container->has('oauth2_server.jwt_bearer.manager')) {
+        if (!$this->container->has('oauth2_server.jwt_bearer.client_manager')) {
             return;
         }
-        $manager = $this->container->get('oauth2_server.jwt_bearer.manager');
+        $manager = $this->container->get('oauth2_server.jwt_bearer.client_manager');
 
         foreach ($this->getClients() as $jwt_client) {
             /*

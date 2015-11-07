@@ -24,3 +24,4 @@ security:
 
     access_control:
         - { path: ^/oauth/v2/authorize, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin/, role: IS_AUTHENTICATED_FULLY }

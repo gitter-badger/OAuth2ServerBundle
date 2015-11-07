@@ -20,14 +20,14 @@ This bundle is a complete OAuth2 Server Bundle for ![Symfony 2.7+](https://img.s
 
 It provides the following official plugins:
 
-* [x] Access token manager:
+* [x] Access token client_manager:
     * [x] Simple string access token
     * [x] JWT access token
 * [ ] Access token type:
     * [x] Bearer access token ([RFC6750](https://tools.ietf.org/html/rfc6750))
     * [ ] MAC access ([IETF draft](https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05)) - *The implementation is stopped until the specification has not reach maturity*
-* [x] Exception manager
-* [x] Scope manager ([RFC6749, section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3))
+* [x] Exception client_manager
+* [x] Scope client_manager ([RFC6749, section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3))
 * [ ] Clients:
     * [x] Public clients ([RFC6749, section 2.1](https://tools.ietf.org/html/rfc6749#section-2.1))
     * [x] Password clients ([RFC6749, section 2.3.1](https://tools.ietf.org/html/rfc6749#section-2.3.1))
