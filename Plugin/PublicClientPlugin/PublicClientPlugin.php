@@ -20,19 +20,13 @@ class PublicClientPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['services', 'public_client_form'] as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
         $container->setParameter('oauth2_server.public_client.client_class', $pluginConfiguration['client_class']);
         $container->setParameter('oauth2_server.public_client.prefix', $pluginConfiguration['prefix']);
         $container->setParameter('oauth2_server.public_client.client_manager.class', $pluginConfiguration['client_manager_class']);
-
-
-        $container->setAlias('oauth2_server.public_client.form_handler', $pluginConfiguration['form']['handler']);
-        $container->setParameter('oauth2_server.public_client.form_name', $pluginConfiguration['form']['name']);
-        $container->setParameter('oauth2_server.public_client.form_type', $pluginConfiguration['form']['type']);
-        $container->setParameter('oauth2_server.public_client.form_validation_groups', $pluginConfiguration['form']['validation_groups']);
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
@@ -52,8 +46,6 @@ class PublicClientPlugin implements BundlePlugin
             ->scalarNode('client_manager_class')->cannotBeEmpty()->defaultValue('SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManager')->end()
             ->end()
             ->isRequired();
-
-        $this->addFormSection($pluginNode);
     }
 
     public function build(ContainerBuilder $container)
@@ -68,24 +60,5 @@ class PublicClientPlugin implements BundlePlugin
 
     public function boot(ContainerInterface $container)
     {
-    }
-
-    private function addFormSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-            ->arrayNode('form')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('type')->defaultValue('oauth2_server_public_client')->end()
-            ->scalarNode('handler')->defaultValue('oauth2_server.public_client.form_handler.default')->end()
-            ->scalarNode('name')->defaultValue('oauth2_server_public_client_form')->cannotBeEmpty()->end()
-            ->arrayNode('validation_groups')
-            ->prototype('scalar')->end()
-            ->defaultValue(['Default'])
-            ->end()
-            ->end()
-            ->end()
-            ->end();
     }
 }

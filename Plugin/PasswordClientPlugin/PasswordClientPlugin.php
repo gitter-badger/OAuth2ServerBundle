@@ -33,7 +33,7 @@ class PasswordClientPlugin implements BundlePlugin
     public function load(array $pluginConfiguration, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
-        foreach (['services', 'password_client_form'] as $basename) {
+        foreach (['services'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
@@ -46,13 +46,6 @@ class PasswordClientPlugin implements BundlePlugin
         $container->setParameter('oauth2_server.password_client.allow_password_client_credentials_in_body_request', $pluginConfiguration['allow_password_client_credentials_in_body_request']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_nonce_lifetime', $pluginConfiguration['digest_authentication_nonce_lifetime']);
         $container->setParameter('oauth2_server.password_client.digest_authentication_key', $pluginConfiguration['digest_authentication_key']);
-
-
-        $container->setAlias('oauth2_server.password_client.form_handler', $pluginConfiguration['form']['handler']);
-        $container->setParameter('oauth2_server.password_client.form_name', $pluginConfiguration['form']['name']);
-        $container->setParameter('oauth2_server.password_client.form_type', $pluginConfiguration['form']['type']);
-        $container->setParameter('oauth2_server.password_client.form_validation_groups', $pluginConfiguration['form']['validation_groups']);
-
     }
 
     public function addConfiguration(ArrayNodeDefinition $pluginNode)
@@ -78,30 +71,9 @@ class PasswordClientPlugin implements BundlePlugin
             ->integerNode('digest_authentication_nonce_lifetime')->defaultValue(300)->end()
             ->end()
             ->isRequired();
-
-        $this->addFormSection($pluginNode);
     }
 
     public function boot(ContainerInterface $container)
     {
-    }
-
-    private function addFormSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-            ->arrayNode('form')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('type')->defaultValue('oauth2_server_password_client')->end()
-            ->scalarNode('handler')->defaultValue('oauth2_server.password_client.form_handler.default')->end()
-            ->scalarNode('name')->defaultValue('oauth2_server_password_client_form')->cannotBeEmpty()->end()
-            ->arrayNode('validation_groups')
-            ->prototype('scalar')->end()
-            ->defaultValue(['Default'])
-            ->end()
-            ->end()
-            ->end()
-            ->end();
     }
 }
