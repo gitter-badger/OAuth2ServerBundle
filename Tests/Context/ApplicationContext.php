@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-2015 Spomky-Labs
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
@@ -154,6 +163,7 @@ trait ApplicationContext
             $command = $this->getApplication()->find($line);
         } catch (\Exception $e) {
             $this->setCommandException($e);
+
             return;
         }
         $tester = new CommandTester($command);
@@ -176,7 +186,7 @@ trait ApplicationContext
         $this->setCommandParameters(json_decode($parameterJson->getRaw(), true));
         if (null === $this->getCommandParameters()) {
             throw new \InvalidArgumentException(
-                "PyStringNode could not be converted to json."
+                'PyStringNode could not be converted to json.'
             );
         }
 
@@ -229,8 +239,8 @@ trait ApplicationContext
      */
     public function theCommandExitCodeShouldBe($code)
     {
-        if ($this->getCommandExitCode() !== (int)$code) {
-            throw new \Exception(sprintf('The exit code is %u.',$this->getCommandExitCode()));
+        if ($this->getCommandExitCode() !== (int) $code) {
+            throw new \Exception(sprintf('The exit code is %u.', $this->getCommandExitCode()));
         }
     }
 
@@ -241,7 +251,7 @@ trait ApplicationContext
     {
         $this->theCommandExceptionShouldBeThrown($exception);
         if ($this->getCommandException()->getMessage() !== $message->getRaw()) {
-            throw new \Exception(sprintf('The message of the exception is "%s".',$this->getCommandException()->getMessage()));
+            throw new \Exception(sprintf('The message of the exception is "%s".', $this->getCommandException()->getMessage()));
         }
     }
 
