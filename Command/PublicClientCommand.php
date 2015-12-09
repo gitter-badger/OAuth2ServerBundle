@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-2015 Spomky-Labs
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
 namespace SpomkyLabs\OAuth2ServerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -20,14 +29,14 @@ class PublicClientCommand extends ContainerAwareCommand
             ->addOption(
                 'allowed_grant_types',
                 null,
-                InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Allowed grant types',
                 []
             )
             ->addOption(
                 'redirect_uris',
                 null,
-                InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Redirect URIs',
                 []
             )
@@ -45,11 +54,11 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /**
-         * @var $service \SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManagerInterface
+         * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\PublicClientPlugin\Model\PublicClientManagerInterface
          */
         $service = $this->getContainer()->get('oauth2_server.public_client.client_manager');
         $client = $service->createClient();
-        foreach(['allowed_grant_types'=>'setAllowedGrantTypes', 'redirect_uris'=>'setRedirectUris'] as $option=>$method) {
+        foreach (['allowed_grant_types' => 'setAllowedGrantTypes', 'redirect_uris' => 'setRedirectUris'] as $option => $method) {
             $client->$method($input->getOption($option));
         }
         $service->saveClient($client);

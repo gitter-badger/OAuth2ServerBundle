@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-2015 Spomky-Labs
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
 namespace SpomkyLabs\OAuth2ServerBundle\Features\Context;
 
 use SpomkyLabs\Jose\EncryptionInstruction;
@@ -58,7 +67,7 @@ trait JWTContext
 
         $signature_instruction = new SignatureInstruction();
         $signature_instruction->setKey($jwk2)
-            ->setProtectedHeader(['cty' => 'JWT','alg' => 'HS512'])
+            ->setProtectedHeader(['cty' => 'JWT', 'alg' => 'HS512'])
             ->setUnprotectedHeader([]);
 
         $encryption_instruction = new EncryptionInstruction();

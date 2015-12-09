@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-2015 Spomky-Labs
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
 namespace SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model;
 
 use OAuth2\Client\ClientInterface as BaseClientInterface;
@@ -32,7 +41,7 @@ trait ClientManagerBehaviour
     public function createClient()
     {
         $class = $this->getClass();
-        /**
+        /*
          * @var \SpomkyLabs\OAuth2ServerBundle\Plugin\ClientManagerSupervisorPlugin\Model\ClientInterface
          */
         $client = new $class();
@@ -63,7 +72,6 @@ trait ClientManagerBehaviour
         $class = $this->getClass();
         if (!$client instanceof $class) {
             throw new \InvalidArgumentException(sprintf('Argument must be an instance of "%s"', $class));
-
         }
     }
 }
