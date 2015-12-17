@@ -1,6 +1,8 @@
 OAuth2 Server Bundle
 ====================
 
+[![Join the chat at https://gitter.im/Spomky-Labs/OAuth2ServerBundle](https://badges.gitter.im/Spomky-Labs/OAuth2ServerBundle.svg)](https://gitter.im/Spomky-Labs/OAuth2ServerBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Spomky-Labs/OAuth2ServerBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Spomky-Labs/OAuth2ServerBundle/?branch=master)
 [![Build Status](https://travis-ci.org/Spomky-Labs/OAuth2ServerBundle.svg?branch=master)](https://travis-ci.org/Spomky-Labs/OAuth2ServerBundle)
 [![HHVM Status](http://hhvm.h4cc.de/badge/spomky-labs/oauth2-server-bundle.png)](http://hhvm.h4cc.de/package/spomky-labs/oauth2-server-bundle)
